@@ -4,7 +4,7 @@
 Polunetsintään toteutan A* algoritmin ja mahdollisesti jonkin vertailualgoritmin.
 Tietorakenteista toteutan tarvittavat tietorakenteet. (selvitän pian)
 Tarvittaessa toteutan myös algoritmin (ja tietorakenteet) lähimpien naapurien löytämiseen 
-(riippuen missä muodossa koordinaatit saadaan xtc -tiedostosta).
+(riippuen missä muodossa koordinaatit saadaan xtc -tiedostosta) paikallista verkkoa varten.
 Toinen vaihtoehto on muodostaa koko verkko ennen polun etsimistä.
 
 ## Mitä ongelmaa ratkaiset ja miksi valitsit kyseiset algoritmit/tietorakenteet
@@ -43,4 +43,7 @@ Mainituissa tapauksissa huomattavan nopeutuksen saattaa tuoda, jos polkua lähde
 sekä alusta (eteenpäin) että lopusta (taaksepäin).
 
 ## Lähteet
-http://sbcb.bioch.ox.ac.uk/jgromacs/ xtc tiedostojen lukemiseen
+http://sbcb.bioch.ox.ac.uk/jgromacs/ yksi vaihtoehto xtc tiedostojen lukemiseen 
+(tarvitsee GROMACS:n)
+
+http://manual.gromacs.org/online/xtc.html nopeampi vaihtoehto (C/FORTRAN ja tarvitsee GROMACS:n)
