@@ -1,28 +1,34 @@
-#include "gromacs/fileio/xtcio.h"
+#include "/opt/gromacs-5.0.7/include/gromacs/fileio/xtcio.h"
 
 #define FAIL 0
 #define SUCCESS 1
 
 int main(int argc, char ** argv) {
-  XDR *xd;
+  t_fileio  *xd;
   char *filename;
   int natoms,step;
   real time,prec;
   matrix box;
   rvec *x;
+  gmx_bool bOK;
 
-  if (argc >= 1) {
-	filename=argv[0];
+  if (argc > 1) {
+	filename=argv[1];
   }	else {
-	puts("filename failed %s\n", argv[0]);
+	printf("filename failed %s\n", argv[1]);
 	return FAIL;
   }
 
-  if (open_xtc(xd, filename, "r") == 0) {
-	puts("open_xtc failed\n");
+  if ((xd = open_xtc(filename, "r")) == 0) {
+	printf("open_xtc failed\n");
 	return FAIL;
   }
 
+  if (read_first_xtc(xd, &natoms, &step, &time, box, &x, &prec, &bOK) == 0) {
+	printf("reading first frame failed\n");
+	return FAIL;
+  }
+  printf("number of atoms: %d\n", natoms);
   
   return SUCCESS;
 }
