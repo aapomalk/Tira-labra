@@ -1,4 +1,4 @@
-#include "/opt/gromacs-5.0.7/include/gromacs/fileio/xtcio.h"
+#include "xtcio.h"
 
 #define FAIL 0
 #define SUCCESS 1
@@ -6,7 +6,7 @@
 int main(int argc, char ** argv) {
   t_fileio  *xd;
   char *filename;
-  int natoms,step;
+  int natoms,step,i,j;
   real time,prec;
   matrix box;
   rvec *x;
@@ -15,7 +15,7 @@ int main(int argc, char ** argv) {
   if (argc > 1) {
 	filename=argv[1];
   }	else {
-	printf("filename failed %s\n", argv[1]);
+	printf("filename failed\nprogram needs .xtc -filename as parameter\nLike this %s test.xtc\n", argv[0]);
 	return FAIL;
   }
 
@@ -28,7 +28,21 @@ int main(int argc, char ** argv) {
 	printf("reading first frame failed\n");
 	return FAIL;
   }
-  printf("number of atoms: %d\n", natoms);
+  printf("natoms: %d, step: %d, time: %.2f, prec: %.2f, bOK: %d\n", natoms, step, time, prec, bOK);
+  printf("box: ");
+  for (i=0; i<3; i++) {
+	for (j=0; j<3; j++) {
+	  printf("%.3f%s", box[i][j], (i == 2 && j == 2) ? "\n" : ", ");
+	}
+  }
+  printf("coordinates:\n");
+  for (i=0; i<natoms; i++) {
+	printf("%d: ", i);
+	for (j=0; j<3; j++) { /* If j==3 then it's the same as if j==0 and i +1 larger */
+	  printf("%.3f%s", x[i][j], (j == 2) ? "" : " ");
+	}
+	printf("\n");
+  }
   
   return SUCCESS;
 }
