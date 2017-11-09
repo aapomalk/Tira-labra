@@ -7,6 +7,11 @@ Kirjoittelin lähinnä header -tiedostoja.
 
 20-24
 
+### 9.11.
+Aloitin koodaamisen ja testaamisen.
+
+22:30-01:40
+
 ## Miten ohjelma on edistynyt?
 
 ## Mitä opin tällä viikolla / tänään?

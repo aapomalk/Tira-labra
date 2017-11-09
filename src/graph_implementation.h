@@ -1,18 +1,24 @@
 #ifndef GRAPH_IMPLEMENTATION_H
 #define GRAPH_IMPLEMENTATION_H
 
-typedef double COORDINATE [3];
+#define DIMENSIONS 3
+
+typedef double COORDINATE [DIMENSIONS];
 
 typedef struct ATOM {
 	COORDINATE coord;
 	int index;
 } ATOM;
 
-typedef struct VERTEX {
+/* typedef in graph.h */
+struct VERTEX {
 	int index; /* the index of GRAPH */
 	ATOM not_hydrogen;
+	int n_hydrogens;
 	ATOM *hydrogens;
 };
+
+int initialize_hydrogens(VERTEX *v, int n_hydrogens);
 
 typedef struct BOX {
 	int decomposition [3]; /* how many boxes along vector 1, 2 and 3 */
@@ -20,7 +26,8 @@ typedef struct BOX {
 	VERTEX *** domains; /* 3D list of domains shaped like box */
 } BOX;
 
-typedef struct GRAPH {
+/* typedef in graph.h */
+struct GRAPH {
 	int number_of_nodes;
 	VERTEX *nodes; /* the nodes themselves */
 	EDGE **edges; /* a (null-terminated) list of edges for each node */

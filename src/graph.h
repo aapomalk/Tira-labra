@@ -7,6 +7,7 @@ VERTEX * new_vertex();
 int delete_vertex(VERTEX *v);
 double heuristic(VERTEX *a, VERTEX *b);
 int get_index(VERTEX *v); /* index to identify v, see find_vertex */
+char* print_vertex(VERTEX *v);
 
 typedef struct EDGE {
 	double weight;
