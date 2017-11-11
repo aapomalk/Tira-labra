@@ -15,7 +15,7 @@ Aloitin koodaamisen ja testaamisen.
 ### 11.11.
 Lisää koodaamista ja testaamista.
 
-12:30-14:15
+12:30-14:15, 19-0:30
 
 ## Miten ohjelma on edistynyt?
 
