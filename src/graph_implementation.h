@@ -21,17 +21,21 @@ struct VERTEX {
 int initialize_hydrogens(VERTEX *v, int n_hydrogens);
 
 typedef struct BOX {
-	int decomposition [3]; /* how many boxes along vector 1, 2 and 3 */
-	COORDINATE vectors [3]; /* these define the BOX shape */
-	VERTEX *** domains; /* 3D list of domains shaped like box */
+	int decomposition [DIMENSIONS]; /* how many boxes along vector 1, 2 and 3 */
+	COORDINATE vectors [DIMENSIONS]; /* these define the BOX shape */
+	VERTEX ** domains; /* list of domains shaped like box */
 } BOX;
+
+BOX * new_box();
+int number_of_domains(BOX *box);
+int delete_box(BOX **box);
 
 /* typedef in graph.h */
 struct GRAPH {
 	int number_of_nodes;
 	VERTEX *nodes; /* the nodes themselves */
 	EDGE **edges; /* a (null-terminated) list of edges for each node */
-	BOX box; /* the domain decomposition of graph */
+	BOX *box; /* the domain decomposition of graph */
 };
 
 /* returns a list of domains reachable from coordinate c by distance */

@@ -12,6 +12,11 @@ Aloitin koodaamisen ja testaamisen.
 
 22:30-01:40
 
+### 11.11.
+Lisää koodaamista ja testaamista.
+
+12:30-14:15
+
 ## Miten ohjelma on edistynyt?
 
 ## Mitä opin tällä viikolla / tänään?
