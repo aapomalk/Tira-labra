@@ -13,13 +13,14 @@ Aloitin koodaamisen ja testaamisen.
 22:30-01:40
 
 ### 11.11.
-Lisää koodaamista ja testaamista.
+Lisää koodaamista ja testaamista. Verkko tietorakenteena alkaa hahmottumaan, kohta pääsen koodaamaan itse algoritmia.
 
 12:30-14:15, 19-0:30
 
 ## Miten ohjelma on edistynyt?
 
 ## Mitä opin tällä viikolla / tänään?
+Opin/muistutin itseäni/tajusin paremmin, että miten C:n pointterit ja muistin varaaminen toimii.
 
 ## Mikä jäi epäselväksi tai tuottanut vaikeuksia?
 
