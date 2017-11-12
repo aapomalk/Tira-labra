@@ -39,15 +39,26 @@ void prepare_box(GRAPH *g, int *decomposition, COORDINATE *vectors);
 struct GRAPH {
 	int number_of_nodes, list_length;
 	VERTEX *nodes; /* the nodes themselves */
+	int *n_of_edges,*size_of_edge_lists;
+	double distance, angle;
 	EDGE **edges; /* a (null-terminated) list of edges for each node */
 	BOX *box; /* the domain decomposition of graph */
 };
 
 /* returns the domain of coordinate if x = {0, 0, 0} and next domain in y-direction if x = {0, 1, 0} etc. */
-VERTEX ** get_domain(BOX *b, COORDINATE c, int *x); /* length of x is DIMENSIONS */
-int * get_domain_index(BOX *b, COORDINATE c);
+int get_neighbouring_domain(BOX *b, COORDINATE c, int *x); /* length of x is DIMENSIONS */
+int get_domain_index(BOX *b, COORDINATE c);
+int * get_domain_indexes(BOX *b, COORDINATE c, int *i);
 int is_connection(VERTEX *a, VERTEX *b, double distance, double angle);
+void set_distance(GRAPH *g, double distance);
+void set_angle(GRAPH *g, double angle);
 void form_edges(GRAPH *g, VERTEX *v);
 void set_index(VERTEX *v, int index); /* the graph index */
+
+int domain_is_within_reach(GRAPH *g, COORDINATE c, int *x);
+COORDINATE * get_domain_origin(BOX *b, COORDINATE c);
+
+COORDINATE * projection(COORDINATE a, COORDINATE b);
+void add_vertex_to_domain(int domain, VERTEX *v, BOX *box);
 
 #endif

@@ -32,13 +32,16 @@ Riippuen valituista arvoista (erityisesti kulma) kaikki läheisetkään atomit e
 muodosta vetysidosta.
 
 ## Tavoitteena olevat aika- ja tilavaativuudet (m.m. O-analyysit)
-Aikavaativuus on O(|E|) (eli yhteyksien lukumäärä) ja tilavaativuus O(|V|) (eli atomien lukumäärä).
+Aikavaativuus on O((|E|+|V|)log(|V|)) ja tilavaativuus O(|V|) (|E| on yhteyksien lukumäärä ja |V| solmujen lukumäärä).
+|V|log(|V|) aikavaativuudessa tulee tarpeesta järjestää solmut järjestykseen.
+|E|log(|V|) tulee taas siitä, että kukin kaari käsitellään enintään kertaalleen, 
+ja tämän seurauksena mahdollisesti järjestetään kaaren päässä oleva solmu uudelle paikalle.
 Käytännössä (kun käytetään suunnilleen oletusmääritelmää vetysidokselle) algoritmin ei tarvitse 
 pitää kirjaa lähellekään kaikista atomeista.
 3Å etäisyydellä olevat atomit ovat enintään kymmenien luokkaa 
 ja näistäkin mahdollisesti suurin osa voidaan jättää koko verkosta pois.
 Kun taas yhdessä simulaatiossa saattaa olla helposti yhteensä satoja tuhansia atomeja.
-Niissä aika-askeleissa, joissa polkua ei löydy päädytään lähelle O(|E|).
+Niissä aika-askeleissa, joissa polkua ei löydy päädytään lähelle O(|V|log(|V|)), sillä |E| ja |V| kasvavat suunnilleen samaa tahtia.
 Mainituissa tapauksissa huomattavan nopeutuksen saattaa tuoda, jos polkua lähdetään etsimään 
 sekä alusta (eteenpäin) että lopusta (taaksepäin).
 

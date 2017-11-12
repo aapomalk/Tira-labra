@@ -4,7 +4,7 @@
 typedef struct VERTEX VERTEX;
 
 VERTEX * new_vertex();
-double heuristic(VERTEX *a, VERTEX *b);
+
 int get_index(VERTEX *v); /* index to identify v, see find_vertex */
 char* print_vertex(VERTEX *v);
 
@@ -14,6 +14,8 @@ typedef struct EDGE {
 } EDGE;
 
 typedef struct GRAPH GRAPH;
+
+double heuristic(VERTEX *a, VERTEX *b, GRAPH *g);
 
 GRAPH * new_graph();
 int delete_graph(GRAPH **g); /* pass the address of pointer g like &g */

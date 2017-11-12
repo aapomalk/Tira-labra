@@ -34,7 +34,7 @@ void test_vertex(void) {
 }
 
 void test_heuristic(void) {
-	VERTEX *a = new_vertex();
+	/*VERTEX *a = new_vertex();
 	VERTEX *b = new_vertex();
 	a->not_hydrogen.coord[0] = 1.0;
 	b->not_hydrogen.coord[0] = 2.0;
@@ -42,7 +42,10 @@ void test_heuristic(void) {
 	a->not_hydrogen.coord[1] = 1.0;
 	TEST_ASSERT_EQUAL_FLOAT(sqrt(2.0), heuristic(a, b));
 	free(a);
-	free(b);
+	free(b);*/
+	printf("---------!!!!!!!!!-----------\nheuristic test need modification!!!!!!!!!\n");
+	printf("---------!!!!!!!!!-----------\n");
+	TEST_ASSERT(0);
 }
 
 void test_graph(void) {
@@ -95,11 +98,54 @@ void test_insert_many_vertex_to_graph(void) {
 		VERTEX *v = new_vertex();
 		TEST_ASSERT_EQUAL_INT(i, size_of_graph(g));
 		TEST_ASSERT_EQUAL_INT(SUCCESS, add_vertex(g, v));
-		if (i >= j - 1) {
+		if (i >= j) {
 			j = j * 2;
 		}
 		TEST_ASSERT_EQUAL_INT(j, g->list_length);
 	}
+	delete_graph(&g);
+}
+
+void test_box_preparation(void) {
+	int i,j,k,decomposition[DIMENSIONS] = {5, 3, 4};
+	COORDINATE vectors[DIMENSIONS];
+	GRAPH *g = new_graph();
+	for (i=0; i<DIMENSIONS; i++) {
+		for (j=0; j<DIMENSIONS; j++) {
+			vectors[i][j] = 0.0;
+		}
+	}
+	vectors[0][0] = 5.0;
+	vectors[1][1] = 3.0; /* these vectors are orthogonal */
+	vectors[2][2] = 4.0;
+	
+	for (i=0; i<decomposition[0]; i++) {
+		for (j=0; j<decomposition[1]; j++) {
+			for (k=0; k<decomposition[2]; k++) {
+				VERTEX *v = new_vertex();
+				v->not_hydrogen.coord[0] = 0.5 + i;
+				v->not_hydrogen.coord[1] = 0.5 + j;
+				v->not_hydrogen.coord[2] = 0.5 + k;
+				TEST_ASSERT_EQUAL_INT(SUCCESS, add_vertex(g, v));
+			}
+		}
+	}
+	prepare_box(g, decomposition, vectors);
+	TEST_ASSERT_EQUAL_INT(5*3*4 ,number_of_domains(g->box));
+	for (i=0; i<5*4*3; i++) {
+		TEST_ASSERT_EQUAL_INT(1, g->box->n_of_vertex_in_domains[i]); /* each domain has one vertex */
+		TEST_ASSERT_EQUAL_INT(3, g->box->size_of_domains[i]);
+		g->nodes[i].not_hydrogen.coord[0] = 0.5;
+		g->nodes[i].not_hydrogen.coord[1] = 0.5;
+		g->nodes[i].not_hydrogen.coord[2] = 0.5;
+	}
+	prepare_box(g, decomposition, vectors);
+	TEST_ASSERT_EQUAL_INT(5*4*3, g->box->n_of_vertex_in_domains[0]); /* all nodes are in one domain */
+	for (i=1; i<5*4*3; i++) {
+		TEST_ASSERT_EQUAL_INT(0, g->box->n_of_vertex_in_domains[i]); /* others are empty */
+		TEST_ASSERT_EQUAL_INT(3, g->box->size_of_domains[i]);
+	}
+	delete_graph(&g);
 }
 
 int main(void) {
@@ -109,5 +155,6 @@ int main(void) {
 	RUN_TEST(test_graph);
 	RUN_TEST(test_vertex_graph);
 	RUN_TEST(test_insert_many_vertex_to_graph);
+	RUN_TEST(test_box_preparation);
 	return UNITY_END();
 }

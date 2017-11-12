@@ -5,5 +5,8 @@
 #define FAIL 0
 #define INITIAL_LENGTH 10
 #define PRINT_LENGTH 30
+#define INITIAL_DOMAIN_SIZE 3
+#define ASSUMED_DISTANCE 0.3
+#define ASSUMED_ANGLE 20
 
 #endif
