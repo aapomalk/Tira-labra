@@ -1,4 +1,4 @@
-#include "unity.h"
+#include "unity.h" /* I have downloaded unity from http://www.throwtheswitch.org/unity/ */
 #include "../src/constants.h"
 #include "../src/graph.h"
 #include "../src/graph_implementation.h"
@@ -33,19 +33,17 @@ void test_vertex(void) {
 	free(v); /* if a vertex is not inserted in graph it needs to be freed */
 }
 
+/* first testing without periodicity */
 void test_heuristic(void) {
-	/*VERTEX *a = new_vertex();
+	VERTEX *a = new_vertex();
 	VERTEX *b = new_vertex();
 	a->not_hydrogen.coord[0] = 1.0;
 	b->not_hydrogen.coord[0] = 2.0;
-	TEST_ASSERT_EQUAL_FLOAT(1.0, heuristic(a, b));
+	TEST_ASSERT_EQUAL_FLOAT(1.0, heuristic(a, b, NULL)); 
 	a->not_hydrogen.coord[1] = 1.0;
-	TEST_ASSERT_EQUAL_FLOAT(sqrt(2.0), heuristic(a, b));
+	TEST_ASSERT_EQUAL_FLOAT(sqrt(2.0), heuristic(a, b, NULL));
 	free(a);
-	free(b);*/
-	printf("---------!!!!!!!!!-----------\nheuristic test need modification!!!!!!!!!\n");
-	printf("---------!!!!!!!!!-----------\n");
-	TEST_ASSERT(0);
+	free(b);
 }
 
 void test_graph(void) {
@@ -148,6 +146,98 @@ void test_box_preparation(void) {
 	delete_graph(&g);
 }
 
+void test_periodicity(void) {
+	VERTEX *a = new_vertex();
+	VERTEX *b = new_vertex();
+	int i,j,decomposition[DIMENSIONS] = {1, 1, 1}; /* decomposition is not needed, but we need at least one domain */
+	COORDINATE vectors[DIMENSIONS];
+	GRAPH *g = new_graph();
+	for (i=0; i<DIMENSIONS; i++) {
+		for (j=0; j<DIMENSIONS; j++) {
+			vectors[i][j] = 0.0;
+		}
+	}
+	vectors[0][0] = 3.0;
+	vectors[1][1] = 3.0; /* our box is a cube */
+	vectors[2][2] = 3.0;
+	
+	a->not_hydrogen.coord[0] = 0.4;
+	b->not_hydrogen.coord[0] = 2.9;
+	
+	add_vertex(g, a);
+	add_vertex(g, b);
+	
+	prepare_box(g, decomposition, vectors);
+	TEST_ASSERT_EQUAL_FLOAT(2.5, heuristic(&(g->nodes[0]), &(g->nodes[1]), NULL)); /* without periodicity */
+	TEST_ASSERT_EQUAL_FLOAT(0.5, heuristic(&(g->nodes[0]), &(g->nodes[1]), g)); /* with periodicity */
+}
+
+void test_domain_within_reach(void) {
+	GRAPH *g = new_graph();
+	int i,j,decomposition[DIMENSIONS] = {10, 10, 10};
+	COORDINATE vectors[DIMENSIONS], coord;
+	int *neighbour = malloc(DIMENSIONS * sizeof(int));
+	int a,b,c;
+	
+	for (i=0; i<DIMENSIONS; i++) {
+		for (j=0; j<DIMENSIONS; j++) {
+			vectors[i][j] = 0.0;
+		}
+	}
+	vectors[0][0] = 10.0;
+	vectors[1][1] = 10.0; /* our box is a cube */
+	vectors[2][2] = 10.0;
+	set_distance(g, 1.0); /* this determines whether domain is within reach */
+	prepare_box(g, decomposition, vectors);
+	
+	for (a=0; a<DIMENSIONS; a++) {
+		coord[a] = 5.5;
+	}
+	
+	for (a=0; a<pow(5, DIMENSIONS); a++) {
+		int true = 1;
+		char message[30];
+		b=a;
+		for (c=0; c<DIMENSIONS; c++) {
+			int x = -2 + (b % 5);
+			if (x < -1 || x > 1) { /* only the closest domains are within reach */
+				true = 0;
+			}
+			neighbour[c] = x;
+			b /= 5;
+		}
+		sprintf(message, "neighbour: %d %d %d", neighbour[0], neighbour[1], neighbour[2]);
+		TEST_ASSERT_EQUAL_INT_MESSAGE(true, domain_is_within_reach(g, coord, neighbour), message);
+	}
+	
+	free(neighbour);
+}
+
+void test_domain_origin(void) {
+	GRAPH *g = new_graph();
+	int i,j,decomposition[DIMENSIONS] = {10, 10, 10};
+	COORDINATE vectors[DIMENSIONS], coord, *ret;
+	
+	for (i=0; i<DIMENSIONS; i++) {
+		for (j=0; j<DIMENSIONS; j++) {
+			vectors[i][j] = 0.0;
+		}
+	}
+	vectors[0][0] = 10.0;
+	vectors[1][1] = 10.0; /* our box is a cube */
+	vectors[2][2] = 10.0;
+	prepare_box(g, decomposition, vectors);
+	
+	for (i=0; i<DIMENSIONS; i++) {
+		coord[i] = 1.5;
+	}
+	ret = get_domain_origin(g->box, coord);
+	for (i=0; i<DIMENSIONS; i++) {
+		TEST_ASSERT_EQUAL_FLOAT(1.0, (*ret)[i]);
+	}
+	free(ret);
+}
+
 int main(void) {
 	UNITY_BEGIN();
 	RUN_TEST(test_vertex);
@@ -156,5 +246,8 @@ int main(void) {
 	RUN_TEST(test_vertex_graph);
 	RUN_TEST(test_insert_many_vertex_to_graph);
 	RUN_TEST(test_box_preparation);
+	RUN_TEST(test_periodicity);
+	RUN_TEST(test_domain_within_reach);
+	RUN_TEST(test_domain_origin);
 	return UNITY_END();
 }

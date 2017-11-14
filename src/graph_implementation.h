@@ -45,6 +45,8 @@ struct GRAPH {
 	BOX *box; /* the domain decomposition of graph */
 };
 
+double minimum_angle_between(VERTEX *a, VERTEX *b, GRAPH *g);
+
 /* returns the domain of coordinate if x = {0, 0, 0} and next domain in y-direction if x = {0, 1, 0} etc. */
 int get_neighbouring_domain(BOX *b, COORDINATE c, int *x); /* length of x is DIMENSIONS */
 int get_domain_index(BOX *b, COORDINATE c);

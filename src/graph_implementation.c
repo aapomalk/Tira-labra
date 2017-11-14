@@ -51,15 +51,32 @@ int delete_hydrogens(VERTEX *v) {
 }
 
 double heuristic(VERTEX *a, VERTEX *b, GRAPH *g) {
-	double x = 0; /* this needs modifications for periodic boundaries !!!!!!!!!! */
+	double x = 0, min = -1.0;
 	int i;
-	for (i=0; i<DIMENSIONS; i++) {
-		x += pow(a->not_hydrogen.coord[i] - b->not_hydrogen.coord[i], 2);
+	if (g == NULL || g->box->domains == NULL) { /* in these cases direct distance is used */
+		for (i=0; i<DIMENSIONS; i++) {
+			x += pow(a->not_hydrogen.coord[i] - b->not_hydrogen.coord[i], 2);
+		}
+	} else { /* otherwise periodicity is used */
+		for (i=0; i<pow(3,DIMENSIONS); i++) { /* DIMENSIONS = 3 -> 3^3=27 periodic images are checked */
+			int m,n;
+			x = 0.0;
+			for (m=0; m<DIMENSIONS; m++) {
+				double b_vec = 0.0;
+				int j=i;
+				for (n=0; n<DIMENSIONS; n++) {
+					int k = -1 + (j % 3); /* each dimension gets -1, 0 and 1 */
+					b_vec += k * g->box->vectors[n][m];
+					j /= 3; /* the remainder gets removed in integer division */
+				}
+				x += pow(a->not_hydrogen.coord[m] - b->not_hydrogen.coord[m] + b_vec, 2);
+			}
+			if (min < 0 || x < min) {
+				min = x;
+			}
+		}
+		x = min; /* finally the smallest periodic distances is returned */
 	}
-	/*min = x;
-	for (i=0; i<pow(3, DIMENSIONS); i++) {
-		
-	}*/
 	return sqrt(x);
 }
 
@@ -139,13 +156,17 @@ int get_domain_index(BOX *b, COORDINATE c) {
 
 int * get_domain_indexes(BOX *b, COORDINATE c, int *i) {
 	int j,k;
+	COORDINATE copy;
+	for (j=0; j<DIMENSIONS; j++) {
+		copy[j] = c[j]; /* it's important not to modify c */
+	}
 	/* it's important to start from the last coordinate,
 	that way we can remove its effect from c and move to lower dimensional vectors */
 	for (j=DIMENSIONS-1; j>=0; j--) { 
-		double d = c[j] / b->vectors[j][j];
+		double d = copy[j] / b->vectors[j][j];
 		i[j] = (int) floor(b->decomposition[j] * d);
 		for (k=0; k<DIMENSIONS; k++) {
-			c[k] = c[k] - d * b->vectors[j][k]; /* removing the (j+1)'th dimension */
+			copy[k] = copy[k] - d * b->vectors[j][k]; /* removing the (j+1)'th dimension */
 		}
 		while (i[j] >= b->decomposition[j]) {
 			i[j] -= b->decomposition[j];
@@ -258,12 +279,14 @@ GRAPH * new_graph() {
 	return g;
 }
 
+/* max distance between nodes in order to be neighbours */
 void set_distance(GRAPH *g, double distance) {
 	if (distance > 0.0) {
 		g->distance = distance;
 	}
 }
 
+/* the max angle formed from the node main atoms (not_hydrogen) and one of the first nodes hydrogens */
 void set_angle(GRAPH *g, double angle) {
 	if (angle > 0 && angle <= 180) {
 		g->angle = angle;
