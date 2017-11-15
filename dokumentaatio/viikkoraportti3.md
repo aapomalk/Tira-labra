@@ -7,6 +7,10 @@ Sain periodisuuden toimimaan. Lisäksi nyt on mahdollista selvittää onko domai
 
 21-24
 
+### 15.11.
+
+21:20-
+
 ## Miten ohjelma on edistynyt?
 
 ## Mitä opin tällä viikolla / tänään?

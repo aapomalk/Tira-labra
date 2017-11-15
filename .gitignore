@@ -5,4 +5,5 @@
 =======
 **/*.out
 **/*.out.stackdump
+**/*.o
 >>>>>>> d98ce1a70ee0abb929089865af0bb2511bb5f109

@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <math.h>
 
+/* this is now old file, the new files are in graph_implementation folder */
+
 #define ABS(X) ((X)<0 ? -(X) : (X))
 
 VERTEX * new_vertex() {
@@ -183,7 +185,7 @@ int get_neighbouring_domain_index(BOX *b, COORDINATE c, int *x) {
 	for (i=0; i<DIMENSIONS; i++) {
 		double d = 1.0 * x[i] / b->decomposition[i];
 		for (j=0; j<DIMENSIONS; j++) {
-			c[i] += d * b->vectors[i][j];
+			c[i] += d * b->vectors[i][j]; /* this is now based on coordinates, but this could be purely integer function */
 		}
 	}
 	return get_domain_index(b, c);
