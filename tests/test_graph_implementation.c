@@ -239,6 +239,7 @@ void test_domain_origin(void) {
 }
 
 int main(void) {
+	printf("\n");
 	UNITY_BEGIN();
 	RUN_TEST(test_vertex);
 	RUN_TEST(test_heuristic);

@@ -8,8 +8,11 @@ Sain periodisuuden toimimaan. Lisäksi nyt on mahdollista selvittää onko domai
 21-24
 
 ### 15.11.
+Projektin siistimistä. graph_implementation.c tiedosto jaettu kolmeen osaan ja ylimääräiset kansiot poistettu.
 
-21:20-
+Ohjelman pitäisi nyt olla käytännössä valmis algoritmia varten. Vielä olisi kuitenkin hyvä tehdä kattavat testit.
+
+21:20-01:20
 
 ## Miten ohjelma on edistynyt?
 

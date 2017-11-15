@@ -90,7 +90,7 @@ int * get_domain_indexes(BOX *b, COORDINATE c, int *i) {
 			i[j] += b->decomposition[j];
 		}
 	}
-	return i;
+	return i; /* parameter i is also returned */
 }
 
 int get_neighbouring_domain_index(BOX *b, COORDINATE c, int *x) {

@@ -114,10 +114,76 @@ EDGE * get_edges(GRAPH *g, VERTEX *v) {
 }
 
 void form_edges(GRAPH *g, VERTEX *v) {
-	/*int i = v->index;
-	EDGE *e = g->edges[i];*/
+	int index = v->index;
+	int *neighbours = malloc(DIMENSIONS * sizeof(int));
+	int found = 1, i, level;
+	int *checked = calloc(number_of_domains(g->box), sizeof(int));
 	
-	return; /* complete this later */
+	for (level=0; found == 1; level++) { /* current domain is on level 0, 
+	level 1 is all the surrounding domains and so on */
+		int value = 1 + 2 * level, next, equals_value = 0;
+		found = 0;
+		for (i=0; i<pow(value, DIMENSIONS); i++) {
+			int j = i, k;
+			for (k=0; k<DIMENSIONS; k++) {
+				int a = -level + (j % value);
+				neighbours[k] = a;
+				if (a == value || a == -value) {
+					equals_value = 1; /* at least one of the values need to be the level (+-) */
+				}
+				j /= value;
+			}
+			if (equals_value == 0) {
+				continue; /* this is not on the right level */
+			}
+			next = get_neighbouring_domain_index(g->box, v->not_hydrogen.coord, neighbours);
+			if (domain_is_within_reach(g, v->not_hydrogen.coord, neighbours) == 1 && checked[next] == 0) {
+				int j;
+				found = 1; /* there was still at least one domain reachable and unvisited 
+				-> we can continue level-loop deeper */
+				checked[next] = 1; /* we're not going to visit this domain again */
+				for (j=0; j < g->box->n_of_vertex_in_domains[next]; j++) {
+					VERTEX *x = &(g->box->domains[next][j]);
+					double weight = is_connection(v, x, g);
+					if (weight >= 0) {
+						add_edge(index, x, weight, g);
+					}
+				}
+			}
+		}
+	}
+	
+	free(checked);
+	free(neighbours);
+	return;
+}
+
+void add_edge(int index, VERTEX *v, double weight, GRAPH *g) {
+	if (g->edges[index] == NULL) {
+		g->edges[index] = malloc(INITIAL_EDGE_NUMBER * sizeof(EDGE));
+		g->size_of_edge_lists[index] = INITIAL_EDGE_NUMBER;
+		g->n_of_edges[index] = 0;
+	}
+	while (g->n_of_edges[index] >= g->size_of_edge_lists[index]) {
+		g->size_of_edge_lists[index] *= 2;
+		g->edges[index] = realloc(g->edges[index], g->size_of_edge_lists[index] * sizeof(EDGE));
+	}
+	g->n_of_edges[index] += 1;
+	g->edges[index][g->n_of_edges[index]].weight = weight;
+	g->edges[index][g->n_of_edges[index]].node = v;
+}
+
+/* returns the distance if success and negative value otherwise */
+double is_connection(VERTEX *a, VERTEX *b, GRAPH *g) {
+	double *vec = malloc(DIMENSIONS * sizeof(double));
+	double distance = heuristic2(a, b, g, vec);
+	if (distance > g->distance) {
+		return -1.0;
+	}
+	if (minimum_angle_between(a, b, g, vec, distance) > g->angle) {
+		return -1.0;
+	}
+	return distance;
 }
 
 int domain_is_within_reach(GRAPH *g, COORDINATE c, int *x) {
@@ -225,6 +291,13 @@ void prepare_box(GRAPH *g, int *decomposition, COORDINATE *vectors) {
 }
 
 double heuristic(VERTEX *a, VERTEX *b, GRAPH *g) {
+	double *x = malloc(DIMENSIONS * sizeof(double));
+	double ret = heuristic2(a, b, g, x);
+	free(x);
+	return ret;
+}
+
+double heuristic2(VERTEX *a, VERTEX *b, GRAPH *g, double *from_a_to_b) {
 	double x = 0, min = -1.0;
 	int i;
 	if (g == NULL || g->box->domains == NULL) { /* in these cases direct distance is used */
@@ -234,6 +307,7 @@ double heuristic(VERTEX *a, VERTEX *b, GRAPH *g) {
 	} else { /* otherwise periodicity is used */
 		for (i=0; i<pow(3,DIMENSIONS); i++) { /* DIMENSIONS = 3 -> 3^3=27 periodic images are checked */
 			int m,n;
+			double copy[DIMENSIONS];
 			x = 0.0;
 			for (m=0; m<DIMENSIONS; m++) {
 				double b_vec = 0.0;
@@ -243,13 +317,38 @@ double heuristic(VERTEX *a, VERTEX *b, GRAPH *g) {
 					b_vec += k * g->box->vectors[n][m];
 					j /= 3; /* the remainder gets removed in integer division */
 				}
-				x += pow(a->not_hydrogen.coord[m] - b->not_hydrogen.coord[m] + b_vec, 2);
+				copy[m] = a->not_hydrogen.coord[m] - b->not_hydrogen.coord[m] + b_vec;
+				x += pow(copy[m], 2);
 			}
 			if (min < 0 || x < min) {
 				min = x;
+				for (m=0; m<DIMENSIONS; m++) {
+					from_a_to_b[m] = copy[m];
+				}
 			}
 		}
 		x = min; /* finally the smallest periodic distances is returned */
 	}
 	return sqrt(x);
 }
+
+double minimum_angle_between(VERTEX *a, VERTEX *b, GRAPH *g, double *vec, double distance) {
+	int i,j;
+	double min = -1;
+	for (j=0; j < a->n_hydrogens; j++) {
+		double length1 = 0;
+		double dot_product = 0;
+		double value;
+		for (i=0; i<DIMENSIONS; i++) {
+			double vec1 = a->hydrogens[j].coord[i] - a->not_hydrogen.coord[i];
+			dot_product += vec1 * vec[i];
+			length1 += vec1 * vec1;
+		}
+		value = acos(dot_product / sqrt(length1 * distance)) * 180.0 / PI;
+		if (min < 0 || value < min) {
+			min = value;
+		}
+	}
+	return min;
+}
+
