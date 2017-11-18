@@ -14,6 +14,10 @@ Ohjelman pitäisi nyt olla käytännössä valmis algoritmia varten. Vielä olis
 
 21:20-01:20
 
+### 18.11.
+
+13-15:45
+
 ## Miten ohjelma on edistynyt?
 
 ## Mitä opin tällä viikolla / tänään?

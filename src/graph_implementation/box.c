@@ -32,7 +32,12 @@ void free_domains(BOX *box) {
 	int i;
 	if (box->domains != NULL) {
 		for (i=0; i<number_of_domains(box); i++) {
-			free(box->domains[i]);
+			if (box->domains[i] != NULL) {
+				/*printf("%d domain", i);
+				printf(", %d vertex, %d size", box->n_of_vertex_in_domains[i], box->size_of_domains[i]);
+				printf(", %d domain address, %d NULL\n", (int)box->domains[i], (int)NULL);*/
+				free(box->domains[i]);
+			}
 		}
 		free(box->domains);
 		free(box->n_of_vertex_in_domains);
@@ -94,14 +99,27 @@ int * get_domain_indexes(BOX *b, COORDINATE c, int *i) {
 }
 
 int get_neighbouring_domain_index(BOX *b, COORDINATE c, int *x) {
-	int i,j;
-	for (i=0; i<DIMENSIONS; i++) {
+	int i,ret=0,y=1,*indexes = malloc(DIMENSIONS * sizeof(int));
+	/*for (i=0; i<DIMENSIONS; i++) {
 		double d = 1.0 * x[i] / b->decomposition[i];
 		for (j=0; j<DIMENSIONS; j++) {
-			c[i] += d * b->vectors[i][j]; /* this is now based on coordinates, but this could be purely integer function */
+			c[i] += d * b->vectors[i][j]; 
 		}
 	}
-	return get_domain_index(b, c);
+	return get_domain_index(b, c);*/
+	indexes = get_domain_indexes(b, c, indexes);
+	for (i=0; i<DIMENSIONS; i++) {
+		int value = x[i] + indexes[i];
+		while (value < 0) {
+			value += b->decomposition[i];
+		}
+		while (value >= b->decomposition[i]) {
+			value -= b->decomposition[i];
+		}
+		ret += y * value;
+		y *= b->decomposition[i];
+	}
+	return ret;
 }
 
 void add_vertex_to_domain(int domain, VERTEX *v, BOX *box) {
@@ -134,6 +152,6 @@ COORDINATE * get_domain_origin(BOX *b, COORDINATE c) {
 			(*coord)[j] += b->vectors[k][j] * i[k] / b->decomposition[k];
 		}
 	}
-	
+	free(i);
 	return coord;
 }

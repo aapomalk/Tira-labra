@@ -170,6 +170,8 @@ void test_periodicity(void) {
 	prepare_box(g, decomposition, vectors);
 	TEST_ASSERT_EQUAL_FLOAT(2.5, heuristic(&(g->nodes[0]), &(g->nodes[1]), NULL)); /* without periodicity */
 	TEST_ASSERT_EQUAL_FLOAT(0.5, heuristic(&(g->nodes[0]), &(g->nodes[1]), g)); /* with periodicity */
+	
+	delete_graph(&g);
 }
 
 void test_domain_within_reach(void) {
@@ -211,6 +213,7 @@ void test_domain_within_reach(void) {
 	}
 	
 	free(neighbour);
+	delete_graph(&g);
 }
 
 void test_domain_origin(void) {
@@ -236,11 +239,73 @@ void test_domain_origin(void) {
 		TEST_ASSERT_EQUAL_FLOAT(1.0, (*ret)[i]);
 	}
 	free(ret);
+	
+	delete_graph(&g);
+}
+
+void test_get_edges(void) {
+	GRAPH *g = new_graph();
+	int i,j,k,decomposition[DIMENSIONS] = {10, 10, 10};
+	COORDINATE vectors[DIMENSIONS];
+	
+	for (i=0; i<DIMENSIONS; i++) {
+		for (j=0; j<DIMENSIONS; j++) {
+			vectors[j][i] = 0.0;
+		}
+	}
+	vectors[0][0] = 10.0;
+	vectors[1][1] = 10.0; /* our box is a cube */
+	vectors[2][2] = 10.0;
+	for (i=0; i<decomposition[0]; i++) {
+		for (j=0; j<decomposition[1]; j++) {
+			for (k=0; k<decomposition[2]; k++) {
+				int a,b;
+				VERTEX *v = new_vertex();
+				v->not_hydrogen.coord[0] = 0.5 + i;
+				v->not_hydrogen.coord[1] = 0.5 + j;
+				v->not_hydrogen.coord[2] = 0.5 + k;
+				initialize_hydrogens(v, 6);
+				for (a=0; a<6; a++) {
+					for (b=0; b<DIMENSIONS; b++) {
+						v->hydrogens[a].coord[b] = v->not_hydrogen.coord[b];
+					}
+				}
+				v->hydrogens[0].coord[0] += 0.5;
+				v->hydrogens[1].coord[0] -= 0.5;
+				v->hydrogens[2].coord[1] += 0.5;
+				v->hydrogens[3].coord[1] -= 0.5;
+				v->hydrogens[4].coord[2] += 0.5;
+				v->hydrogens[5].coord[2] -= 0.5;
+				add_vertex(g, v);
+			}
+		}
+	}
+	prepare_box(g, decomposition, vectors);
+	set_distance(g, 2.3);
+	set_angle(g, 0.0001);
+	for (i=0; i<size_of_graph(g); i++) {
+		EDGE *e;
+		char message[30];
+		sprintf(message, "i: %d", i);
+		TEST_ASSERT_EQUAL_INT(-1, g->n_of_edges[i]);
+		e = get_edges(g, get_vertex(g, i));
+		for (j=0; j<g->n_of_edges[i]; j++) {
+			for (k=0; k<DIMENSIONS; k++) {
+				printf("%f ", e[j].node->not_hydrogen.coord[k]);
+			}
+			printf("\n");
+		}
+		TEST_ASSERT_EQUAL_INT_MESSAGE(12, g->n_of_edges[i], message);
+		TEST_ASSERT(NULL != e);
+	}
+	delete_graph(&g);
 }
 
 int main(void) {
 	printf("\n");
 	UNITY_BEGIN();
+	RUN_TEST(test_domain_origin);
+	RUN_TEST(test_get_edges);
 	RUN_TEST(test_vertex);
 	RUN_TEST(test_heuristic);
 	RUN_TEST(test_graph);
@@ -249,6 +314,5 @@ int main(void) {
 	RUN_TEST(test_box_preparation);
 	RUN_TEST(test_periodicity);
 	RUN_TEST(test_domain_within_reach);
-	RUN_TEST(test_domain_origin);
 	return UNITY_END();
 }

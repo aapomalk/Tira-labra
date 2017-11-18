@@ -18,6 +18,7 @@ GRAPH * new_graph() {
 	for (i=0; i<INITIAL_LENGTH; i++) {
 		g->n_of_edges[i] = -1;
 		g->size_of_edge_lists[i] = 0;
+		g->edges[i] = NULL;
 	}
 	g->distance = ASSUMED_DISTANCE;
 	g->angle = ASSUMED_ANGLE;
@@ -40,7 +41,7 @@ int add_vertex(GRAPH *g, VERTEX *v) {
 			g->size_of_edge_lists[i] = 0;
 		}
 	}
-	set_index(v, 0);
+	set_index(v, number);
 	g->nodes[number] = *v; /* contents of v are copied */
 	g->edges[number] = NULL;
 	g->number_of_nodes++;
@@ -105,12 +106,11 @@ VERTEX * find_vertex(GRAPH *g, int index) {
 
 EDGE * get_edges(GRAPH *g, VERTEX *v) {
 	int i = v->index;
-	EDGE *e = g->edges[i];
 	if (g->n_of_edges[i] >= 0) {
-		return e;
+		return g->edges[i];
 	}
 	form_edges(g, v);
-	return e;
+	return g->edges[i];
 }
 
 void form_edges(GRAPH *g, VERTEX *v) {
@@ -121,14 +121,14 @@ void form_edges(GRAPH *g, VERTEX *v) {
 	
 	for (level=0; found == 1; level++) { /* current domain is on level 0, 
 	level 1 is all the surrounding domains and so on */
-		int value = 1 + 2 * level, next, equals_value = 0;
+		int value = 1 + 2 * level, next;
 		found = 0;
 		for (i=0; i<pow(value, DIMENSIONS); i++) {
-			int j = i, k;
+			int j = i, k, equals_value = 0;
 			for (k=0; k<DIMENSIONS; k++) {
 				int a = -level + (j % value);
 				neighbours[k] = a;
-				if (a == value || a == -value) {
+				if (a == level || a == -level) {
 					equals_value = 1; /* at least one of the values need to be the level (+-) */
 				}
 				j /= value;
@@ -144,7 +144,11 @@ void form_edges(GRAPH *g, VERTEX *v) {
 				checked[next] = 1; /* we're not going to visit this domain again */
 				for (j=0; j < g->box->n_of_vertex_in_domains[next]; j++) {
 					VERTEX *x = &(g->box->domains[next][j]);
-					double weight = is_connection(v, x, g);
+					double weight;
+					if (x->index == index) {
+						continue;
+					}
+					weight = is_connection(v, x, g);
 					if (weight >= 0) {
 						add_edge(index, x, weight, g);
 					}
@@ -169,8 +173,8 @@ void add_edge(int index, VERTEX *v, double weight, GRAPH *g) {
 		g->edges[index] = realloc(g->edges[index], g->size_of_edge_lists[index] * sizeof(EDGE));
 	}
 	g->n_of_edges[index] += 1;
-	g->edges[index][g->n_of_edges[index]].weight = weight;
-	g->edges[index][g->n_of_edges[index]].node = v;
+	g->edges[index][g->n_of_edges[index]-1].weight = weight;
+	g->edges[index][g->n_of_edges[index]-1].node = v;
 }
 
 /* returns the distance if success and negative value otherwise */
@@ -216,7 +220,7 @@ int domain_is_within_reach(GRAPH *g, COORDINATE c, int *x) {
 }
 
 int delete_graph(GRAPH **g) {
-	int i,j;
+	int i;
 	if (*g == NULL) {
 		return FAIL;
 	}
@@ -225,22 +229,19 @@ int delete_graph(GRAPH **g) {
 			VERTEX *v = (*g)->nodes;
 			v += i;
 			if (delete_hydrogens(v) == FAIL) {
-				return FAIL;
+				/*return FAIL;*/
 			}
 		}
 		free((*g)->nodes);
 	}
 	if ((*g)->edges != NULL) {
 		for (i=0; i<size_of_graph(*g); i++) {
-			j=0;
-			while ((*g)->edges[j] != NULL) {
-				free((*g)->edges[j]);
-				j++;
-			}
+			free((*g)->edges[i]);
 		}
+		free((*g)->edges);
 	}
 	if (delete_box(&((*g)->box)) == FAIL) {
-		return FAIL;
+		/*return FAIL;*/
 	}
 	free((*g)->n_of_edges);
 	free((*g)->size_of_edge_lists);
@@ -268,6 +269,7 @@ void prepare_box(GRAPH *g, int *decomposition, COORDINATE *vectors) {
 		box->size_of_domains = malloc(current * sizeof(int));
 		box->n_of_vertex_in_domains = malloc(current * sizeof(int));
 		for (i=0; i<current; i++) {
+			box->domains[i] = NULL;
 			box->size_of_domains[i] = 0;
 			box->n_of_vertex_in_domains[i] = 0;
 		}
@@ -277,6 +279,7 @@ void prepare_box(GRAPH *g, int *decomposition, COORDINATE *vectors) {
 		box->n_of_vertex_in_domains = realloc(box->n_of_vertex_in_domains, current * sizeof(int));
 		for (i=0; i<current; i++) {
 			if (i >= previous) {
+				box->domains[i] = NULL;
 				box->size_of_domains[i] = 0;
 			}
 			box->n_of_vertex_in_domains[i] = 0;
