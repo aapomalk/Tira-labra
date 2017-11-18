@@ -181,12 +181,15 @@ void add_edge(int index, VERTEX *v, double weight, GRAPH *g) {
 double is_connection(VERTEX *a, VERTEX *b, GRAPH *g) {
 	double *vec = malloc(DIMENSIONS * sizeof(double));
 	double distance = heuristic2(a, b, g, vec);
+	double angle;
 	if (distance > g->distance) {
 		return -1.0;
 	}
-	if (minimum_angle_between(a, b, g, vec, distance) > g->angle) {
+	angle = minimum_angle_between(a, b, g, vec, distance);
+	if (angle > g->angle) {
 		return -1.0;
 	}
+	free(vec);
 	return distance;
 }
 
@@ -305,7 +308,8 @@ double heuristic2(VERTEX *a, VERTEX *b, GRAPH *g, double *from_a_to_b) {
 	int i;
 	if (g == NULL || g->box->domains == NULL) { /* in these cases direct distance is used */
 		for (i=0; i<DIMENSIONS; i++) {
-			x += pow(a->not_hydrogen.coord[i] - b->not_hydrogen.coord[i], 2);
+			from_a_to_b[i] = b->not_hydrogen.coord[i] - a->not_hydrogen.coord[i];
+			x += pow(from_a_to_b[i], 2);
 		}
 	} else { /* otherwise periodicity is used */
 		for (i=0; i<pow(3,DIMENSIONS); i++) { /* DIMENSIONS = 3 -> 3^3=27 periodic images are checked */
@@ -320,7 +324,7 @@ double heuristic2(VERTEX *a, VERTEX *b, GRAPH *g, double *from_a_to_b) {
 					b_vec += k * g->box->vectors[n][m];
 					j /= 3; /* the remainder gets removed in integer division */
 				}
-				copy[m] = a->not_hydrogen.coord[m] - b->not_hydrogen.coord[m] + b_vec;
+				copy[m] = b->not_hydrogen.coord[m] - a->not_hydrogen.coord[m] + b_vec;
 				x += pow(copy[m], 2);
 			}
 			if (min < 0 || x < min) {
@@ -347,7 +351,7 @@ double minimum_angle_between(VERTEX *a, VERTEX *b, GRAPH *g, double *vec, double
 			dot_product += vec1 * vec[i];
 			length1 += vec1 * vec1;
 		}
-		value = acos(dot_product / sqrt(length1 * distance)) * 180.0 / PI;
+		value = acos(dot_product / (sqrt(length1) * distance)) * 180.0 / PI;
 		if (min < 0 || value < min) {
 			min = value;
 		}

@@ -15,8 +15,10 @@ Ohjelman pitäisi nyt olla käytännössä valmis algoritmia varten. Vielä olis
 21:20-01:20
 
 ### 18.11.
+Testeissä havaitut puutteet on nyt korjattu ja tällä kertaa verkon todella pitäisi nyt olla tietorakenteena valmis, 
+voin siis siirtyä itse algoritmin (ja tarvittavien tietorakenteiden) koodaamiseen.
 
-13-15:45
+13-15:45 21-22
 
 ## Miten ohjelma on edistynyt?
 

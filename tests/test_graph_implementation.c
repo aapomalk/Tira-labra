@@ -289,16 +289,71 @@ void test_get_edges(void) {
 		sprintf(message, "i: %d", i);
 		TEST_ASSERT_EQUAL_INT(-1, g->n_of_edges[i]);
 		e = get_edges(g, get_vertex(g, i));
-		for (j=0; j<g->n_of_edges[i]; j++) {
-			for (k=0; k<DIMENSIONS; k++) {
-				printf("%f ", e[j].node->not_hydrogen.coord[k]);
-			}
-			printf("\n");
-		}
 		TEST_ASSERT_EQUAL_INT_MESSAGE(12, g->n_of_edges[i], message);
 		TEST_ASSERT(NULL != e);
 	}
 	delete_graph(&g);
+}
+
+void test_is_connection(void) {
+	VERTEX *a = new_vertex();
+	VERTEX *b = new_vertex();
+	GRAPH *g = new_graph();
+	
+	b->not_hydrogen.coord[0] = 1.0;
+	initialize_hydrogens(a, 1);
+	a->hydrogens[0].coord[0] = 0.5;
+	
+	set_distance(g, 0.1);
+	set_angle(g, 20);
+	
+	TEST_ASSERT_EQUAL_FLOAT(-1.0, is_connection(a, b, g));
+	
+	set_distance(g, 2.0);
+	TEST_ASSERT_EQUAL_FLOAT(1.0, is_connection(a, b, g));
+	
+	b->not_hydrogen.coord[1] = 1.0;
+	TEST_ASSERT_EQUAL_FLOAT(-1.0, is_connection(a, b, g));
+	
+	set_angle(g, 50);
+	TEST_ASSERT_EQUAL_FLOAT(sqrt(2), is_connection(a, b, g));
+	
+	delete_graph(&g);
+	delete_hydrogens(a);
+	free(a);
+	free(b);
+}
+
+void test_angle(void) {
+	VERTEX *a = new_vertex();
+	VERTEX *b = new_vertex();
+	GRAPH *g = NULL;
+	double *vec = malloc(DIMENSIONS * sizeof(double));
+	double distance;
+	double angle;
+	double angle2;
+	int i;
+	
+	b->not_hydrogen.coord[0] = 1.0;
+	initialize_hydrogens(a, 1);
+	a->hydrogens[0].coord[0] = 0.5;
+	
+	distance = heuristic2(a, b, g, vec);
+	TEST_ASSERT_EQUAL_FLOAT(1.0, distance);
+	angle = minimum_angle_between(a, b, g, vec, distance);
+	TEST_ASSERT_EQUAL_FLOAT(0.0, angle);
+	
+	angle2 = 20;
+	for (i=0; angle2 <= 180; angle2 = 1.0 + i, i++) {
+		a->hydrogens[0].coord[0] = cos(PI * angle2 / 180);
+		a->hydrogens[0].coord[1] = sin(PI * angle2 / 180) * cos(i);
+		a->hydrogens[0].coord[2] = sin(PI * angle2 / 180) * sin(i);
+	
+		angle = minimum_angle_between(a, b, g, vec, distance);
+		TEST_ASSERT_EQUAL_FLOAT(angle2, angle);
+	}
+	
+	free(vec);
 }
 
 int main(void) {
@@ -314,5 +369,7 @@ int main(void) {
 	RUN_TEST(test_box_preparation);
 	RUN_TEST(test_periodicity);
 	RUN_TEST(test_domain_within_reach);
+	RUN_TEST(test_is_connection);
+	RUN_TEST(test_angle);
 	return UNITY_END();
 }
