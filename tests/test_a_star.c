@@ -25,6 +25,10 @@ void test_set_start_target(void) {
   delete_a_star(a);
 }
 
+void test_path_finding(void) {
+  
+}
+
 int main(void) {
 	printf("\n");
 	UNITY_BEGIN();
