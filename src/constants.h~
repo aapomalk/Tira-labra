@@ -6,10 +6,9 @@
 #define INITIAL_LENGTH 10
 #define PRINT_LENGTH 30
 #define INITIAL_DOMAIN_SIZE 3
-#define ASSUMED_DISTANCE 0.3 /* 3Å */
-#define ASSUMED_ANGLE 20 /* in degrees */
+#define ASSUMED_DISTANCE 0.3
+#define ASSUMED_ANGLE 20
 #define PI 3.141592653589793 
 #define INITIAL_EDGE_NUMBER 2
-#define INITIAL_HEAP_SIZE 3
 
 #endif

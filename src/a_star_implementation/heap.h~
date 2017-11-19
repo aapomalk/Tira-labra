@@ -1,0 +1,10 @@
+#ifndef HEAP_H
+#define HEAP_H
+
+int parent(HEAP *h, int heap_index);
+int left_child(HEAP *h, int heap_index);
+int right_child(HEAP *h, int heap_index);
+void swap(HEAP *h, int id1, int id2);
+void heapify(HEAP *h, int heap_index);
+
+#endif
