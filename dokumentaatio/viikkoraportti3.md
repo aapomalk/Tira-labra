@@ -25,10 +25,18 @@ A* aloitettu keko -tietorakenteesta (valmis). Samoin itse algoritmista testaamat
 
 15-21:30
 
+Kokonaisuudessaan siis noin 3h+4h+2h45min+1h+6h30min = 17h15min
+
 ## Miten ohjelma on edistynyt?
+Ohjelma on edennyt hyvin. Ensi viikolla ohjelman ensimmäinen versio saattaa olla jo valmis.
 
 ## Mitä opin tällä viikolla / tänään?
+Olen oppinut makefile:n käyttämistä hieman enemmän, kuten myös Emacs:a ja Windowsia.
+Olen myös oppinut testaamisen tärkeyttä.
 
 ## Mikä jäi epäselväksi tai tuottanut vaikeuksia?
+Virheiden löytäminen on välillä ollut vaikeaa.
 
 ## Mitä teen seuraavaksi?
+Kunhan saan A* algoritmin testattua siirryn tekemään tiedostojen lukemis funktioita
+ja tämän jälkeen kokoan ohjelman yhteen.
