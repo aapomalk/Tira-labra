@@ -46,6 +46,7 @@ void prepare_a_star(A_STAR *a, GRAPH *g) {
 int search_path(A_STAR *a, GRAPH *g) {
   EDGE *e;
   int index,start = a->start, target = a->target;
+  double dist;
   if (a->start < 0 || a->target < 0) {
 	return FAIL;
   }
@@ -53,23 +54,38 @@ int search_path(A_STAR *a, GRAPH *g) {
   a->distance_from_start[start] = 0.0;
   a->came_from[start] = start;
   index = start;
+
   do {
 	int i;
 	e = get_edges(g, get_vertex(g, index));
 	for (i=0; i < g->n_of_edges[index]; i++) {
 	  int edge_index = e[i].node->index;
-	  double distance;
-	  if (a->came_from[edge_index] < 0) {
-		continue; /* this is already found */
+	  double distance = a->distance_from_start[index] + heuristic(&(g->nodes[index]), &(g->nodes[edge_index]), g);
+
+	  /* if found first time (distance < 0) and also if we found a shorter path then we add it */
+	  if (a->came_from[edge_index] < 0 || distance < a->distance_from_start[edge_index]) { 
+		a->distance_from_start[edge_index] = distance; /* shortest distance */
+		a->came_from[edge_index] = index; /* shortest came from */
+		printf("inserting %d\n", edge_index);
+		/* 
+		   There will be some with the same index but different distances,
+		   but probably this is still more efficient compared to the other option
+		   where the index is always updated in some list; at least this is easier to implement.
+		   More memory used in the heap (total memory usage might be still smaller) but less swapping of indexes. 
+		*/
+		insert_component(a->heap, edge_index, distance + heuristic(&(g->nodes[edge_index]), &(g->nodes[a->target]), g));
 	  }
-	  distance = a->distance_from_start[index] + heuristic(&(g->nodes[index]), &(g->nodes[edge_index]), g);
-	  a->came_from[edge_index] = index;
-	  a->distance_from_start[edge_index] = distance;
-	  insert_component(a->heap, edge_index, distance + heuristic(&(g->nodes[edge_index]), &(g->nodes[a->target]), g));
 	}
-	index = get_first_index(a->heap);
-	remove_first(a->heap);
-  } while (a->heap->n_of_components > 0);
+
+	do {
+	  dist = get_first_value(a->heap);
+	  index = get_first_index(a->heap);
+	  printf("removing %d\n", index);
+	  remove_first(a->heap);
+	} while (dist > a->distance_from_start[index]); /* lets skip all the longer (old) paths */
+	
+  } while (a->heap->n_of_components > 0 && index != target);
+
   if (a->came_from[target] >= 0) {
 	return SUCCESS;
   }
