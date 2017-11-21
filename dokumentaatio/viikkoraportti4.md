@@ -19,7 +19,9 @@ Dokumentaation valmistelua (raportti 4, toteutus- ja testausdokumentaatio). A* a
 
 Algoritmi on nyt toimiva.
 
-klo 10-11:15 21:15-22
+Dokumentaatiota lisätty. Suorituskykytestaus pitäisi aloittaa mahdollisimman pian.
+
+klo 10-11:15 21:15-22 23-24
 
 ## Miten ohjelma on edistynyt?
 
