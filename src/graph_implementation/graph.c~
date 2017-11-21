@@ -65,7 +65,6 @@ int add_vertex(GRAPH *g, VERTEX *v) {
 void set_distance(GRAPH *g, double distance) {
 	if (distance > 0.0) {
 		g->distance = distance;
-		clear_edges(g);
 	}
 }
 
@@ -73,7 +72,6 @@ void set_distance(GRAPH *g, double distance) {
 void set_angle(GRAPH *g, double angle) {
 	if (angle > 0 && angle <= 180) {
 		g->angle = angle;
-		clear_edges(g);
 	}
 }
 
@@ -222,14 +220,6 @@ int domain_is_within_reach(GRAPH *g, COORDINATE c, int *x) {
 	
 	free(origin);
 	return SUCCESS;
-}
-
-void clear_edges(GRAPH *g) {
-  int i;
-  for (i=0; i<size_of_graph(g); i++) {
-	free(g->edges[i]);
-	g->edges[i] = NULL;
-  }
 }
 
 int delete_graph(GRAPH **g) {

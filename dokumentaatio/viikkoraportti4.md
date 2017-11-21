@@ -17,7 +17,9 @@
 ### 21.11.
 Dokumentaation valmistelua (raportti 4, toteutus- ja testausdokumentaatio). A* algoritmia muokattu, koska ensimmäisenä löydetty yhteys ei välttämättä ole lyhin. Testaus vielä kesken.
 
-klo 10-11:15
+Algoritmi on nyt toimiva.
+
+klo 10-11:15 21:15-22
 
 ## Miten ohjelma on edistynyt?
 

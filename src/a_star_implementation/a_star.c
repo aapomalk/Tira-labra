@@ -66,7 +66,6 @@ int search_path(A_STAR *a, GRAPH *g) {
 	  if (a->came_from[edge_index] < 0 || distance < a->distance_from_start[edge_index]) { 
 		a->distance_from_start[edge_index] = distance; /* shortest distance */
 		a->came_from[edge_index] = index; /* shortest came from */
-		printf("inserting %d\n", edge_index);
 		/* 
 		   There will be some with the same index but different distances,
 		   but probably this is still more efficient compared to the other option
@@ -80,9 +79,8 @@ int search_path(A_STAR *a, GRAPH *g) {
 	do {
 	  dist = get_first_value(a->heap);
 	  index = get_first_index(a->heap);
-	  printf("removing %d\n", index);
 	  remove_first(a->heap);
-	} while (dist > a->distance_from_start[index]); /* lets skip all the longer (old) paths */
+	} while (dist > a->distance_from_start[index] + heuristic(&(g->nodes[index]), &(g->nodes[a->target]), g)); /* lets skip all the longer (old) paths */
 	
   } while (a->heap->n_of_components > 0 && index != target);
 

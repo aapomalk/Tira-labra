@@ -32,6 +32,7 @@ void test_path_finding(void) {
   A_STAR *a = new_a_star();
   int i,j,k,decomposition[DIMENSIONS] = {10, 10, 10};
   COORDINATE vectors[DIMENSIONS];
+  int *indexes, length;
   
   for (i=0; i<DIMENSIONS; i++) {
 	for (j=0; j<DIMENSIONS; j++) {
@@ -72,17 +73,24 @@ void test_path_finding(void) {
   set_start(a, 0);
   set_target(a, 500);
 
-  /*TEST_ASSERT_EQUAL_INT(FAIL, search_path(a, g));*/ /* path is not found */
-  set_distance(g, 1.5);
-  i=search_path(a, g);
-  /*TEST_ASSERT_EQUAL_INT(SUCCESS, i);*/ /* path is found */
-  for (i=0; i < g->number_of_nodes; i++) {
-	double dist = a->distance_from_start[i];
-	int prev = a->came_from[i];
-	if (prev >= 0) {
-	  printf("distance: %f, prev: %d, index: %d\n", dist, prev, i);
+  TEST_ASSERT_EQUAL_INT(FAIL, search_path(a, g)); /* path is not found */
+  set_distance(g, 1.5); /* by changing the distance path will be found */
+  TEST_ASSERT_EQUAL_INT(SUCCESS, search_path(a, g)); /* path is found */
+  TEST_ASSERT_EQUAL_FLOAT(5.0, get_path_length(a));
+  indexes = get_path_indexes(a, &length);
+  TEST_ASSERT_EQUAL_INT(6, length);
+  for (i=length-1; i>=0; i--) { /* the path is returned backwards */
+	j = (i * 100 - 500);
+	if (j < 0) {
+	  j += 1000;
 	}
+	TEST_ASSERT_EQUAL_INT(j, indexes[i]);
+	/* there is actually two shortest paths but this is favored by the algorithm */
   }
+
+  set_target(a, 555); /* when changing the target the path is still found */
+  TEST_ASSERT_EQUAL_INT(SUCCESS, search_path(a, g)); /* path is found */
+  TEST_ASSERT_EQUAL_FLOAT(15.0, get_path_length(a)); /* this time the length is different */
 }
 
 int main(void) {
