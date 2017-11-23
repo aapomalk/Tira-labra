@@ -23,6 +23,11 @@ Dokumentaatiota lisätty. Suorituskykytestaus pitäisi aloittaa mahdollisimman p
 
 klo 10-11:15 21:15-22 23-24
 
+### 22.11.
+Vertaisarviointia, josta tosin ei tunnu tulevan mitään. Neuraali-verkot ovat toistaiseksi liian vaikea ymmärtää, ja JavaScript ei helpota asiaa.
+
+21:30-22, 22:30-0:30
+
 ## Miten ohjelma on edistynyt?
 
 ## Mitä opin tällä viikolla / tänään?

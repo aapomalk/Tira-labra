@@ -28,6 +28,11 @@ Vertaisarviointia, josta tosin ei tunnu tulevan mitään. Neuraali-verkot ovat t
 
 21:30-22, 22:30-0:30
 
+### 23.11.
+Uuteen vertaisarviointi -projektiin tutustumista.
+
+10:40-11:15
+
 ## Miten ohjelma on edistynyt?
 
 ## Mitä opin tällä viikolla / tänään?
