@@ -8,6 +8,9 @@
 GRAPH * new_graph() {
 	int initial_length = INITIAL_LENGTH,i;
 	GRAPH * g = malloc(sizeof(GRAPH));
+	if (g == NULL) {
+	  return NULL;
+	}
 	g->number_of_nodes = 0;
 	g->list_length = initial_length;
 	g->nodes = malloc(initial_length * sizeof(VERTEX));
@@ -15,6 +18,10 @@ GRAPH * new_graph() {
 	g->box = new_box();
 	g->n_of_edges = malloc(initial_length * sizeof(int));
 	g->size_of_edge_lists = malloc(initial_length * sizeof(int));
+	/*if (g->nodes == NULL || g->edges == NULL || g->n_of_edges == NULL || g->size_of_edge_lists) {
+	  printf("malloc NULL\n");
+	  return NULL;
+	  }*/
 	for (i=0; i<INITIAL_LENGTH; i++) {
 		g->n_of_edges[i] = -1;
 		g->size_of_edge_lists[i] = 0;
@@ -36,6 +43,9 @@ int add_vertex(GRAPH *g, VERTEX *v) {
 		g->edges = realloc(g->edges, length * sizeof(EDGE*));
 		g->n_of_edges = realloc(g->n_of_edges, length * sizeof(int));
 		g->size_of_edge_lists = realloc(g->size_of_edge_lists, length * sizeof(int));
+		if (g->nodes == NULL || g->edges == NULL || g->n_of_edges == NULL || g->size_of_edge_lists == NULL) {
+		  return FAIL;
+		}
 		for (i=number; i<length; i++) {
 			g->n_of_edges[i] = -1;
 			g->size_of_edge_lists[i] = 0;
@@ -227,8 +237,9 @@ int domain_is_within_reach(GRAPH *g, COORDINATE c, int *x) {
 void clear_edges(GRAPH *g) {
   int i;
   for (i=0; i<size_of_graph(g); i++) {
-	free(g->edges[i]);
-	g->edges[i] = NULL;
+	/*free(g->edges[i]);
+	  g->edges[i] = NULL;*/
+	g->n_of_edges[i] = -1;
   }
 }
 
@@ -307,10 +318,16 @@ void prepare_box(GRAPH *g, int *decomposition, COORDINATE *vectors) {
 }
 
 double heuristic(VERTEX *a, VERTEX *b, GRAPH *g) {
-	double *x = malloc(DIMENSIONS * sizeof(double));
-	double ret = heuristic2(a, b, g, x);
-	free(x);
-	return ret;
+  double *x = malloc(DIMENSIONS * sizeof(double));
+  double ret = heuristic2(a, b, g, x);
+  free(x);
+
+#ifndef HEURISTIC_ZERO /* for testing Dijkstra */
+  return ret;
+#endif
+#ifdef HEURISTIC_ZERO
+  return 0.0 * ret;
+#endif
 }
 
 double heuristic2(VERTEX *a, VERTEX *b, GRAPH *g, double *from_a_to_b) {

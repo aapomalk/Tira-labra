@@ -8,9 +8,6 @@
 VERTEX * new_vertex() {
 	int i;
 	VERTEX *v = malloc(sizeof(VERTEX));
-	if (v == NULL) {
-	  return NULL;
-	}
 	v->index = -1;
 	v->not_hydrogen.index = -1;
 	for (i=0; i<DIMENSIONS; i++) {
@@ -27,9 +24,6 @@ int initialize_hydrogens(VERTEX *v, int n_hydrogens) {
 		return FAIL;
 	}
 	v->hydrogens = malloc(n_hydrogens*sizeof(ATOM));
-	if (v->hydrogens == NULL) {
-	  return FAIL;
-	}
 	for (i=0; i<n_hydrogens; i++) {
 		v->hydrogens[i].index = -1;
 		for (j=0; j<DIMENSIONS; j++) {

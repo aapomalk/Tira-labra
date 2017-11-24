@@ -6,10 +6,16 @@ P4= ../src/a_star_implementation
 
 FLAGS= -I $(P) -I $(P3)
 OBJS=test_graph_implementation.c $(P)/unity.c $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o
-DEPS= $(P3)/graph.h $(P3)/graph_implementation.h $(P3)/a_star.h $(P4)/heap.h
+DEPS= $(P3)/graph.h $(P3)/graph_implementation.h $(P3)/a_star.h $(P4)/heap.h $(P4)/a_star_implementation.h
 
 OBJS2=test_heap.c $(P)/unity.c $(P4)/heap.o
 FLAGS2= -I $(P4)
+
+OBJS3=test_a_star.c $(P)/unity.c $(P4)/a_star.o $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o $(P4)/heap.o
+
+test_a_star: $(OBJS3)
+	$(CC) -o $@.out $^ $(FLAGS) $(FLAGS2)
+	./$@.out
 
 test_heap: $(OBJS2)
 	$(CC) -o $@.out $^ $(FLAGS) $(FLAGS2)

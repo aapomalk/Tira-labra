@@ -13,15 +13,15 @@ HEAP * new_heap() {
   return h;
 }
 
-int parent(HEAP *h, int heap_index) {
+int parent(int heap_index) {
   return (heap_index + 1) / 2 - 1;
 }
 
-int left_child(HEAP *h, int heap_index) {
+int left_child(int heap_index) {
   return (heap_index + 1) * 2 - 1;
 }
 
-int right_child(HEAP *h, int heap_index) {
+int right_child(int heap_index) {
   return (heap_index + 1) * 2;
 }
 
@@ -32,19 +32,19 @@ void swap(HEAP *h, int id1, int id2) {
 }
 
 void heapify(HEAP *h, int heap_index) {
-  int parent_idx = parent(h, heap_index);
+  int parent_idx = parent(heap_index);
   double prnt = h->components[parent_idx].value;
   int left_idx, right_idx;
   while (heap_index > 0 && prnt > h->components[heap_index].value) {
 	swap(h, heap_index, parent_idx);
 
 	heap_index = parent_idx;
-	parent_idx = parent(h, heap_index);
+	parent_idx = parent(heap_index);
 	prnt = h->components[parent_idx].value;
   }
 
-  left_idx = left_child(h, heap_index);
-  right_idx = right_child(h, heap_index);
+  left_idx = left_child(heap_index);
+  right_idx = right_child(heap_index);
   while (left_idx < h->n_of_components || right_idx < h->n_of_components) {
 	double left, right, current = h->components[heap_index].value;
 	if (left_idx < h->n_of_components) {
@@ -62,15 +62,15 @@ void heapify(HEAP *h, int heap_index) {
 	}
 
 	if (right < left) {
-	  swap(h, heap_index, right);
+	  swap(h, heap_index, right_idx);
 	  heap_index = right_idx;
 	} else {
-	  swap(h, heap_index, left);
+	  swap(h, heap_index, left_idx);
 	  heap_index = left_idx;
 	}
 
-	left_idx = left_child(h, heap_index);
-	right_idx = right_child(h, heap_index);
+	left_idx = left_child(heap_index);
+	right_idx = right_child(heap_index);
   }
 }
 
@@ -102,8 +102,8 @@ double get_first_value(HEAP *h) {
 
 void remove_first(HEAP *h) {
   if (h->n_of_components > 0) {
+	swap(h, 0, h->n_of_components - 1);
 	h->n_of_components -= 1;
-	swap(h, 0, h->n_of_components);
 	heapify(h, 0);
   }
 }

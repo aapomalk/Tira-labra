@@ -8,6 +8,9 @@
 GRAPH * new_graph() {
 	int initial_length = INITIAL_LENGTH,i;
 	GRAPH * g = malloc(sizeof(GRAPH));
+	if (g == NULL) {
+	  return NULL;
+	}
 	g->number_of_nodes = 0;
 	g->list_length = initial_length;
 	g->nodes = malloc(initial_length * sizeof(VERTEX));
@@ -65,6 +68,7 @@ int add_vertex(GRAPH *g, VERTEX *v) {
 void set_distance(GRAPH *g, double distance) {
 	if (distance > 0.0) {
 		g->distance = distance;
+		clear_edges(g);
 	}
 }
 
@@ -72,6 +76,7 @@ void set_distance(GRAPH *g, double distance) {
 void set_angle(GRAPH *g, double angle) {
 	if (angle > 0 && angle <= 180) {
 		g->angle = angle;
+		clear_edges(g);
 	}
 }
 
@@ -222,6 +227,15 @@ int domain_is_within_reach(GRAPH *g, COORDINATE c, int *x) {
 	return SUCCESS;
 }
 
+void clear_edges(GRAPH *g) {
+  int i;
+  for (i=0; i<size_of_graph(g); i++) {
+	/*free(g->edges[i]);
+	  g->edges[i] = NULL;*/
+	g->n_of_edges[i] = -1;
+  }
+}
+
 int delete_graph(GRAPH **g) {
 	int i;
 	if (*g == NULL) {
@@ -297,10 +311,19 @@ void prepare_box(GRAPH *g, int *decomposition, COORDINATE *vectors) {
 }
 
 double heuristic(VERTEX *a, VERTEX *b, GRAPH *g) {
-	double *x = malloc(DIMENSIONS * sizeof(double));
-	double ret = heuristic2(a, b, g, x);
-	free(x);
-	return ret;
+#ifndef HEURISTIC_ZERO /* for testing Dijkstra */
+
+  double *x = malloc(DIMENSIONS * sizeof(double));
+  double ret = heuristic2(a, b, g, x);
+  free(x);
+  return ret;
+
+#endif
+#ifdef HEURISTIC_ZERO
+
+  return 0.0;
+
+#endif
 }
 
 double heuristic2(VERTEX *a, VERTEX *b, GRAPH *g, double *from_a_to_b) {

@@ -33,6 +33,12 @@ Uuteen vertaisarviointi -projektiin tutustumista.
 
 10:40-11:15
 
+### 24.11.
+Suorituskyky testejä. A* ja Dijkstra algoritmeissa ei näytä olevan merkittävää eroa.
+Lisäksi suurilla syötteillä tulee segmentation fault, ja välillä myös muutenkin.
+
+klo 7:30-10
+
 ## Miten ohjelma on edistynyt?
 
 ## Mitä opin tällä viikolla / tänään?

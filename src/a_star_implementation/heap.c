@@ -35,7 +35,7 @@ void heapify(HEAP *h, int heap_index) {
   int parent_idx = parent(heap_index);
   double prnt = h->components[parent_idx].value;
   int left_idx, right_idx;
-  while (heap_index > 0 && prnt > h->components[heap_index].value) {
+  while (heap_index > 0 && prnt >= h->components[heap_index].value) {
 	swap(h, heap_index, parent_idx);
 
 	heap_index = parent_idx;
