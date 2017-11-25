@@ -39,6 +39,11 @@ Lisäksi suurilla syötteillä tulee segmentation fault, ja välillä myös muut
 
 klo 7:30-10
 
+### 25.11.
+Tein uuden "luokan" allocation, tarkoituksena virheellisten allokaatioitten käsitteleminen.
+
+10-11
+
 ## Miten ohjelma on edistynyt?
 
 ## Mitä opin tällä viikolla / tänään?

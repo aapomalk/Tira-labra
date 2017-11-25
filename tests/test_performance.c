@@ -15,6 +15,8 @@ clock_t test_performance(int size, int decomp) {
   int i,j,k,decomposition[DIMENSIONS];
   COORDINATE vectors[DIMENSIONS];
   clock_t time_start, time_end;
+  time_t t;
+  srand((unsigned) time(&t));
   
   for (i=0; i<DIMENSIONS; i++) {
 	decomposition[i] = decomp;
@@ -30,9 +32,9 @@ clock_t test_performance(int size, int decomp) {
 	  for (k=0; k<decomposition[2]; k++) {
 		int a,b;
 		VERTEX *v = new_vertex();
-		v->not_hydrogen.coord[0] = 0.5 + i;
-		v->not_hydrogen.coord[1] = 0.5 + j;
-		v->not_hydrogen.coord[2] = 0.5 + k;
+		v->not_hydrogen.coord[0] = 0.5 + i + rand() / RAND_MAX * 0.01;
+		v->not_hydrogen.coord[1] = 0.5 + j + rand() / RAND_MAX * 0.01;
+		v->not_hydrogen.coord[2] = 0.5 + k + rand() / RAND_MAX * 0.01;
 		initialize_hydrogens(v, 6);
 		for (a=0; a<6; a++) {
 		  for (b=0; b<DIMENSIONS; b++) {
@@ -69,6 +71,7 @@ clock_t test_performance(int size, int decomp) {
 int main(int argc, char ** argv) {
   int size,decomp;
   clock_t evaluation;
+  printf("%s ", argv[0]);
   sscanf(argv[1], "%d", &size);
   sscanf(argv[2], "%d", &decomp);
   evaluation = test_performance(size, decomp);

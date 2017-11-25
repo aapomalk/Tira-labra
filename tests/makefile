@@ -25,7 +25,7 @@ test_performance: test_performance.c $(OBJS_X)
 #	./$@.out 16 8
 
 test_performance_zero: test_performance.c $(OBJS_Y)
-	$(CC) -o $@_heuristic_zero.out $^ $(FLAGS) $(FLAGS2) 
+	$(CC) -o $@_heuristic.out $^ $(FLAGS) $(FLAGS2) 
 #	./$@_heuristic_zero.out 10 5
 #	./$@_heuristic_zero.out 16 8
 
