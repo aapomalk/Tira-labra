@@ -5,7 +5,7 @@ P3= ../src
 P4= ../src/a_star_implementation
 P5= ../src/allocation_implementation
 
-FLAGS= -I $(P) -I $(P3)
+FLAGS= -I $(P) -I $(P3) -lm
 OBJS=test_graph_implementation.c $(P)/unity.c $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o $(P5)/allocation.o
 DEPS= $(P3)/graph.h $(P3)/graph_implementation.h $(P3)/a_star.h $(P4)/heap.h $(P4)/a_star_implementation.h $(P5)/allocation.o
 
