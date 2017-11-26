@@ -6,6 +6,8 @@ Unity -C ohjelmointikielen testaus pakettia käyttäen ohjelman tietorakenteita ja
 
 Testeissä on testattu olennaisia ja vähemmän olennaisia osia ohjelmasta. Yksi testien hyöty on ollut tietorakenteiden ja algoritmien käyttämisen harjoittelu, mikä on hyödyttänyt ohjelmointia suuresti. Tämän yhtenä piirteenä on ollut ylipäätänsä ohjelman kääntymisen testaaminen. Varsinaisten algoritmien kohdalla myös väärät tulokset on löydetty testien avulla (tulokset jotka eivät tuota segmentation fault:a tai ohjelman muuta keskeytystä).
 
+Myös ohjelman tehokkuutta testattiin suhteessa solmujen määrään ja alueiden (domain) määrään.
+
 ### test_graph_implementation.c
 
 Sisältää tällä hetkellä 12 eri testitapausta, joista kukin sisältää useampia "TEST_ASSERT" (ja muita) -testejä.
@@ -24,11 +26,23 @@ Kun keko ja verkko on todettu toimiviksi on hyvä testata itse algoritmia. Ohjelm
 
 Tämä oleellinen on "test_path_finding". Siinä ensin luodaan verkon testaamisen yhteydestä tuttu rakennelma, jossa jokaisella solmulla on yhteys kuuteen ympäröivään solmuun. Ensiksi kun solmujen enimmäisetäisyys asetetaan liian pieneksi ei kohde solmuun päästä, mutta kun enimmäisetäisyyttä kasvatetaan löytyy kohdesolmu. Myös kun kohdesolmua vaihdetaan niin algoritmi löytää sen.
 
+### test_performance.c
+
+Tätä testiä varten kääntäjä teki kaksi versiota: A* algoritmin ja Djikstra algoritmin.
+Näiden välillä on nähtävissä selvä ero (ks. performance_test_output.txt, *2_output.txt).
+Myös alueiden (domain) lukumäärällä oli hyvin suuri vaikutus.
+Jos alueita oli yhtä paljon kuin solmuja niin suoritusajat nousivat maltillisesti syötteen mukana,
+mutta jos alueita oli vain yksi niin suoritusajan nousu oli hyvin jyrkkää (vertaa performance_test_output.txt ja performance_test_output_one_domain.txt tiedostoja jne).
+
 ## Minkälaisilla syötteillä testaus tehtiin (vertailupainotteisissa töissä tärkeää)
 
 ## Miten testit voidaan toistaa
 
 Testit voidaan toistaa ensin kääntämällä testit (makefile -tiedosto test -kansiossa antaa esimerkkikomentoja, mutta helpompaa on käyttää komentoa "make"; makefile myös ajaa valitun testin). Kääntämisen jälkeen ohjelman voi ajaa komentoriviltä esimerkiksi komennolla ./test_a_star.out
+
+Suoritusaikoja varten komentoriville (ainakin Linux käyttöjärjestelmissä) voi kirjoittaa seuraavanlaisen komennon:
+
+`for i in {10..30..5} ; do ./test_performance2.out $i 1; ./test_performance_zero2_heuristic.out $i 1 ; done > performance_test2_output_one_domain.txt`
 
 ## Ohjelman toiminnan empiirisen testauksen tulosten esittäminen graafisessa muodossa
 

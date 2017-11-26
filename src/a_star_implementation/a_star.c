@@ -49,6 +49,9 @@ int search_path(A_STAR *a, GRAPH *g) {
   int index,start = a->start, target = a->target;
   double dist;
   int i;
+  #ifdef HEURISTIC_ZERO
+  printf("using heuristic_zero\n");
+  #endif
   if (g == NULL) {
 	return FAIL;
   }
@@ -61,16 +64,13 @@ int search_path(A_STAR *a, GRAPH *g) {
   index = start;
 
   do {
-	/*	printf(".. ");*/
 	e = get_edges(g, get_vertex(g, index));
 	if (e == NULL) {
 	  continue;
 	}
-	/*	printf("searching path.. %d %d %d - ", index, a->heap->n_of_components, g->n_of_edges[index]);*/
 	for (i=0; i < g->n_of_edges[index]; i++) {
 	  int edge_index = e[i].node->index;
 	  double distance = a->distance_from_start[index] + heuristic(&(g->nodes[index]), &(g->nodes[edge_index]), g);
-	  /*  printf("%d, ", edge_index);*/
 
 	  /* if found first time (distance < 0) and also if we found a shorter path then we add it */
 	  if (a->came_from[edge_index] < 0 || distance < a->distance_from_start[edge_index]) { 
@@ -94,23 +94,13 @@ int search_path(A_STAR *a, GRAPH *g) {
 	  dist = get_first_value(a->heap);
 	  index = get_first_index(a->heap);
 	  remove_first(a->heap);
-	} while (
-#ifdef SKIP_INDEX_10
-			 index == 10  /*this is for debugging*/  ||
-#endif
-			 dist > a->distance_from_start[index]
+	} while (dist > a->distance_from_start[index]
 #ifndef HEURISTIC_ZERO /* if heuristic zero is defined then only the distance from start is included */
 			 + heuristic(&(g->nodes[index]), &(g->nodes[a->target]), g)
 #endif
 			 ); /* lets skip all the longer (old) paths */
-	/*	printf("end %d %d %d\n", a->heap->n_of_components, index, g->number_of_nodes);
-	printf("%d", a->heap->n_of_components > 0);
-	printf("%d", index != target);
-	printf("%d", index >= 0);
-	printf("%d\n", index < g->number_of_nodes);*/
-	printf("%d ", index);
   } while (a->heap->n_of_components > 0 && index != target && index >= 0 && index < g->number_of_nodes);
-  /*  printf("finished\n");*/
+
   if (a->came_from[target] >= 0) {
 	return SUCCESS;
   }

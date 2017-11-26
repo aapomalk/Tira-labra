@@ -64,7 +64,7 @@ clock_t test_performance(int size, int decomp) {
 
   j=0;
   set_start(a, j);
-  i = size / 2 - 1 + size * size / 2 + size * size * size / 2;
+  i = size / 2 - 1;
   set_target(a, i);
   
   time_start = clock();

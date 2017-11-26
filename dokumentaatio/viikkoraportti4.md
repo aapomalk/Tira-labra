@@ -51,12 +51,29 @@ Mysteeri on ratkaistu osittain: kyseessä on indeksi numero 10. Syytä en ymmär
 
 Linuxilla kyseistä ongelmaa indeksin 10 kanssa ei ole, ilmeisesti jokin virhe Cygwin gcc kääntäjässä.
 
-14-16:15, 18:45-21
+Suoritustestejä. Lopultakin sain Dijkstra -version toimimaan.
+
+14-16:15, 18:45-23:45
 
 ## Miten ohjelma on edistynyt?
 
+Ohjelma on odistynyt jotenkin.
+Enimmäkseen kuitenkin oheisasioita tehty (kuten suoritustestejä, debuggaamista ja vertaisarviointia).
+
 ## Mitä opin tällä viikolla / tänään?
+
+Opin että kääntäjällä voi olla äärimmäisen suuri merkitys.
+Cygwin kääntäjä tuottaa erikoisia virheitä, joita Linux:n vastaava ei tuota.
 
 ## Mikä jäi epäselväksi tai tuottanut vaikeuksia?
 
+Kääntäjän ongelmat ovat hämäriä.
+Lisäksi kesti pitkään ennen kuin sain toteutettua heuristic_zero muokkauksen, 
+joka siis muuttaa A* algoritmin Dijkstra algoritmiksi
+(aluksi muutin koko funktion palauttamaan nollan, lopulta tajusin että muutos täytyy tehdä ainoastaan a_star.c tiedostossa).
+
 ## Mitä teen seuraavaksi?
+
+Seuraavaksi annan vertaispalautetta ja katson mitä seuraavalla viikolla täytyy tehdä.
+Ohjelman suhteen yritän edetä tiedostojen lukemiseen ja tämän jälkeen pyrin viimeistelemään ohjelman.
+Lopuksi testaan ohjelmaa oikeisiin xtc -tiedostoihin.

@@ -1,0 +1,25 @@
+./test_performance2.out
+evaluation with size 10 and decomposition 10 is 6026
+./test_performance_zero2_heuristic.out
+using heuristic_zero
+evaluation with size 10 and decomposition 10 is 72206
+./test_performance2.out
+evaluation with size 15 and decomposition 15 is 2076
+./test_performance_zero2_heuristic.out
+using heuristic_zero
+evaluation with size 15 and decomposition 15 is 121538
+./test_performance2.out
+evaluation with size 20 and decomposition 20 is 3146
+./test_performance_zero2_heuristic.out
+using heuristic_zero
+evaluation with size 20 and decomposition 20 is 383029
+./test_performance2.out
+evaluation with size 25 and decomposition 25 is 3860
+./test_performance_zero2_heuristic.out
+using heuristic_zero
+evaluation with size 25 and decomposition 25 is 687992
+./test_performance2.out
+evaluation with size 30 and decomposition 30 is 4964
+./test_performance_zero2_heuristic.out
+using heuristic_zero
+evaluation with size 30 and decomposition 30 is 1351236

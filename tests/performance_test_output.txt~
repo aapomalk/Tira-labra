@@ -1,0 +1,76 @@
+./test_performance.out
+evaluation with size 10 and decomposition 10 is 282965
+./test_performance_zero_heuristic.out
+evaluation with size 10 and decomposition 10 is 280697
+./test_performance.out
+evaluation with size 15 and decomposition 15 is 55417
+./test_performance_zero_heuristic.out
+evaluation with size 15 and decomposition 15 is 55549
+./test_performance.out
+evaluation with size 20 and decomposition 20 is 2588703
+./test_performance_zero_heuristic.out
+evaluation with size 20 and decomposition 20 is 2561246
+./test_performance.out
+evaluation with size 25 and decomposition 25 is 397280
+./test_performance_zero_heuristic.out
+evaluation with size 25 and decomposition 25 is 397382
+./test_performance.out
+evaluation with size 30 and decomposition 30 is 8919843
+./test_performance_zero_heuristic.out
+evaluation with size 30 and decomposition 30 is 8932822
+./test_performance.out
+evaluation with size 35 and decomposition 35 is 1419765
+./test_performance_zero_heuristic.out
+evaluation with size 35 and decomposition 35 is 1415922
+./test_performance.out
+evaluation with size 40 and decomposition 40 is 21595380
+./test_performance_zero_heuristic.out
+evaluation with size 40 and decomposition 40 is 21618056
+./test_performance.out
+evaluation with size 45 and decomposition 45 is 3590791
+./test_performance_zero_heuristic.out
+evaluation with size 45 and decomposition 45 is 2954793
+./test_performance.out
+evaluation with size 50 and decomposition 50 is 39772298
+./test_performance_zero_heuristic.out
+evaluation with size 50 and decomposition 50 is 36833276
+./test_performance.out
+evaluation with size 55 and decomposition 55 is 7491814
+./test_performance_zero_heuristic.out
+evaluation with size 55 and decomposition 55 is 7470146
+./test_performance.out
+evaluation with size 60 and decomposition 60 is 65447396
+./test_performance_zero_heuristic.out
+evaluation with size 60 and decomposition 60 is 67337241
+./test_performance.out
+evaluation with size 65 and decomposition 65 is 13648713
+./test_performance_zero_heuristic.out
+evaluation with size 65 and decomposition 65 is 13657447
+./test_performance.out
+evaluation with size 70 and decomposition 70 is 108178350
+./test_performance_zero_heuristic.out
+evaluation with size 70 and decomposition 70 is 101891320
+./test_performance.out
+evaluation with size 75 and decomposition 75 is 22981101
+./test_performance_zero_heuristic.out
+evaluation with size 75 and decomposition 75 is 23003070
+./test_performance.out
+evaluation with size 80 and decomposition 80 is 171662569
+./test_performance_zero_heuristic.out
+evaluation with size 80 and decomposition 80 is 154104492
+./test_performance.out
+evaluation with size 85 and decomposition 85 is 32204670
+./test_performance_zero_heuristic.out
+evaluation with size 85 and decomposition 85 is 29929804
+./test_performance.out
+evaluation with size 90 and decomposition 90 is 238191357
+./test_performance_zero_heuristic.out
+evaluation with size 90 and decomposition 90 is 241988411
+./test_performance.out
+evaluation with size 95 and decomposition 95 is 56591596
+./test_performance_zero_heuristic.out
+evaluation with size 95 and decomposition 95 is 55736553
+./test_performance.out
+evaluation with size 100 and decomposition 100 is 359502897
+./test_performance_zero_heuristic.out
+evaluation with size 100 and decomposition 100 is 358856501
