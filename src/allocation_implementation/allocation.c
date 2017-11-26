@@ -10,16 +10,9 @@ void * allocation_malloc(int number_of_elements, size_t size) {
   return ptr;
 }
 
-void * allocation_realloc(int previous, int new, size_t size, void *ptr) {
+void * allocation_realloc(int previous, void *ptr, int new, size_t size) {
   void * ptr2;
-  while (new > previous) {
-	if ((ptr2 = realloc(ptr, new * size)) == NULL) {
-	  printf("trying smaller realloc\n");
-	  new = previous + (new - previous) / 2; /* lets check if smaller realloc works */
-	} else {
-	  break; /* realloc worked */
-	}
-  }
+  ptr2 = realloc(ptr, new * size);
   if (ptr2 == NULL) {
 	printf("allocation (realloc) failed, exiting\n");
 	exit(2);

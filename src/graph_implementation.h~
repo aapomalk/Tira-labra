@@ -62,7 +62,7 @@ void add_edge(int index, VERTEX *v, double weight, GRAPH *g);
 double heuristic2(VERTEX *a, VERTEX *b, GRAPH *g, double *from_a_to_b);
 
 
-
+void clear_edges(GRAPH *g);
 COORDINATE * projection(COORDINATE a, COORDINATE b);
 
 #endif

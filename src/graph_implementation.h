@@ -58,6 +58,8 @@ double minimum_angle_between(VERTEX *a, VERTEX *b, GRAPH *g, double *vec, double
 int domain_is_within_reach(GRAPH *g, COORDINATE c, int *x);
 double is_connection(VERTEX *a, VERTEX *b, GRAPH *g);
 void add_edge(int index, VERTEX *v, double weight, GRAPH *g);
+void set_vertex_list_length(GRAPH *g, int length);
+
 
 double heuristic2(VERTEX *a, VERTEX *b, GRAPH *g, double *from_a_to_b);
 

@@ -3,19 +3,22 @@ P= ../../Unity/src
 P2= ../src/graph_implementation
 P3= ../src
 P4= ../src/a_star_implementation
+P5= ../src/allocation_implementation
 
 FLAGS= -I $(P) -I $(P3)
-OBJS=test_graph_implementation.c $(P)/unity.c $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o
-DEPS= $(P3)/graph.h $(P3)/graph_implementation.h $(P3)/a_star.h $(P4)/heap.h $(P4)/a_star_implementation.h
+OBJS=test_graph_implementation.c $(P)/unity.c $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o $(P5)/allocation.o
+DEPS= $(P3)/graph.h $(P3)/graph_implementation.h $(P3)/a_star.h $(P4)/heap.h $(P4)/a_star_implementation.h $(P5)/allocation.o
 
-OBJS2=test_heap.c $(P)/unity.c $(P4)/heap.o
+OBJS2=test_heap.c $(P)/unity.c $(P4)/heap.o $(P5)/allocation.o
 FLAGS2= -I $(P4)
 
-OBJS3=test_a_star.c $(P)/unity.c $(P4)/a_star.o $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o $(P4)/heap.o
+OBJS3=test_a_star.c $(P)/unity.c $(P4)/a_star.o $(P2)/graph.o $(P5)/allocation.o $(P2)/box.o $(P2)/vertex.o $(P4)/heap.o
 
-OBJS_X=$(P)/unity.c $(P4)/a_star.o $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o $(P4)/heap.o
+OBJS_X=$(P)/unity.c $(P4)/a_star.o $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o $(P4)/heap.o $(P5)/allocation.o
 
-OBJS_Y=$(P)/unity.c $(P4)/a_star.o $(P2)/graph_zero.o $(P2)/box.o $(P2)/vertex.o $(P4)/heap.o
+OBJS_Y=$(P)/unity.c $(P4)/a_star.o $(P2)/graph_zero.o $(P2)/box.o $(P2)/vertex.o $(P4)/heap.o $(P5)/allocation.o
+
+all: performance test_a_star test_heap test_graph_implementation2
 
 performance: test_performance test_performance_zero
 

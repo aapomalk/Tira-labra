@@ -65,10 +65,12 @@ int delete_box(BOX **box) {
 */
 int get_domain_index(BOX *b, COORDINATE c) {
 	int *i = malloc(DIMENSIONS * sizeof(int));
-	if (i == NULL) {
-	  return NULL;
-	}
 	int j,x=0,y=1;
+
+	if (i == NULL) {
+	  return -1;
+	}
+
 	
 	i = get_domain_indexes(b, c, i);
 	
@@ -107,7 +109,7 @@ int * get_domain_indexes(BOX *b, COORDINATE c, int *i) {
 int get_neighbouring_domain_index(BOX *b, COORDINATE c, int *x) {
 	int i,ret=0,y=1,*indexes = malloc(DIMENSIONS * sizeof(int));
 	if (indexes == NULL) {
-	  return NULL;
+	  return -1;
 	}
 	/*for (i=0; i<DIMENSIONS; i++) {
 		double d = 1.0 * x[i] / b->decomposition[i];

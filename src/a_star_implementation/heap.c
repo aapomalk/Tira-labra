@@ -1,15 +1,16 @@
 #include "constants.h"
 #include "a_star.h"
 #include "heap.h"
+#include "allocation.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 
 HEAP * new_heap() {
-  HEAP *h = malloc(sizeof(HEAP));
+  HEAP *h = allocation_malloc(1, sizeof(HEAP));
   h->size = INITIAL_HEAP_SIZE;
   h->n_of_components = 0;
-  h->components = malloc(h->size * sizeof(HEAP_COMPONENT));
+  h->components = allocation_malloc(h->size, sizeof(HEAP_COMPONENT));
   return h;
 }
 
@@ -78,7 +79,7 @@ void insert_component(HEAP *h, int index, double value) {
   int heap_index = h->n_of_components;
   if (h->n_of_components >= h->size) {
 	h->size *= 2;
-	h->components = realloc(h->components, h->size * sizeof(HEAP_COMPONENT));
+	h->components = allocation_realloc(h->n_of_components, h->components, h->size, sizeof(HEAP_COMPONENT));
   }
   h->components[heap_index].index = index;
   h->components[heap_index].value = value;

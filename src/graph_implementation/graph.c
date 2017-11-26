@@ -1,23 +1,24 @@
 #include "graph.h"
 #include "graph_implementation.h"
 #include "constants.h"
+#include "allocation.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 
 GRAPH * new_graph() {
 	int initial_length = INITIAL_LENGTH,i;
-	GRAPH * g = malloc(sizeof(GRAPH));
+	GRAPH * g = allocation_malloc(1, sizeof(GRAPH));
 	if (g == NULL) {
 	  return NULL;
 	}
 	g->number_of_nodes = 0;
 	g->list_length = initial_length;
-	g->nodes = malloc(initial_length * sizeof(VERTEX));
-	g->edges = malloc(initial_length * sizeof(EDGE*));
+	g->nodes = allocation_malloc(initial_length, sizeof(VERTEX));
+	g->edges = allocation_malloc(initial_length, sizeof(EDGE*));
 	g->box = new_box();
-	g->n_of_edges = malloc(initial_length * sizeof(int));
-	g->size_of_edge_lists = malloc(initial_length * sizeof(int));
+	g->n_of_edges = allocation_malloc(initial_length, sizeof(int));
+	g->size_of_edge_lists = allocation_malloc(initial_length, sizeof(int));
 	/*if (g->nodes == NULL || g->edges == NULL || g->n_of_edges == NULL || g->size_of_edge_lists) {
 	  printf("malloc NULL\n");
 	  return NULL;
@@ -32,12 +33,39 @@ GRAPH * new_graph() {
 	return g;
 }
 
+void reallocate_memory_exact(GRAPH *g, int number, int final_size) {
+  int length,i;
+  length = g->list_length = final_size;
+  g->nodes = allocation_realloc(number, g->nodes, length, sizeof(VERTEX));
+  g->edges = allocation_realloc(number, g->edges, length, sizeof(EDGE*));
+  g->n_of_edges = allocation_realloc(number, g->n_of_edges, length, sizeof(int));
+  g->size_of_edge_lists = allocation_realloc(number, g->size_of_edge_lists, length, sizeof(int));
+  for (i=number; i<length; i++) {
+	g->n_of_edges[i] = -1;
+	g->size_of_edge_lists[i] = 0;
+  }
+}
+
+void reallocate_memory(GRAPH *g, int number) {
+  reallocate_memory_exact(g, number, 2 * g->list_length);
+}
+
+void set_vertex_list_length(GRAPH *g, int length) {
+  int number = g->number_of_nodes;
+  int i;
+  reallocate_memory_exact(g, number, length);
+  for (i=number; i<length; i++) {
+	set_index(&(g->nodes[i]), i);
+  }
+}
+
 int add_vertex(GRAPH *g, VERTEX *v) {
 	int number = g->number_of_nodes;
 	int index = number - 1;
 	VERTEX *n = get_vertex(g, index);
 	if (number >= g->list_length) {
-		int length,i;
+	  reallocate_memory(g, number);
+	  /*		int length,i;
 		length = g->list_length = 2 * g->list_length;
 		g->nodes = realloc(g->nodes, length * sizeof(VERTEX));
 		g->edges = realloc(g->edges, length * sizeof(EDGE*));
@@ -49,7 +77,7 @@ int add_vertex(GRAPH *g, VERTEX *v) {
 		for (i=number; i<length; i++) {
 			g->n_of_edges[i] = -1;
 			g->size_of_edge_lists[i] = 0;
-		}
+			}*/
 	}
 	set_index(v, number);
 	g->nodes[number] = *v; /* contents of v are copied */
@@ -127,9 +155,9 @@ EDGE * get_edges(GRAPH *g, VERTEX *v) {
 
 void form_edges(GRAPH *g, VERTEX *v) {
 	int index = v->index;
-	int *neighbours = malloc(DIMENSIONS * sizeof(int));
+	int *neighbours = allocation_malloc(DIMENSIONS, sizeof(int));
 	int found = 1, i, level;
-	int *checked = calloc(number_of_domains(g->box), sizeof(int));
+	int *checked = allocation_calloc(number_of_domains(g->box), sizeof(int));
 	
 	for (level=0; found == 1; level++) { /* current domain is on level 0, 
 	level 1 is all the surrounding domains and so on */
@@ -175,34 +203,34 @@ void form_edges(GRAPH *g, VERTEX *v) {
 }
 
 void add_edge(int index, VERTEX *v, double weight, GRAPH *g) {
-	if (g->edges[index] == NULL) {
-		g->edges[index] = malloc(INITIAL_EDGE_NUMBER * sizeof(EDGE));
-		g->size_of_edge_lists[index] = INITIAL_EDGE_NUMBER;
-		g->n_of_edges[index] = 0;
-	}
-	while (g->n_of_edges[index] >= g->size_of_edge_lists[index]) {
-		g->size_of_edge_lists[index] *= 2;
-		g->edges[index] = realloc(g->edges[index], g->size_of_edge_lists[index] * sizeof(EDGE));
-	}
-	g->n_of_edges[index] += 1;
-	g->edges[index][g->n_of_edges[index]-1].weight = weight;
-	g->edges[index][g->n_of_edges[index]-1].node = v;
+  if (g->edges[index] == NULL) {
+	g->edges[index] = allocation_malloc(INITIAL_EDGE_NUMBER, sizeof(EDGE));
+	g->size_of_edge_lists[index] = INITIAL_EDGE_NUMBER;
+	g->n_of_edges[index] = 0;
+  }
+  while (g->n_of_edges[index] >= g->size_of_edge_lists[index]) {
+	g->size_of_edge_lists[index] *= 2;
+	g->edges[index] = allocation_realloc(g->n_of_edges[index], g->edges[index], g->size_of_edge_lists[index], sizeof(EDGE));
+  }
+  g->n_of_edges[index] += 1;
+  g->edges[index][g->n_of_edges[index]-1].weight = weight;
+  g->edges[index][g->n_of_edges[index]-1].node = v;
 }
 
 /* returns the distance if success and negative value otherwise */
 double is_connection(VERTEX *a, VERTEX *b, GRAPH *g) {
-	double *vec = malloc(DIMENSIONS * sizeof(double));
-	double distance = heuristic2(a, b, g, vec);
-	double angle;
-	if (distance > g->distance) {
-		return -1.0;
-	}
-	angle = minimum_angle_between(a, b, g, vec, distance);
-	if (angle > g->angle) {
-		return -1.0;
-	}
-	free(vec);
-	return distance;
+  double *vec = allocation_malloc(DIMENSIONS, sizeof(double));
+  double distance = heuristic2(a, b, g, vec);
+  double angle;
+  if (distance > g->distance) {
+	return -1.0;
+  }
+  angle = minimum_angle_between(a, b, g, vec, distance);
+  if (angle > g->angle) {
+	return -1.0;
+  }
+  free(vec);
+  return distance;
 }
 
 int domain_is_within_reach(GRAPH *g, COORDINATE c, int *x) {
@@ -275,50 +303,50 @@ int delete_graph(GRAPH **g) {
 }
 
 void prepare_box(GRAPH *g, int *decomposition, COORDINATE *vectors) {
-	BOX *box = g->box;
-	int i,j,previous = number_of_domains(box), current;
-	for (i=0; i<DIMENSIONS; i++) {
-		box->decomposition[i] = decomposition[i];
-		for (j=0; j<DIMENSIONS; j++) {
-			if (j > i) {
-				box->vectors[i][j] = 0.0; /* the n'th vector will have n dimensions */
-			} else {
-				box->vectors[i][j] = vectors[i][j];
-			}
-		}
+  BOX *box = g->box;
+  int i,j,previous = number_of_domains(box), current;
+  for (i=0; i<DIMENSIONS; i++) {
+	box->decomposition[i] = decomposition[i];
+	for (j=0; j<DIMENSIONS; j++) {
+	  if (j > i) {
+		box->vectors[i][j] = 0.0; /* the n'th vector will have n dimensions */
+	  } else {
+		box->vectors[i][j] = vectors[i][j];
+	  }
 	}
-	current = number_of_domains(box);
-	if (box->domains == NULL) {
-		box->domains = malloc(current * sizeof(VERTEX*));
-		box->size_of_domains = malloc(current * sizeof(int));
-		box->n_of_vertex_in_domains = malloc(current * sizeof(int));
-		for (i=0; i<current; i++) {
-			box->domains[i] = NULL;
-			box->size_of_domains[i] = 0;
-			box->n_of_vertex_in_domains[i] = 0;
-		}
-	} else {
-		box->domains = realloc(box->domains, current * sizeof(VERTEX*));
-		box->size_of_domains = realloc(box->size_of_domains, current * sizeof(int));
-		box->n_of_vertex_in_domains = realloc(box->n_of_vertex_in_domains, current * sizeof(int));
-		for (i=0; i<current; i++) {
-			if (i >= previous) {
-				box->domains[i] = NULL;
-				box->size_of_domains[i] = 0;
-			}
-			box->n_of_vertex_in_domains[i] = 0;
-		}
+  }
+  current = number_of_domains(box);
+  if (box->domains == NULL) {
+	box->domains = allocation_malloc(current, sizeof(VERTEX*));
+	box->size_of_domains = allocation_malloc(current, sizeof(int));
+	box->n_of_vertex_in_domains = allocation_malloc(current, sizeof(int));
+	for (i=0; i<current; i++) {
+	  box->domains[i] = NULL;
+	  box->size_of_domains[i] = 0;
+	  box->n_of_vertex_in_domains[i] = 0;
 	}
-	for (i=0; i<size_of_graph(g); i++) {
-		VERTEX v = g->nodes[i];
-		int index = get_domain_index(box, v.not_hydrogen.coord);
-		g->n_of_edges[i] = -1;
-		add_vertex_to_domain(index, &v, box);
+  } else {
+	box->domains = allocation_realloc(previous, box->domains, current, sizeof(VERTEX*));
+	box->size_of_domains = allocation_realloc(previous, box->size_of_domains, current, sizeof(int));
+	box->n_of_vertex_in_domains = allocation_realloc(previous, box->n_of_vertex_in_domains, current, sizeof(int));
+	for (i=0; i<current; i++) {
+	  if (i >= previous) {
+		box->domains[i] = NULL;
+		box->size_of_domains[i] = 0;
+	  }
+	  box->n_of_vertex_in_domains[i] = 0;
 	}
+  }
+  for (i=0; i<size_of_graph(g); i++) {
+	VERTEX v = g->nodes[i];
+	int index = get_domain_index(box, v.not_hydrogen.coord);
+	g->n_of_edges[i] = -1;
+	add_vertex_to_domain(index, &v, box);
+  }
 }
 
 double heuristic(VERTEX *a, VERTEX *b, GRAPH *g) {
-  double *x = malloc(DIMENSIONS * sizeof(double));
+  double *x = allocation_malloc(DIMENSIONS, sizeof(double));
   double ret = heuristic2(a, b, g, x);
   free(x);
 

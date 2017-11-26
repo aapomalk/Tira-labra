@@ -17,6 +17,8 @@ OBJS_X=$(P)/unity.c $(P4)/a_star.o $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o $(P4
 
 OBJS_Y=$(P)/unity.c $(P4)/a_star.o $(P2)/graph_zero.o $(P2)/box.o $(P2)/vertex.o $(P4)/heap.o
 
+all: performance test_a_star test_heap test_graph_implementation2
+
 performance: test_performance test_performance_zero
 
 test_performance: test_performance.c $(OBJS_X)
@@ -25,7 +27,7 @@ test_performance: test_performance.c $(OBJS_X)
 #	./$@.out 16 8
 
 test_performance_zero: test_performance.c $(OBJS_Y)
-	$(CC) -o $@_heuristic_zero.out $^ $(FLAGS) $(FLAGS2) 
+	$(CC) -o $@_heuristic.out $^ $(FLAGS) $(FLAGS2) 
 #	./$@_heuristic_zero.out 10 5
 #	./$@_heuristic_zero.out 16 8
 

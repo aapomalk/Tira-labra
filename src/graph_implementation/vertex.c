@@ -1,13 +1,14 @@
 #include "graph.h"
 #include "graph_implementation.h"
 #include "constants.h"
+#include "allocation.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 
 VERTEX * new_vertex() {
 	int i;
-	VERTEX *v = malloc(sizeof(VERTEX));
+	VERTEX *v = allocation_malloc(1, sizeof(VERTEX));
 	if (v == NULL) {
 	  return NULL;
 	}
@@ -26,7 +27,7 @@ int initialize_hydrogens(VERTEX *v, int n_hydrogens) {
 	if (v->hydrogens != NULL) {
 		return FAIL;
 	}
-	v->hydrogens = malloc(n_hydrogens*sizeof(ATOM));
+	v->hydrogens = allocation_malloc(n_hydrogens, sizeof(ATOM));
 	if (v->hydrogens == NULL) {
 	  return FAIL;
 	}
@@ -59,9 +60,9 @@ int get_index(VERTEX *v) {
 }
 
 char* print_vertex(VERTEX *v) {
-	char *text = malloc(PRINT_LENGTH*sizeof(char));
-	sprintf(text, "%d", v->not_hydrogen.index);
-	return text;
+  char *text = allocation_malloc(PRINT_LENGTH, sizeof(char));
+  sprintf(text, "%d", v->not_hydrogen.index);
+  return text;
 }
 
 void set_index(VERTEX *v, int ind) {
