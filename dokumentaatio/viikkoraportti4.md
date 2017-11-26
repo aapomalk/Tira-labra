@@ -47,7 +47,9 @@ Tein uuden "luokan" allocation, tarkoituksena virheellisten allokaatioitten käs
 ### 26.11.
 Mysteerinen segmentation fault jatkuu, mutta se ei näytä olevan täysin riippuvainen verkon koosta.
 
-14-16:15
+Mysteeri on ratkaistu osittain: kyseessä on indeksi numero 10. Syytä en ymmärrä, mutta jos kyseisen indeksin ohittaa niin segfaultia ei tule...
+
+14-16:15, 18:45-
 
 ## Miten ohjelma on edistynyt?
 

@@ -19,6 +19,7 @@ clock_t test_performance(int size, int decomp) {
   int index = 0;
   int *indexes;
   srand((unsigned) time(&t));
+  printf("%d\n", rand());
   
   for (i=0; i<DIMENSIONS; i++) {
 	decomposition[i] = decomp;
@@ -38,9 +39,9 @@ clock_t test_performance(int size, int decomp) {
 		if (v->index != index) {
 		  printf("error, index not the same!!!\n");
 		}
-		v->not_hydrogen.coord[0] = 0.5 + i + rand() / RAND_MAX * 0.01;
-		v->not_hydrogen.coord[1] = 0.5 + j + rand() / RAND_MAX * 0.01;
-		v->not_hydrogen.coord[2] = 0.5 + k + rand() / RAND_MAX * 0.01;
+		v->not_hydrogen.coord[0] = 0.5 + i + rand() * 0.01 / RAND_MAX;
+		v->not_hydrogen.coord[1] = 0.5 + j + rand() * 0.01 / RAND_MAX;
+		v->not_hydrogen.coord[2] = 0.5 + k + rand() * 0.01 / RAND_MAX;
 		initialize_hydrogens(v, 6);
 		for (a=0; a<6; a++) {
 		  for (b=0; b<DIMENSIONS; b++) {
@@ -62,10 +63,11 @@ clock_t test_performance(int size, int decomp) {
   set_distance(g, 1.5);
   set_angle(g, 20.0);
 
-  set_start(a, 0);
+  j=9;
+  set_start(a, j);
   i = size / 2 - 1 + size * size / 2 + size * size * size / 2;
   set_target(a, i);
-  printf("\nstart: 0, target: %d\n", i);
+  printf("\nstart: %d, target: %d\n", j, i);
   
   time_start = clock();
   i = search_path(a, g);

@@ -48,7 +48,10 @@ int search_path(A_STAR *a, GRAPH *g) {
   EDGE *e;
   int index,start = a->start, target = a->target;
   double dist;
-  if (a->start < 0 || a->target < 0) {
+  if (g == NULL) {
+	return FAIL;
+  }
+  if (a->start < 0 || a->target < 0 || a->start >= g->number_of_nodes || a->target >= g->number_of_nodes) {
 	return FAIL;
   }
   prepare_a_star(a, g);
@@ -58,7 +61,11 @@ int search_path(A_STAR *a, GRAPH *g) {
 
   do {
 	int i;
+	printf("searching path.. %d %d\n", index, a->heap->n_of_components);
 	e = get_edges(g, get_vertex(g, index));
+	if (e == NULL) {
+	  continue;
+	}
 	for (i=0; i < g->n_of_edges[index]; i++) {
 	  int edge_index = e[i].node->index;
 	  double distance = a->distance_from_start[index] + heuristic(&(g->nodes[index]), &(g->nodes[edge_index]), g);

@@ -44,6 +44,11 @@ Tein uuden "luokan" allocation, tarkoituksena virheellisten allokaatioitten käs
 
 10-11
 
+### 26.11.
+Mysteerinen segmentation fault jatkuu, mutta se ei näytä olevan täysin riippuvainen verkon koosta.
+
+14-16:15
+
 ## Miten ohjelma on edistynyt?
 
 ## Mitä opin tällä viikolla / tänään?
