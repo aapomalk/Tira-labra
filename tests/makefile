@@ -5,7 +5,7 @@ P3= ../src
 P4= ../src/a_star_implementation
 P5= ../src/allocation_implementation
 
-FLAGS= -I $(P) -I $(P3) -lm
+FLAGS= -I $(P) -I $(P3) -lm -D SKIP_INDEX_10
 OBJS=test_graph_implementation.c $(P)/unity.c $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o $(P5)/allocation.o
 DEPS= $(P3)/graph.h $(P3)/graph_implementation.h $(P3)/a_star.h $(P4)/heap.h $(P4)/a_star_implementation.h $(P5)/allocation.o
 
@@ -58,3 +58,6 @@ $(P2)/graph_zero.o: $(P2)/graph.c $(DEPS)
 # this is the old make for test
 test_graph_implementation: test_graph_implementation.c ../src/graph_implementation.c $(P)/unity.c
 	$(CC) test_graph_implementation.c  ../src/graph_implementation.c $(P)/unity.c -o test_graph_implementation.out -I $(P)
+
+just_a_test: test.c
+	$(CC) test.c -o test.out

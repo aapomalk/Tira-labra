@@ -350,12 +350,7 @@ double heuristic(VERTEX *a, VERTEX *b, GRAPH *g) {
   double ret = heuristic2(a, b, g, x);
   free(x);
 
-#ifndef HEURISTIC_ZERO /* for testing Dijkstra */
   return ret;
-#endif
-#ifdef HEURISTIC_ZERO
-  return 0.0 * ret;
-#endif
 }
 
 double heuristic2(VERTEX *a, VERTEX *b, GRAPH *g, double *from_a_to_b) {

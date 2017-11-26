@@ -33,3 +33,7 @@ Testit voidaan toistaa ensin kääntämällä testit (makefile -tiedosto test -kansio
 ## Ohjelman toiminnan empiirisen testauksen tulosten esittäminen graafisessa muodossa
 
 ## Testaus on ideaalitapauksessa suoritettava ohjelma. Tällöin testi on helposti toistettavissa, mikä helpottaa toteutuksen tekoa jo varhaisessa vaiheessa. Javalla tehdyissä töissä on erittäin suositeltavaa käyttää testaukseen JUnitia
+
+## Tunnettuja ongelmia:
+
+Cygwin gcc versio 6.4.0 tuottaa segmentation fault:n kun a_star indeksi on 10 ja mahdollisesti myös muiden indeksien kanssa. Linux:n gcc:llä ei tunnu olevan vastaavia ongelmia.

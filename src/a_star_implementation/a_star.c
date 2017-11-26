@@ -82,7 +82,11 @@ int search_path(A_STAR *a, GRAPH *g) {
 		   where the index is always updated in some list; at least this is easier to implement.
 		   More memory used in the heap (total memory usage might be still smaller) but less swapping of indexes. 
 		*/
-		insert_component(a->heap, edge_index, distance + heuristic(&(g->nodes[edge_index]), &(g->nodes[a->target]), g));
+		insert_component(a->heap, edge_index, distance
+#ifndef HEURISTIC_ZERO						 
+						 + heuristic(&(g->nodes[edge_index]), &(g->nodes[a->target]), g)
+#endif
+						 );
 	  }
 	}
 
@@ -90,12 +94,21 @@ int search_path(A_STAR *a, GRAPH *g) {
 	  dist = get_first_value(a->heap);
 	  index = get_first_index(a->heap);
 	  remove_first(a->heap);
-	} while (/*index == 10*/ /* this is for debugging */ /*||*/ dist > a->distance_from_start[index] + heuristic(&(g->nodes[index]), &(g->nodes[a->target]), g)); /* lets skip all the longer (old) paths */
+	} while (
+#ifdef SKIP_INDEX_10
+			 index == 10  /*this is for debugging*/  ||
+#endif
+			 dist > a->distance_from_start[index]
+#ifndef HEURISTIC_ZERO /* if heuristic zero is defined then only the distance from start is included */
+			 + heuristic(&(g->nodes[index]), &(g->nodes[a->target]), g)
+#endif
+			 ); /* lets skip all the longer (old) paths */
 	/*	printf("end %d %d %d\n", a->heap->n_of_components, index, g->number_of_nodes);
 	printf("%d", a->heap->n_of_components > 0);
 	printf("%d", index != target);
 	printf("%d", index >= 0);
 	printf("%d\n", index < g->number_of_nodes);*/
+	printf("%d ", index);
   } while (a->heap->n_of_components > 0 && index != target && index >= 0 && index < g->number_of_nodes);
   /*  printf("finished\n");*/
   if (a->came_from[target] >= 0) {

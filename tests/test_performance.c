@@ -63,7 +63,7 @@ clock_t test_performance(int size, int decomp) {
   set_distance(g, 1.5);
   set_angle(g, 20.0);
 
-  j=9;
+  j=0;
   set_start(a, j);
   i = size / 2 - 1 + size * size / 2 + size * size * size / 2;
   set_target(a, i);
@@ -74,6 +74,7 @@ clock_t test_performance(int size, int decomp) {
   time_end = clock();
   if (i == FAIL) {
 	printf("path not found with size %d\n", size);
+	return time_end - time_start;
   }
   printf("path length: %f\n", get_path_length(a));
   indexes = get_path_indexes(a, &i);

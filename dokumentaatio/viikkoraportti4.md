@@ -49,7 +49,9 @@ Mysteerinen segmentation fault jatkuu, mutta se ei näytä olevan täysin riippu
 
 Mysteeri on ratkaistu osittain: kyseessä on indeksi numero 10. Syytä en ymmärrä, mutta jos kyseisen indeksin ohittaa niin segfaultia ei tule...
 
-14-16:15, 18:45-
+Linuxilla kyseistä ongelmaa indeksin 10 kanssa ei ole, ilmeisesti jokin virhe Cygwin gcc kääntäjässä.
+
+14-16:15, 18:45-21
 
 ## Miten ohjelma on edistynyt?
 
