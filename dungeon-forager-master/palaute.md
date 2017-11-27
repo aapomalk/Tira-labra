@@ -4,7 +4,7 @@ Paketti ladattu 10:38 23.11.2017
 
 Mielenkiintoinen aihe.
 
-(koodia luettu 27.11. klo 21:30-
+(koodia luettu 27.11. klo 21:30-22:30)
 
 Mietin, että jos luolastosta muodostuu verkko, jossa on negatiivisia painoja niin sopiiko A* tällaiseen? 
 Voisiko Bellmanin-Fordin algoritmia muokata muuttuville verkonpainoille?
