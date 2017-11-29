@@ -6,21 +6,31 @@ Mielenkiintoinen aihe.
 
 (koodia luettu 27.11. klo 21:30-22:30)
 
-Mietin, että jos luolastosta muodostuu verkko, jossa on negatiivisia painoja niin sopiiko A* tällaiseen? 
-Voisiko Bellmanin-Fordin algoritmia muokata muuttuville verkonpainoille?
+Hyvältä vaikuttaa.
+Haet eri kierrosten askeleita samassa listassa, jolloin paras reitti löytyy luonnollisesti ensimmäisenä (kunhan toteutat askeleiden järjestämisen).
+Hyvän oloinen rakenne, missä askeleet ja kierrokset on eritelty omiin luokkiinsa.
 
-Ilmeisesti etsitään kuitenkin ajallisesti nopeinta reittiä, johon A* kyllä soveltuu:
-Jos maali löytyy kulkematta yhdenkään erikoissolmun kautta niin se on silloin varmasti nopein eikä erikoissolmuista tarvitse välittää.
+## AStarStepComparator.java (katsottu netistä 27.11.)
 
-Toinen pohdinnan aihe on, että etsitkö erikoissolmuista lähteviä polkuja samassa sopassa kuin muita polkuja?
-Tämä ehkä selviää lukemalla koodia tarkemmin (jos ehdin).
-Jos haluaa että nopein reitti löytyy ensimmäisenä, eikä tarvitse alkaa vertailemaan vaihtoehtoisia reittejä 
-niin silloin erikseen aloitetut etsinnät tulisi hakea samassa sopassa muiden polkujen kanssa.
-Samalla sopalla tarkoitan, että uuden polun etsintä tapahtuu samaa kekoa käyttäen.
-Tällöin ensimmäisenä maaliin löytyvä reitti omaa lyhimmän ajan.
+**heuristic:** Mielestäni ei ole hyötyä ottaa karteesista etäisyyttä `sqrt(x*x+y*y)`,
+kun luolastossa voi liikkua vain vierekkäisiin ruutuihin ruutu kerrallaan.
+Todellinen pienin etäisyys kohteeseen siis olisi `x+y`.
 
-## AStarStepComparator.java
+**comparator:** lisäksi karteesisen etäisyyden tarkkuus menetetään kun muutetaan double -> int.
+Tässä etäisyyden voisi kertoa jollain vakiolla, jolloin saataisiin tarkempi vertailu.
+Tai esimerkiksi palauttaa 1 jos `val1 > val2`, 0 jos `val1 == val2` ja -1 jos `val1 < val2`.
+Tähän on tärkeä keskittyä, sillä jos järjestys on epätäsmällinen niin ohjelma ei tuota lyhintä/parasta polkua luolaston läpi.
 
-**heuristic:** onko hyötyä ottaa karteesista etäisyyttä "sqrt(x*x+y*y)" jos luolastossa voi liikkua vain vierekkäisiin ruutuihin ruutu kerrallaan? Todellinen minimi kuljettu etäisyys siis olisi "x+y" jos olen oikein ymmärtänyt. Jos vinottainen liike on myös mahdollista niin silloin todellinen etäisyys on "max(x, y)".
+## Cycle.java
 
-**comparator:** toisaalta karteesisen etäisyyden tarkkuus menetetään kun muutetaan double -> int. Tässä etäisyyden voisi kertoa jollain vakiolla, jolloin saataisiin tarkempi vertailu. Tai esimerkiksi palauttaa 1 jos "val1 > val2", 0 jos "val1 == val2" ja -1 jos "val1 < val2". Jos järjestys on epätäsmällinen niin tuottaako ohjelma lyhintä/parasta polkua luolaston läpi? Lisäksi jos etäisyys laskettaisiin "x+y" niin sen voisi suorittaa suoraan kokonaisluvuilla.
+**visited:** ovelaa käyttää taulukkoa, joka ei kopioidu sijoitusoperaatiossa (vaan on eri askeleille sama)
+säästäen muistia ja helpottaa informaation jakamista.
+Jos haluaisi säästää enemmän tilaa niin jokaiselle luolan ruudulle voisi olla oma taulukko/lista,
+johon lisättäisiin millä kierroksella siinä on jo käyty.
+Tämä sillä oletuksella, että kukin kierros koluaa vain osan luolastosta.
+Jos kaikki kierrokset koluavat käytännössä koko luolaston niin tilaa ei säästy (mutta tällöin maali on luultavasti jo löydetty).
+
+## Forarger.java
+
+Vanhassa versiossa et vielä järjestä askeleita.
+Oletettavasti tätä varten olet lisännyt PriorityQueue luokan.
