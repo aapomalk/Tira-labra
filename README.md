@@ -25,7 +25,7 @@ Make ohjelmaa käytetään ajamaan makefile -tiedostoja.
 
 3. Linux käyttöjärjestelmässä gcc ja make löytyvät luultavasti valmiina.
 Windows ympäristössä tarvitset jonkin ohjelman tjtn, joka sisältää edelliset ohjelmat.
-Esimerkiksi (Cygwin)[https://www.cygwin.com/] projekti
+Esimerkiksi [Cygwin](https://www.cygwin.com/) projekti
 (gcc ja make täytyy erikseen lisätä Cygwiniin, seuraa Cygwinin ohjeita).
 
 4. Käytän projektissa valmiin ohjelman päätteenä .out -päätettä.

@@ -1,6 +1,10 @@
 #ifndef BUILD_GRAPH_IMPLEMENTATION_H
 #define BUILD_GRAPH_IMPLEMENTATION_H
 
+#include "graph.h"
+#include "graph_implementation.h"
+
+
 /* 
    The vertex_definitions is a list of lists.
 
@@ -20,7 +24,13 @@
    -The first matching list is always used, 
    so index and segname definitions should be always before the general definitions.
  */
-int read_pdb(char *pdb, char ***vertex_definitions, int **n_of_hydrogens, GRAPH *g);
+int read_pdb(char *pdb, char ***vertex_definitions, int *n_of_hydrogens, int n_of_definitions, GRAPH *g);
+int compare_substring(char * line, int start_index, int number_of_chars_to_compare, char * compare);
+int compare_definition_and_line(char * line, char * definition);
+int compare_atomname_and_line(char * line, char * atomname);
+void insert_atom(ATOM *a, char *line, int index);
+int is_an_atom(char *line, int *index);
+
 
 /* 
    Distance, angle and domain decomposition are defined in param -file.

@@ -1,6 +1,9 @@
 #ifndef BUILD_GRAPH_H
 #define BUILD_GRAPH_H
 
+#include "graph.h"
+#include "graph_implementation.h"
+
 /* 
    reads the files top, coord, and param
    -top is the topology, containing atoms and their indexes

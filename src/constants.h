@@ -11,5 +11,8 @@
 #define PI 3.141592653589793 
 #define INITIAL_EDGE_NUMBER 2
 #define INITIAL_HEAP_SIZE 3
+#define PDB_LINE_LENGTH_BUFFER 100 /* a little extra */
+#define HYDROGEN_IDENTIFIER 2
+#define NON_HYDROGEN_IDENTIFIER 1
 
 #endif

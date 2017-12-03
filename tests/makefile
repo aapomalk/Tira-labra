@@ -4,21 +4,32 @@ P2= ../src/graph_implementation
 P3= ../src
 P4= ../src/a_star_implementation
 P5= ../src/allocation_implementation
+P6= ../src/build_graph_implementation
+
+GBV=$(P2)/graph.o $(P2)/box.o $(P2)/vertex.o
+UNI=$(P)/unity.c
+ALLOC=$(P5)/allocation.o
 
 FLAGS= -I $(P) -I $(P3) -lm
-OBJS=test_graph_implementation.c $(P)/unity.c $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o $(P5)/allocation.o
-DEPS= $(P3)/graph.h $(P3)/graph_implementation.h $(P3)/a_star.h $(P4)/heap.h $(P4)/a_star_implementation.h $(P5)/allocation.o
+OBJS=test_graph_implementation.c $(UNI) $(GBV) $(ALLOC)
+DEPS= $(P3)/graph.h $(P3)/graph_implementation.h $(P3)/a_star.h $(P4)/heap.h $(P4)/a_star_implementation.h $(P3)/allocation.h $(P3)/build_graph_implementation.h $(P3)/build_graph.h
 
-OBJS2=test_heap.c $(P)/unity.c $(P4)/heap.o $(P5)/allocation.o
+OBJS2=test_heap.c $(UNI) $(P4)/heap.o $(ALLOC)
 FLAGS2= -I $(P4)
 
-OBJS3=test_a_star.c $(P)/unity.c $(P4)/a_star.o $(P2)/graph.o $(P5)/allocation.o $(P2)/box.o $(P2)/vertex.o $(P4)/heap.o
+OBJS3=test_a_star.c $(UNI) $(P4)/a_star.o $(P2)/graph.o $(ALLOC) $(P2)/box.o $(P2)/vertex.o $(P4)/heap.o
 
-OBJS_X=$(P)/unity.c $(P4)/a_star.o $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o $(P4)/heap.o $(P5)/allocation.o
+OBJS_X=$(UNI) $(P4)/a_star.o $(GBV) $(P4)/heap.o $(ALLOC)
 
-OBJS_Y=$(P)/unity.c $(P4)/a_star_zero.o $(P2)/graph.o $(P2)/box.o $(P2)/vertex.o $(P4)/heap.o $(P5)/allocation.o
+OBJS_Y=$(UNI) $(P4)/a_star_zero.o $(GBV) $(P4)/heap.o $(ALLOC)
 
-all: performance test_a_star test_heap test_graph_implementation2
+OBJS_B=$(P6)/build_graph_implementation.o $(GBV) $(UNI) $(ALLOC)
+
+all: performance test_a_star test_heap test_graph_implementation2 test_build_graph
+
+test_build_graph: test_build_graph_implementation.c $(OBJS_B)
+	$(CC) -o $@.out $^ $(FLAGS) $(FLAGS2)
+	./$@.out
 
 performance: test_performance test_performance_zero test_performance2 test_performance_zero2
 
@@ -67,8 +78,8 @@ $(P4)/a_star_zero.o: $(P4)/a_star.c $(DEPS)
 	$(CC) -c -o $@ $< $(FLAGS) -D HEURISTIC_ZERO
 
 # this is the old make for test
-test_graph_implementation: test_graph_implementation.c ../src/graph_implementation.c $(P)/unity.c
-	$(CC) test_graph_implementation.c  ../src/graph_implementation.c $(P)/unity.c -o test_graph_implementation.out -I $(P)
+test_graph_implementation: test_graph_implementation.c ../src/graph_implementation.c $(UNI)
+	$(CC) test_graph_implementation.c  ../src/graph_implementation.c $(UNI) -o test_graph_implementation.out -I $(P)
 
 just_a_test: test.c
 	$(CC) test.c -o test.out

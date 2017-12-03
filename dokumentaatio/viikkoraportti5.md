@@ -31,7 +31,7 @@ Vertaisarvioinnin pohjalta muokkauksia.
 README tiedostoon lisätty ohjeita C-koodin kääntämiseen ja ajamiseen.
 ~ -päätteiset varmuuskopiotiedostot poistettu githubista (ja lisätty .gitignore tiedostoon).
 
-klo 13:15-14:15
+klo 13:15-14:15, 15-
 
 ## Miten ohjelma on edistynyt?
 
