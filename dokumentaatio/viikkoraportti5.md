@@ -26,6 +26,13 @@ Koodikatselmointi suoritettu 21:50. Header -tiedostojen tekemistä (tulevan ohje
 
 klo 21-23:30
 
+### 3.12.
+Vertaisarvioinnin pohjalta muokkauksia.
+README tiedostoon lisätty ohjeita C-koodin kääntämiseen ja ajamiseen.
+~ -päätteiset varmuuskopiotiedostot poistettu githubista (ja lisätty .gitignore tiedostoon).
+
+klo 13:15-14:15
+
 ## Miten ohjelma on edistynyt?
 
 ## Mitä opin tällä viikolla / tänään?
