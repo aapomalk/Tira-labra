@@ -31,12 +31,18 @@ Vertaisarvioinnin pohjalta muokkauksia.
 README tiedostoon lisätty ohjeita C-koodin kääntämiseen ja ajamiseen.
 ~ -päätteiset varmuuskopiotiedostot poistettu githubista (ja lisätty .gitignore tiedostoon).
 
-klo 13:15-14:15, 15-
+pdb -tiedoston lukemista koodattu. Loppuvaiheessa segmentation fault, jonka tutkiminen jäi kesken.
+
+klo 13:15-14:15, 15-23:55
+
+Yhteensä noin 13h30min
 
 ## Miten ohjelma on edistynyt?
+Hitaammin kuin olisin halunnut. Pdb lukija on teoriassa valmis, mutta käytnnössä tulee segfault.
 
 ## Mitä opin tällä viikolla / tänään?
 
 ## Mikä jäi epäselväksi tai tuottanut vaikeuksia?
 
 ## Mitä teen seuraavaksi?
+Yritän selvittää segfaultin syyn ja korjata ongelman.
