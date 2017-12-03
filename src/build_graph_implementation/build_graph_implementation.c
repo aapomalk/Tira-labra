@@ -153,27 +153,35 @@ int read_pdb(char *pdb, char ***vertex_definitions, int *n_of_hydrogens, int n_o
 		  int hydrogen_or_not;
 		  if ((hydrogen_or_not = compare_atomname_and_line(line, vertex_definitions[i][j])) > 0) {
 			if (j == 1 && hydrogen_index < 0) {
+			  printf("new ");
 			  v = new_vertex(); /* found the first atom of vertex */
+			  printf("a ");
 			  initialize_hydrogens(v, n_of_hydrogens[i]);
+			  printf("vertex ");
 			  hydrogen_index=0;
 			}
 			if (hydrogen_or_not == HYDROGEN_IDENTIFIER && hydrogen_index < n_of_hydrogens[i]) {
+			  printf("inserting ");
 			  insert_atom(&(v->hydrogens[hydrogen_index]), line, index);
+			  printf("jea ");
 			  hydrogen_index++;
 			}
 			if (hydrogen_or_not == NON_HYDROGEN_IDENTIFIER) {
+			  printf("not ");
 			  insert_atom(&(v->not_hydrogen), line, index);
+			  printf("h ");
 			}
 			if (hydrogen_index == n_of_hydrogens[i]) {
+			  printf("added vertex %d  ", index);
 			  add_vertex(g, v); /* this should be the last */
+			  printf("end\n");
 			  hydrogen_index = -2;
-			  break;
 			}
 		  }
 		}
 	  }
 	  if (definition_number == 0) {
-		break; /* last definition of the residue */
+		break;
 	  }
 	}
   }

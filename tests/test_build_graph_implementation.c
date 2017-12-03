@@ -27,6 +27,7 @@ void test_compare_definition_and_line(void) {
   TEST_ASSERT_EQUAL_INT_MESSAGE(0, compare_definition_and_line(line, "0 MET"), "0 MET");
   TEST_ASSERT_EQUAL_INT_MESSAGE(-1, compare_definition_and_line(line, "0 PRO"), "0 PRO");
   TEST_ASSERT_EQUAL_INT_MESSAGE(0, compare_definition_and_line(line, "0 MET PROA"), "0 MET PROA");
+  TEST_ASSERT_EQUAL_INT_MESSAGE(2, compare_definition_and_line(line, "2 MET PROA"), "0 MET PROA 2");
   TEST_ASSERT_EQUAL_INT_MESSAGE(-1, compare_definition_and_line(line, "0 MET PROB"), "0 MET PROB");
   TEST_ASSERT_EQUAL_INT_MESSAGE(0, compare_definition_and_line(line, "0 MET PROA 1"), "0 MET PROA 1");
   TEST_ASSERT_EQUAL_INT_MESSAGE(-1, compare_definition_and_line(line, "0 MET PROA 3"), "0 MET PROA 3");
@@ -69,7 +70,7 @@ void test_is_an_atom(void) {
 
 void test_read_pdb(void) {
   char *pdb = "../xtc_reader/final_solv_ions.pdb";
-  int def = 2;
+  int def = 3;
   char ***vertex_definitions = malloc(def*sizeof(char**));
   int *n_of_hydrogens = malloc(def*sizeof(int));
   GRAPH *g = new_graph();
@@ -86,10 +87,17 @@ void test_read_pdb(void) {
   vertex_definitions[1][1] = "1CG";
   vertex_definitions[1][2] = "2HG";
   n_of_hydrogens[1] = 1;
-  
 
-  TEST_ASSERT_EQUAL_INT(SUCCESS, read_pdb(pdb, vertex_definitions, n_of_hydrogens, 1, g));
+  vertex_definitions[2] = malloc(4*sizeof(char*)); /* room for one hydrogen */
+  vertex_definitions[2][0] = "0 TIP3";
+  vertex_definitions[2][1] = "1OH2";
+  vertex_definitions[2][2] = "2H1";
+  vertex_definitions[2][3] = "2H2";
+  n_of_hydrogens[2] = 2;
 
+
+  TEST_ASSERT_EQUAL_INT(SUCCESS, read_pdb(pdb, vertex_definitions, n_of_hydrogens, def, g));
+  printf("finished\n");
   TEST_ASSERT_EQUAL_INT(2, g->number_of_nodes);
   
   /* see the indexes from pdb file in xtc_reader folder */
