@@ -74,6 +74,7 @@ void test_read_pdb(void) {
   char ***vertex_definitions = malloc(def*sizeof(char**));
   int *n_of_hydrogens = malloc(def*sizeof(int));
   GRAPH *g = new_graph();
+  int i,j,previous=-1;
 
   vertex_definitions[0] = malloc(4*sizeof(char*)); /* room for two hydrogens */
   vertex_definitions[0][0] = "1 LEU PROA 21";
@@ -97,8 +98,7 @@ void test_read_pdb(void) {
 
 
   TEST_ASSERT_EQUAL_INT(SUCCESS, read_pdb(pdb, vertex_definitions, n_of_hydrogens, def, g));
-  printf("finished\n");
-  TEST_ASSERT_EQUAL_INT(2, g->number_of_nodes);
+  TEST_ASSERT_EQUAL_INT(64698, g->number_of_nodes);
   
   /* see the indexes from pdb file in xtc_reader folder */
   TEST_ASSERT_EQUAL_INT(352, g->nodes[0].not_hydrogen.index);
@@ -106,6 +106,19 @@ void test_read_pdb(void) {
 
   TEST_ASSERT_EQUAL_INT(353, g->nodes[0].hydrogens[0].index);
   TEST_ASSERT_EQUAL_INT(354, g->nodes[0].hydrogens[1].index);
+
+  for (i=0; i<g->number_of_nodes; i++) {
+	/*printf("index %d %d %d %.3f %.3f %.3f\n", i, g->nodes[i].not_hydrogen.index, previous,
+	  g->nodes[i].not_hydrogen.coord[0], g->nodes[i].not_hydrogen.coord[1], g->nodes[i].not_hydrogen.coord[2]);*/
+	TEST_ASSERT(previous < g->nodes[i].not_hydrogen.index);
+	previous = g->nodes[i].not_hydrogen.index;
+	for (j=0; j<g->nodes[i].n_hydrogens; j++) {
+	  /*printf("hydrogen %d %d %d %.3f %.3f %.3f\n", j, g->nodes[i].hydrogens[j].index, previous,
+		g->nodes[i].hydrogens[j].coord[0], g->nodes[i].hydrogens[j].coord[1], g->nodes[i].hydrogens[j].coord[2]);*/
+	  TEST_ASSERT(previous < g->nodes[i].hydrogens[j].index);
+	  previous = g->nodes[i].hydrogens[j].index;
+	}
+  }
   
   free(n_of_hydrogens);
   free(vertex_definitions[0]);

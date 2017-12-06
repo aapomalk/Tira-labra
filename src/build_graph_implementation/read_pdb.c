@@ -127,60 +127,97 @@ int is_an_atom(char *line, int *index) {
   return FAIL;
 }
 
+void compare_definition_and_atomname(char ***vertex_definitions, int *hydrogen_or_not,
+									 int *index1, int *index2, char *line, int n_of_definitions, int *n_of_hydrogens) {
+  int definition_number,i,j;
+  for (i=0; i<n_of_definitions; i++) {	
+	if ((definition_number = compare_definition_and_line(line, vertex_definitions[i][0])) >= 0) {
+	  for (j=1; j <= n_of_hydrogens[i] + 1; j++) {
+		if ((*hydrogen_or_not = compare_atomname_and_line(line, vertex_definitions[i][j])) > 0) {
+		  *index1 = i;
+		  *index2 = j;
+		  return;
+		}
+	  }
+	}
+	if (definition_number == 0) {
+	  break;
+	}
+  } 
+}
+
 int read_pdb(char *pdb, char ***vertex_definitions, int *n_of_hydrogens, int n_of_definitions, GRAPH *g) {
   FILE *pdb_pointer;
   char line[PDB_LINE_LENGTH_BUFFER];
-  int hydrogen_index=-2, index=-1;
+  int hydrogen_index=-2, index=-1, number_of_vertexes=0, g_index=0;
 
   pdb_pointer = fopen(pdb, "r");
   if (pdb_pointer == NULL) {
 	printf("error opening file \"%s\"\n", pdb);
 	return FAIL;
   }
-  
+
+  /*
+	In order to avoid allocating memory for each vertex outside graph and then again inside
+	it is better to first calculate the amount of vertex needed and only allocate the 
+	memory inside the graph (otherwise there will probably be a segmentation fault).
+   */
+  while (!feof(pdb_pointer)) { 
+	int i=-1,j,hydrogen_or_not;
+	fgets(line, PDB_LINE_LENGTH_BUFFER, pdb_pointer);
+	if (is_an_atom(line, &index) == FAIL) {
+	  continue;
+	}
+	compare_definition_and_atomname(vertex_definitions, &hydrogen_or_not, &i, &j, line, n_of_definitions, n_of_hydrogens);
+	if (i == -1) {
+	  continue;
+	}
+	if (j == 1 && hydrogen_index < 0) {
+	  hydrogen_index=0;
+	}
+	if (hydrogen_or_not == HYDROGEN_IDENTIFIER && hydrogen_index < n_of_hydrogens[i]) {
+	  hydrogen_index++;
+	}
+	if (hydrogen_index == n_of_hydrogens[i]) {
+	  number_of_vertexes++;
+	  hydrogen_index=-2;
+	}
+  }
+  set_vertex_list_length(g, number_of_vertexes); /* here the allocation is done with one step */
+  g->number_of_nodes = number_of_vertexes;
+
+  rewind(pdb_pointer); /* in order to read the file again */
+  hydrogen_index=-2; /* this is also important */
+  index=-1; /* and this */
+
   while (!feof(pdb_pointer)) {
-	int i,j;
+	int i=-1,j,hydrogen_or_not;
 	VERTEX *v; /* this gets initialized if something is found */
 	fgets(line, PDB_LINE_LENGTH_BUFFER, pdb_pointer);
 	if (is_an_atom(line, &index) == FAIL) {
 	  continue;
 	}
-	for (i=0; i<n_of_definitions; i++) {
-	  int definition_number;
-	  
-	  if ((definition_number = compare_definition_and_line(line, vertex_definitions[i][0])) >= 0) {
-		for (j=1; j <= n_of_hydrogens[i] + 1; j++) {
-		  int hydrogen_or_not;
-		  if ((hydrogen_or_not = compare_atomname_and_line(line, vertex_definitions[i][j])) > 0) {
-			if (j == 1 && hydrogen_index < 0) {
-			  printf("new ");
-			  v = new_vertex(); /* found the first atom of vertex */
-			  printf("a ");
-			  initialize_hydrogens(v, n_of_hydrogens[i]);
-			  printf("vertex ");
-			  hydrogen_index=0;
-			}
-			if (hydrogen_or_not == HYDROGEN_IDENTIFIER && hydrogen_index < n_of_hydrogens[i]) {
-			  printf("inserting ");
-			  insert_atom(&(v->hydrogens[hydrogen_index]), line, index);
-			  printf("jea ");
-			  hydrogen_index++;
-			}
-			if (hydrogen_or_not == NON_HYDROGEN_IDENTIFIER) {
-			  printf("not ");
-			  insert_atom(&(v->not_hydrogen), line, index);
-			  printf("h ");
-			}
-			if (hydrogen_index == n_of_hydrogens[i]) {
-			  printf("added vertex %d  ", index);
-			  add_vertex(g, v); /* this should be the last */
-			  printf("end\n");
-			  hydrogen_index = -2;
-			}
-		  }
-		}
-	  }
-	  if (definition_number == 0) {
+	compare_definition_and_atomname(vertex_definitions, &hydrogen_or_not, &i, &j, line, n_of_definitions, n_of_hydrogens);
+	if (i == -1) {
+	  continue;
+	}
+	if (j == 1 && hydrogen_index < 0) {
+	  v = &(g->nodes[g_index]);/*new_vertex();*/ /* found the first atom of vertex */
+	  g_index++;
+	  initialize_hydrogens(v, n_of_hydrogens[i]);
+	  hydrogen_index=0;
+	}
+	if (hydrogen_or_not == HYDROGEN_IDENTIFIER && hydrogen_index < n_of_hydrogens[i]) {
+	  insert_atom(&(v->hydrogens[hydrogen_index]), line, index);
+	  hydrogen_index++;
+	}
+	if (hydrogen_or_not == NON_HYDROGEN_IDENTIFIER) {
+	  insert_atom(&(v->not_hydrogen), line, index);
+	}
+	if (hydrogen_index == n_of_hydrogens[i]) {
+	  /*add_vertex(g, v);*/ /* this should be the last */
+	  hydrogen_index = -2;
+	  if (g_index >= g->number_of_nodes) {
 		break;
 	  }
 	}

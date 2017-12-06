@@ -23,11 +23,11 @@ OBJS_X=$(UNI) $(P4)/a_star.o $(GBV) $(P4)/heap.o $(ALLOC)
 
 OBJS_Y=$(UNI) $(P4)/a_star_zero.o $(GBV) $(P4)/heap.o $(ALLOC)
 
-OBJS_B=$(P6)/build_graph_implementation.o $(GBV) $(UNI) $(ALLOC)
+OBJS_B=$(P6)/read_pdb.o $(GBV) $(UNI) $(ALLOC)
 
-all: performance test_a_star test_heap test_graph_implementation2 test_build_graph
+all: performance test_a_star test_heap test_graph_implementation2 test_read_pdb
 
-test_build_graph: test_build_graph_implementation.c $(OBJS_B)
+test_read_pdb: test_read_pdb.c $(OBJS_B)
 	$(CC) -o $@.out $^ $(FLAGS) $(FLAGS2)
 	./$@.out
 
