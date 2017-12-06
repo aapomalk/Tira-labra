@@ -21,7 +21,9 @@ varaa kaikille kerralla muistia ja sitten vasta alkaa lisäilemään atomeja ver
 
 test_pdb_reader toimii!
 
-klo 13-17, 18:15-20:15
+Parametrien lukeminen aloitettu.
+
+klo 13-17, 18:15-20:15, 22:30-23:30
 
 ## Miten ohjelma on edistynyt?
 Mukavasti.
@@ -29,7 +31,7 @@ Vaikka en täysin ymmärrä kaikkia segfaulteja niin intuitiiviset ratkaisut toi
 
 ## Mitä opin tällä viikolla / tänään?
 Opin, että muistia ei kannata varata miten sattuu.
-Jatkuva muistin varaaminen ja vapauttaminen ilmeisesti koituu segfaultiksi melko helposti..
+Jatkuva muistin varaaminen ja vapauttaminen ilmeisesti koituu segfaultiksi melko helposti isoilla syötteillä..
 
 ## Mikä jäi epäselväksi tai tuottanut vaikeuksia?
 

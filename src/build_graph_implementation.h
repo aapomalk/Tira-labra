@@ -36,7 +36,10 @@ int is_an_atom(char *line, int *index);
    Distance, angle and domain decomposition are defined in param -file.
    
 */
-char *** build_vertex_definitions_and_prepare_graph(char *param, GRAPH *g);
+int build_vertex_definitions_and_prepare_graph(char *param, GRAPH *g,
+											   char ****vertex_definitions,
+											   int **n_of_hydrogens,
+											   int *n_of_definitions);
 
 int read_first_xtc(char *xtc, GRAPH *g);
 int read_next_xtc(GRAPH *g);
