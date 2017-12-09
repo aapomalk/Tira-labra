@@ -32,7 +32,8 @@ BOX * new_box();
 int number_of_domains(BOX *box);
 void free_domains(BOX *box);
 int delete_box(BOX **box);
-/* returns the domain of coordinate if x = {0, 0, 0} and next domain in y-direction if x = {0, 1, 0} etc. */
+/* returns the domain of coordinate if x = {0, 0, 0} 
+and next domain in y-direction if x = {0, 1, 0} etc. */
 int get_neighbouring_domain_index(BOX *b, COORDINATE c, int *x); /* length of x is DIMENSIONS */
 int get_domain_index(BOX *b, COORDINATE c);
 int * get_domain_indexes(BOX *b, COORDINATE c, int *i);

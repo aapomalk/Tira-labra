@@ -1,7 +1,7 @@
 #include "unity.h" /* I have downloaded unity from http://www.throwtheswitch.org/unity/ */
-#include "../src/constants.h"
-#include "../src/graph.h"
-#include "../src/graph_implementation.h"
+#include "constants.h"
+#include "graph.h"
+#include "graph_implementation.h"
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>

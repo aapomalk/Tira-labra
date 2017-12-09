@@ -42,6 +42,7 @@ void reallocate_memory_exact(GRAPH *g, int number, int final_size) {
   g->size_of_edge_lists = allocation_realloc(number, g->size_of_edge_lists, length, sizeof(int));
   for (i=number; i<length; i++) {
 	g->n_of_edges[i] = -1;
+	g->edges[i] = NULL;
 	g->size_of_edge_lists[i] = 0;
   }
 }
@@ -307,6 +308,9 @@ void prepare_box(GRAPH *g, int *decomposition, COORDINATE *vectors) {
   int i,j,previous = number_of_domains(box), current;
   for (i=0; i<DIMENSIONS; i++) {
 	box->decomposition[i] = decomposition[i];
+	if (vectors == NULL) {
+	  continue; /* for the parameter reading, vectors come with xtc reader */
+	}
 	for (j=0; j<DIMENSIONS; j++) {
 	  if (j > i) {
 		box->vectors[i][j] = 0.0; /* the n'th vector will have n dimensions */

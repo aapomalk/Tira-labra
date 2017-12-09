@@ -25,6 +25,13 @@ Parametrien lukeminen aloitettu.
 
 klo 13-17, 18:15-20:15, 22:30-23:30
 
+### 9.12.2017
+Parametrien lukeminen onnistuu ja pelaa yhteen pdb -lukijan kanssa.
+Seuraavaksi pitäisikin toteuttaa xtc -lukeminen ja pistää ensimmäinen toimiva
+versio ohjelmasta pakettiin.
+
+klo 16:30-18:15, 18:50-20:30
+
 ## Miten ohjelma on edistynyt?
 Mukavasti.
 Vaikka en täysin ymmärrä kaikkia segfaulteja niin intuitiiviset ratkaisut toimivat.

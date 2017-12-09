@@ -307,6 +307,9 @@ void prepare_box(GRAPH *g, int *decomposition, COORDINATE *vectors) {
   int i,j,previous = number_of_domains(box), current;
   for (i=0; i<DIMENSIONS; i++) {
 	box->decomposition[i] = decomposition[i];
+	if (vectors == NULL) {
+	  continue; /* for the parameter reading, vectors come with xtc reader */
+	}
 	for (j=0; j<DIMENSIONS; j++) {
 	  if (j > i) {
 		box->vectors[i][j] = 0.0; /* the n'th vector will have n dimensions */
@@ -350,12 +353,7 @@ double heuristic(VERTEX *a, VERTEX *b, GRAPH *g) {
   double ret = heuristic2(a, b, g, x);
   free(x);
 
-#ifndef HEURISTIC_ZERO /* for testing Dijkstra */
   return ret;
-#endif
-#ifdef HEURISTIC_ZERO
-  return 0.0 * ret;
-#endif
 }
 
 double heuristic2(VERTEX *a, VERTEX *b, GRAPH *g, double *from_a_to_b) {

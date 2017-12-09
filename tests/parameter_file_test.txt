@@ -1,0 +1,29 @@
+# this file is just a test
+
+
+# these go into the GRAPH/BOX
+ANGL 45
+DIST 17
+DCMP 2 4 6
+
+
+#then the definitions:
+
+#first is the number of definitions:
+NDEF 2
+
+#then comes the definitions:
+
+#number of hydrogens is again the first:
+NHYD 2
+RESI 0 ARG PROA
+ATOM 1 GB
+ATOM 2 H3
+ATOM 2 H5
+
+NHYD 1
+RESI 0 JEA
+ATOM 1 hub
+ATOM 2jeba
+
+#and that's it basically

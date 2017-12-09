@@ -34,12 +34,29 @@ int is_an_atom(char *line, int *index);
 
 /* 
    Distance, angle and domain decomposition are defined in param -file.
-   
+   And the vertex definitions of course.
 */
 int build_vertex_definitions_and_prepare_graph(char *param, GRAPH *g,
 											   char ****vertex_definitions,
 											   int **n_of_hydrogens,
 											   int *n_of_definitions);
+int compare_keyword_and_line(char *line, char *keyword);
+void handle_n_of_definitions(char *line, int *n_of_definitions,
+							 int **n_of_hydrogens,
+							 char ****vertex_definitions);
+void handle_angle(char *line, GRAPH *g);
+void handle_distance(char *line, GRAPH *g);
+void handle_domain_decomposition(char *line, GRAPH *g);
+void handle_n_of_hydrogens(char *line, int **n_of_hydrogens,
+						   char ****vertex_definitions, int index);
+void malloc_and_copy(char *line, char ****vertex_definitions, int index,
+					 int index2, int malloc_size);
+void handle_residue_definition(char *line, char ****vertex_definitions,
+							   int index);
+void handle_atomname_definition(char *line, char ****vertex_definitions,
+								int index, int index2);
+void free_vert_def_n_hydr(char ***vertex_definitions, int *n_of_hydrogens,
+						  int n_def);
 
 int read_first_xtc(char *xtc, GRAPH *g);
 int read_next_xtc(GRAPH *g);
