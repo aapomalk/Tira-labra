@@ -37,16 +37,25 @@ Xtc -lukeminen aloitettu.
 Testaus täytyy suorittaa koneella, jossa on GROMACS (työkone).
 Kaikki näyttää toimivan (kunhan muistaa, että decompositio on alustettu).
 
-klo 15:40-16:50, 18:30-19:35, 20:40-
+klo 15:40-16:50, 18:30-19:35, 20:40-0:30
+
+Yhteensä (4h + 2h + 1h) + (1h45min + 1h40min) + (1h10min + 1h5min + 3h50min)
+= 7h + 3h25min + 6h5min = 16h30min
 
 ## Miten ohjelma on edistynyt?
 Mukavasti.
 Vaikka en täysin ymmärrä kaikkia segfaulteja niin intuitiiviset ratkaisut toimivat.
 
+Ohjelma on kokoamista (ja debuggaamista) vaille valmis.
+
 ## Mitä opin tällä viikolla / tänään?
 Opin, että muistia ei kannata varata miten sattuu.
 Jatkuva muistin varaaminen ja vapauttaminen ilmeisesti koituu segfaultiksi melko helposti isoilla syötteillä..
 
+Miten olen päässyt näin pitkälle ilman Valgrindiä?
+Ehkä mysteeriset segfaultit katoaa valgrind -testauksen myötä!
+
 ## Mikä jäi epäselväksi tai tuottanut vaikeuksia?
 
 ## Mitä teen seuraavaksi?
+Paljon Valgrind -testausta

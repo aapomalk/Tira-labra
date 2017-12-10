@@ -24,6 +24,9 @@ VERTEX * new_vertex() {
 
 int initialize_hydrogens(VERTEX *v, int n_hydrogens) {
 	int i,j;
+	if (n_hydrogens <= 0) {
+	  return FAIL;
+	}
 	if (v->hydrogens != NULL) {
 		return FAIL;
 	}

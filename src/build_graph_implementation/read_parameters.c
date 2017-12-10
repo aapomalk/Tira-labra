@@ -127,8 +127,9 @@ int build_vertex_definitions_and_prepare_graph(char *param, GRAPH *g,
   }
 
   while (!feof(param_pointer)) {
-	int i;
-	fgets(line, LINE_LENGTH_BUFFER, param_pointer);
+	if (fgets(line, LINE_LENGTH_BUFFER, param_pointer) == NULL) {
+	  break;
+	}
 	if (compare_keyword_and_line(line, N_OF_DEFINITIONS) == SUCCESS) {
 	  handle_n_of_definitions(line, n_of_definitions, n_of_hydrogens,
 							  vertex_definitions);
@@ -141,15 +142,21 @@ int build_vertex_definitions_and_prepare_graph(char *param, GRAPH *g,
 	  handle_domain_decomposition(line, g);
 	} else if (compare_keyword_and_line(line, N_OF_HYDROGENS) == SUCCESS) {
 	  index++;
+	  if (index >= *n_of_definitions) {
+		printf("index %d >= n_of_definitions %d\n", index, *n_of_definitions);
+		return FAIL;
+	  }
 	  handle_n_of_hydrogens(line, n_of_hydrogens, vertex_definitions, index);
 	} else if (compare_keyword_and_line(line, RESIDUE_DEFINITION) == SUCCESS) {
 	  if (index >= *n_of_definitions) {
+		printf("index %d >= n_of_definitions %d\n", index, *n_of_definitions);
 		return FAIL;
 	  }
 	  handle_residue_definition(line, vertex_definitions, index);
 	  index2 = 1;
 	} else if (compare_keyword_and_line(line, ATOMNAME_DEFINITION) == SUCCESS) {
-	  if (index >= *n_of_definitions || index2 >= (*n_of_hydrogens)[index]) {
+	  if (index >= *n_of_definitions || index2 >= (*n_of_hydrogens)[index] + 2) {
+		printf("index %d >=? n_of_definitions %d or index2 %d >= (*n_of_hydrogens)[%d] %d + 2\n", index, *n_of_definitions, index2, index, (*n_of_hydrogens)[index]);
 		return FAIL;
 	  }
 	  handle_atomname_definition(line, vertex_definitions, index, index2);

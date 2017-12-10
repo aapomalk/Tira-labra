@@ -99,6 +99,9 @@ int search_path(A_STAR *a, GRAPH *g) {
 	do {
 	  dist = get_first_value(a->heap);
 	  index = get_first_index(a->heap);
+	  if (index < 0) {
+		break;
+	  }
 	  remove_first(a->heap);
 	} while (dist > a->distance_from_start[index]
 #ifndef HEURISTIC_ZERO /* if heuristic zero is defined then only the distance from start is included */

@@ -15,6 +15,9 @@ HEAP * new_heap() {
 }
 
 int parent(int heap_index) {
+  if (heap_index == 0) {
+	return 0;
+  }
   return (heap_index + 1) / 2 - 1;
 }
 

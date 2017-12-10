@@ -44,6 +44,7 @@ void reallocate_memory_exact(GRAPH *g, int number, int final_size) {
 	g->n_of_edges[i] = -1;
 	g->edges[i] = NULL;
 	g->size_of_edge_lists[i] = 0;
+	g->nodes[i].hydrogens = NULL;
   }
 }
 
@@ -207,6 +208,9 @@ void add_edge(int index, VERTEX *v, double weight, GRAPH *g) {
   if (g->edges[index] == NULL) {
 	g->edges[index] = allocation_malloc(INITIAL_EDGE_NUMBER, sizeof(EDGE));
 	g->size_of_edge_lists[index] = INITIAL_EDGE_NUMBER;
+	g->n_of_edges[index] = 0;
+  }
+  if (g->n_of_edges[index] < 0) {
 	g->n_of_edges[index] = 0;
   }
   while (g->n_of_edges[index] >= g->size_of_edge_lists[index]) {

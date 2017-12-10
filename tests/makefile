@@ -1,4 +1,4 @@
-sCC= gcc -ansi -pedantic -Wall
+CC= gcc -g -ansi -pedantic -Wall
 P= ../../Unity/src
 P2= ../src/graph_implementation
 P3= ../src

@@ -62,16 +62,18 @@ int compare_definition_and_line(char * line, char * definition) {
   char residue[RESIDUE_LENGTH + 1];
   char segname[SEGNAME_LENGTH + 1];
   char residue_index[RESID_LENGTH + 1];
-  ret = sscanf(definition, "%d %s %s %s", &number, residue, segname, residue_index);
+  ret = sscanf(definition, " %d %s %s %s", &number, residue, segname, residue_index);
   if (ret < 4) {
 	residue_index[0] = 0;
 	if (ret < 3) {
 	  segname[0] = 0;
 	}
   }
-  for (i=1; i<RESID_LENGTH-1; i++) { /* skip the first in case of empty string */
+  for (i=1; i<RESID_LENGTH-1 && residue_index[0] != 0; i++) { /* skip the first in case of empty string */
 	if (residue_index[i] == 0) {
 	  residue_index[i] = ' ';
+	  residue_index[i+1] = 0;
+	  break;
 	  /* 
 		 without this "21" would equal with "210" 
 		 but now "21 " doesn't equal with "210"
@@ -91,7 +93,7 @@ int compare_definition_and_line(char * line, char * definition) {
 }
 
 int compare_atomname_and_line(char * line, char * atomname) {
-  int hydrogen_or_not,i=1;
+  int i=1;
   char an[ATOMNAME_LENGTH+1] = "    ";
   while (atomname[i] != 0) {
 	an[i-1] = atomname[i];
@@ -104,9 +106,7 @@ int compare_atomname_and_line(char * line, char * atomname) {
 }
 
 void insert_atom(ATOM *a, char *line, int index) {
-  int i;
   char *temp = line + 30; /* x-coordinate starts from here */
-  double coord;
   a->index = index;
   sscanf(temp, " %8lf", &(a->coord[0]));
   temp = line + 38; /* y-coordinate */
