@@ -22,6 +22,7 @@ void delete_heap(HEAP *h);
 
 typedef struct A_STAR {
   int start, target, n_of_nodes;
+  double limiter; /* optional, to restrinct the distance from target */
 
   /* these are all for each node in GRAPH */
   double *distance_from_start;
@@ -31,6 +32,7 @@ typedef struct A_STAR {
 } A_STAR;
 
 A_STAR * new_a_star();
+void set_limiter(A_STAR *a, double limiter);
 void set_start(A_STAR *a, int start);
 void set_target(A_STAR *a, int target);
 int search_path(A_STAR *a, GRAPH *g); /* returns SUCCESS if found */

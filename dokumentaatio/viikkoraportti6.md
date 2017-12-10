@@ -37,7 +37,7 @@ Xtc -lukeminen aloitettu.
 Testaus täytyy suorittaa koneella, jossa on GROMACS (työkone).
 Kaikki näyttää toimivan (kunhan muistaa, että decompositio on alustettu).
 
-klo 15:40-16:50, 18:30-19:35
+klo 15:40-16:50, 18:30-19:35, 20:40-
 
 ## Miten ohjelma on edistynyt?
 Mukavasti.
