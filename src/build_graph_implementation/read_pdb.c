@@ -108,7 +108,7 @@ void insert_atom(ATOM *a, char *line, int index) {
   char *temp = line + 30; /* x-coordinate starts from here */
   double coord;
   a->index = index;
-  sscanf(temp, " %8lf", &(a->coord));
+  sscanf(temp, " %8lf", &(a->coord[0]));
   temp = line + 38; /* y-coordinate */
   sscanf(temp, " %8lf", &(a->coord[1]));
   temp = line + 46;

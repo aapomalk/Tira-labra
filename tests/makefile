@@ -21,8 +21,10 @@ $(P7)/build_graph_implementation.h $(P7)/build_graph.h
 OBJS2=test_heap.c $(UNI) $(P4)/heap.o $(ALLOC)
 FLAGS2= -I $(P4)
 
-OBJS3=test_a_star.c $(UNI) $(P4)/a_star.o $(P2)/graph.o $(ALLOC) \
-$(P2)/box.o $(P2)/vertex.o $(P4)/heap.o
+A_STAR=$(P4)/a_star.o  $(P4)/heap.o
+
+OBJS3=test_a_star.c $(UNI) $(A_STAR) $(ALLOC) \
+$(GBV)
 
 OBJS_X=$(UNI) $(P4)/a_star.o $(GBV) $(P4)/heap.o $(ALLOC)
 
@@ -41,8 +43,8 @@ GMX= -I $(dir3) -L$(dir2) -lgromacs
 all: performance test_a_star test_heap test_graph_implementation2 \
 test_read_pdb test_read_parameters test_read_parameters_and_pdb
 
-test_read_xtc: test_read_xtc.c $(P6)/read_xtc.c $(OBJS_D)
-	$(CC) -o $@.out $^ $(GMX) $(FLAGS) $(FLAGS2)
+test_read_xtc: test_read_xtc.c $(P6)/read_xtc.c $(OBJS_D) $(A_STAR)
+	$(CC) -o $@.out $^ $(GMX) $(FLAGS) $(FLAGS2) 
 
 test_read_parameters_and_pdb: test_read_parameters_and_pdb.c $(OBJS_D)
 	$(CC) -o $@.out $^ $(FLAGS) $(FLAGS2)
