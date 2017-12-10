@@ -35,8 +35,9 @@ klo 16:30-18:15, 18:50-20:30
 ### 10.12.2017
 Xtc -lukeminen aloitettu.
 Testaus täytyy suorittaa koneella, jossa on GROMACS (työkone).
+Kaikki näyttää toimivan (kunhan muistaa, että decompositio on alustettu).
 
-klo 15:40-16:50, 18:30-
+klo 15:40-16:50, 18:30-19:35
 
 ## Miten ohjelma on edistynyt?
 Mukavasti.
