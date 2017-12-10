@@ -143,9 +143,15 @@ int build_vertex_definitions_and_prepare_graph(char *param, GRAPH *g,
 	  index++;
 	  handle_n_of_hydrogens(line, n_of_hydrogens, vertex_definitions, index);
 	} else if (compare_keyword_and_line(line, RESIDUE_DEFINITION) == SUCCESS) {
+	  if (index >= *n_of_definitions) {
+		return FAIL;
+	  }
 	  handle_residue_definition(line, vertex_definitions, index);
 	  index2 = 1;
 	} else if (compare_keyword_and_line(line, ATOMNAME_DEFINITION) == SUCCESS) {
+	  if (index >= *n_of_definitions || index2 >= (*n_of_hydrogens)[index]) {
+		return FAIL;
+	  }
 	  handle_atomname_definition(line, vertex_definitions, index, index2);
 	  index2++;
 	}

@@ -76,7 +76,7 @@ int search_path(A_STAR *a, GRAPH *g) {
 	for (i=0; i < g->n_of_edges[index]; i++) {
 	  int edge_index = e[i].node->index;
 	  double target_distance = heuristic(&(g->nodes[edge_index]), &(g->nodes[a->target]), g);
-	  double distance = a->distance_from_start[index] + heuristic(&(g->nodes[index]), &(g->nodes[edge_index]), g);
+	  double distance = a->distance_from_start[index] + e[i].weight; /*heuristic(&(g->nodes[index]), &(g->nodes[edge_index]), g);*/
 
 	  /* if found first time (distance < 0) and also if we found a shorter path then we add it */
 	  if ((a->came_from[edge_index] < 0 || distance < a->distance_from_start[edge_index]) && (a->limiter < 0 || target_distance < a->limiter)) { 
