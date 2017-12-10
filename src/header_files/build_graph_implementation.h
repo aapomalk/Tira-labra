@@ -58,8 +58,8 @@ void handle_atomname_definition(char *line, char ****vertex_definitions,
 void free_vert_def_n_hydr(char ***vertex_definitions, int *n_of_hydrogens,
 						  int n_def);
 
-int read_first_xtc(char *xtc, GRAPH *g);
-int read_next_xtc(GRAPH *g);
-int close_xtc();
+int read_first_xtc_pathfinder(char *xtc, GRAPH *g);
+int read_next_xtc_pathfinder(GRAPH *g);
+int close_xtc_pathfinder();
 
 #endif

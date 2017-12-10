@@ -28,7 +28,8 @@ int main(int argc, char ** argv) {
 	printf("reading first frame failed\n");
 	return FAIL;
   }
-  printf("natoms: %d, step: %d, time: %.2f, prec: %.2f, bOK: %d\n", natoms, step, time, prec, bOK);
+  printf("natoms: %d, step: %d, time: %.2f, prec: %.2f, bOK: %d\n",
+		 natoms, step, time, prec, bOK);
   printf("box: ");
   for (i=0; i<3; i++) {
 	for (j=0; j<3; j++) {

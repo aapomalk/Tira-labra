@@ -32,6 +32,12 @@ versio ohjelmasta pakettiin.
 
 klo 16:30-18:15, 18:50-20:30
 
+### 10.12.2017
+Xtc -lukeminen aloitettu.
+Testaus täytyy suorittaa koneella, jossa on GROMACS (työkone).
+
+klo 15:40-16:50
+
 ## Miten ohjelma on edistynyt?
 Mukavasti.
 Vaikka en täysin ymmärrä kaikkia segfaulteja niin intuitiiviset ratkaisut toimivat.
