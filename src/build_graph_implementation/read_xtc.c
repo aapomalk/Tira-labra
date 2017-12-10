@@ -47,6 +47,7 @@ int read_first_xtc_pathfinder(char *xtc, GRAPH *g) {
 	return FAIL;
   }
   set_all_atom_coordinates(g);
+  return SUCCESS;
 }
 
 int read_next_xtc_pathfinder(GRAPH *g) {
@@ -55,11 +56,15 @@ int read_next_xtc_pathfinder(GRAPH *g) {
 	return FAIL;
   }
   set_all_atom_coordinates(g);
+  return SUCCESS;
 }
 
 int close_xtc_pathfinder() {
-  close_xtc(xd);
+  if (close_xtc(xd) == 0) {
+	return FAIL;
+  }
   xd = NULL;
   free(x);
   x = NULL;
+  return SUCCESS;
 }
