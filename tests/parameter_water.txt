@@ -1,4 +1,6 @@
 
+DCMP 10 10 10
+
 NDEF 1
 
 NHYD 2

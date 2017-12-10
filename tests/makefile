@@ -34,8 +34,15 @@ OBJS_B=$(P6)/read_pdb.o $(COMBINED)
 OBJS_C=$(P6)/read_parameters.o $(COMBINED)
 OBJS_D=$(P6)/read_pdb.o $(COMBINED) $(P6)/read_parameters.o
 
+dir2=/opt/gromacs-5.0.7/lib
+dir3=/opt/gromacs-5.0.7/include/gromacs/fileio
+GMX= -I $(dir3) -L$(dir2) -lgromacs
+
 all: performance test_a_star test_heap test_graph_implementation2 \
 test_read_pdb test_read_parameters test_read_parameters_and_pdb
+
+test_read_xtc: test_read_xtc.c $(P6)/read_xtc.c $(OBJS_D)
+	$(CC) -o $@.out $^ $(GMX) $(FLAGS) $(FLAGS2)
 
 test_read_parameters_and_pdb: test_read_parameters_and_pdb.c $(OBJS_D)
 	$(CC) -o $@.out $^ $(FLAGS) $(FLAGS2)
