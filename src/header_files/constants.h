@@ -3,7 +3,7 @@
 
 #define SUCCESS 1
 #define FAIL 0
-#define INITIAL_LENGTH 10
+#define INITIAL_LENGTH 8
 #define PRINT_LENGTH 30
 #define INITIAL_DOMAIN_SIZE 3
 #define ASSUMED_DISTANCE 0.3 /* 3Å */

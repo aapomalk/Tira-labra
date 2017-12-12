@@ -16,6 +16,7 @@
 void test_vertex(void) {
 	int i;
 	VERTEX *v;
+	char *text;
 	v = new_vertex();
 	TEST_ASSERT_EQUAL_INT(-1, v->index);
 	TEST_ASSERT(NULL == v->hydrogens);
@@ -27,7 +28,10 @@ void test_vertex(void) {
 	TEST_ASSERT_EQUAL_INT(SUCCESS, initialize_hydrogens(v, i));
 	TEST_ASSERT_EQUAL_INT(i, v->n_hydrogens);
 	TEST_ASSERT_EQUAL_INT(-1, get_index(v));
-	TEST_ASSERT_EQUAL_STRING("-1", print_vertex(v));
+	text = malloc(PRINT_LENGTH*sizeof(char));
+	print_vertex(v, text);
+	TEST_ASSERT_EQUAL_STRING("-1", text);
+	free(text);
 	TEST_ASSERT_EQUAL_INT(SUCCESS, delete_hydrogens(v));
 	TEST_ASSERT_EQUAL_INT(FAIL, delete_hydrogens(v));
 	free(v); /* if a vertex is not inserted in graph it needs to be freed */
@@ -56,6 +60,7 @@ void test_graph(void) {
 	TEST_ASSERT_EQUAL_INT(0, number_of_domains(g->box));
 	TEST_ASSERT_EQUAL_INT(SUCCESS, delete_graph(&g));
 	TEST_ASSERT(NULL == g);
+	delete_graph(&g);
 }
 
 void test_vertex_graph(void) {
@@ -354,6 +359,10 @@ void test_angle(void) {
 	}
 	
 	free(vec);
+	delete_hydrogens(a);
+	delete_hydrogens(b);
+	free(a);
+	free(b);
 }
 
 int main(void) {

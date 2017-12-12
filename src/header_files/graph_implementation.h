@@ -15,6 +15,7 @@ struct VERTEX {
 	int n_hydrogens;
 	ATOM *hydrogens;
 };
+void initialize_vertex(VERTEX *v);
 int initialize_hydrogens(VERTEX *v, int n_hydrogens);
 int delete_hydrogens(VERTEX *v);
 void set_index(VERTEX *v, int index); /* the graph index */

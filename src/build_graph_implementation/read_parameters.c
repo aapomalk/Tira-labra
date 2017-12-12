@@ -164,6 +164,7 @@ int build_vertex_definitions_and_prepare_graph(char *param, GRAPH *g,
 	}
   }
 
+  fclose(param_pointer);
   return SUCCESS;
 }
 

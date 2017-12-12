@@ -122,7 +122,10 @@ void test_read_pdb(void) {
   
   free(n_of_hydrogens);
   free(vertex_definitions[0]);
+  free(vertex_definitions[1]);
+  free(vertex_definitions[2]);
   free(vertex_definitions);
+  delete_graph(&g);
 }
 
 int main(void) {

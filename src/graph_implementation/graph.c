@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <math.h>
 
+void reallocate_memory(GRAPH *g, int number);
+
 GRAPH * new_graph() {
 	int initial_length = INITIAL_LENGTH,i;
 	GRAPH * g = allocation_malloc(1, sizeof(GRAPH));
@@ -27,6 +29,7 @@ GRAPH * new_graph() {
 		g->n_of_edges[i] = -1;
 		g->size_of_edge_lists[i] = 0;
 		g->edges[i] = NULL;
+		initialize_vertex(&(g->nodes[i]));
 	}
 	g->distance = ASSUMED_DISTANCE;
 	g->angle = ASSUMED_ANGLE;
@@ -35,16 +38,20 @@ GRAPH * new_graph() {
 
 void reallocate_memory_exact(GRAPH *g, int number, int final_size) {
   int length,i;
+  if (final_size < number) {
+	printf("error, trying to shrink the graph\n");
+	return;
+  }
   length = g->list_length = final_size;
   g->nodes = allocation_realloc(number, g->nodes, length, sizeof(VERTEX));
   g->edges = allocation_realloc(number, g->edges, length, sizeof(EDGE*));
   g->n_of_edges = allocation_realloc(number, g->n_of_edges, length, sizeof(int));
   g->size_of_edge_lists = allocation_realloc(number, g->size_of_edge_lists, length, sizeof(int));
-  for (i=number; i<length; i++) {
+  for (i=g->number_of_nodes; i<length; i++) {
 	g->n_of_edges[i] = -1;
 	g->edges[i] = NULL;
 	g->size_of_edge_lists[i] = 0;
-	g->nodes[i].hydrogens = NULL;
+	initialize_vertex(&(g->nodes[i]));
   }
 }
 
@@ -64,7 +71,7 @@ void set_vertex_list_length(GRAPH *g, int length) {
 int add_vertex(GRAPH *g, VERTEX *v) {
 	int number = g->number_of_nodes;
 	int index = number - 1;
-	VERTEX *n = get_vertex(g, index);
+	VERTEX *n;
 	if (number >= g->list_length) {
 	  reallocate_memory(g, number);
 	  /*		int length,i;
@@ -81,6 +88,7 @@ int add_vertex(GRAPH *g, VERTEX *v) {
 			g->size_of_edge_lists[i] = 0;
 			}*/
 	}
+	n = get_vertex(g, index);
 	set_index(v, number);
 	g->nodes[number] = *v; /* contents of v are copied */
 	g->edges[number] = NULL;
@@ -122,9 +130,13 @@ int size_of_graph(GRAPH *g) {
 }
 
 VERTEX * get_vertex(GRAPH *g, int index) {
-	VERTEX *v = g->nodes;
-	v += index;
-	return v;
+  VERTEX *v;
+  if (index < 0 || index >= g->number_of_nodes) {
+	return NULL;
+  }
+  v = &(g->nodes[index]);
+  /*v += index;*/
+  return v;
 }
 
 /* assuming that the vertex index are in order */
@@ -198,6 +210,9 @@ void form_edges(GRAPH *g, VERTEX *v) {
 			}
 		}
 	}
+	if (g->edges[index] == NULL) {
+	  g->n_of_edges[index] = 0; /* if nothing was found then we don't want to search them again */
+	}
 	
 	free(checked);
 	free(neighbours);
@@ -228,10 +243,12 @@ double is_connection(VERTEX *a, VERTEX *b, GRAPH *g) {
   double distance = heuristic2(a, b, g, vec);
   double angle;
   if (distance > g->distance) {
+	free(vec);
 	return -1.0;
   }
   angle = minimum_angle_between(a, b, g, vec, distance);
   if (angle > g->angle) {
+	free(vec);
 	return -1.0;
   }
   free(vec);
@@ -259,7 +276,8 @@ int domain_is_within_reach(GRAPH *g, COORDINATE c, int *x) {
 			}
 		}
 		if (c[i] + distance < min || c[i] - distance > max) {
-			return FAIL;
+		  free(origin);
+		  return FAIL;
 		}
 	}
 	

@@ -23,9 +23,12 @@ void test_read_xtc(void) {
 
   A_STAR *a = new_a_star();
   int found;
-  set_start(a, 0);
-  set_target(a, 1);
-  set_limiter(a, 1.5);
+
+  printf("test_read_xtc started\n");
+  
+  set_start(a, 1);
+  set_target(a, 0);
+  set_limiter(a, -1); /* if this is negative then there is no limiter */
   
   if (build_vertex_definitions_and_prepare_graph("parameter_protein_and_water.txt",
 												 g, &vert_def, &n_hydr, &n_def) == FAIL) {
@@ -42,22 +45,34 @@ void test_read_xtc(void) {
   TEST_ASSERT(test_coordinate != g->nodes[0].not_hydrogen.coord[0]);
   test_coordinate = g->nodes[0].not_hydrogen.coord[0];
 
-  found = search_path(a, g);
-  printf("path found %d, length %f\n", found, get_path_length(a));
-  
+  /*found = search_path(a, g);
+	printf("path found %d, length %f\n", found, get_path_length(a));*/
+  printf("starting path finding\n");
+  printf("\nstep, length, list of graph_index:structure_index:distance_from_start\n");
   for (i=0; i>=0; i++) {
+		/*TEST_ASSERT(test_coordinate != g->nodes[0].not_hydrogen.coord[0]);*/
+	found = search_path(a, g);
+	
+	if (found == SUCCESS) {
+	  int *indexes,j,steps = -1;
+	  printf("%d, %f,", i, get_path_length(a));
+	  indexes = get_path_indexes(a, &steps);
+	  for (j=steps-1; j>=0; j--) {
+		printf("%d:%d:%.3f ", indexes[j], g->nodes[indexes[j]].not_hydrogen.index, a->distance_from_start[indexes[j]]);
+	  }
+	  printf("\n");
+	  free(indexes);
+	}
 	if (SUCCESS != read_next_xtc_pathfinder(g)) {
 	  printf("exiting loop at round %d\n", i);
 	  break;
 	}
-	/*TEST_ASSERT(test_coordinate != g->nodes[0].not_hydrogen.coord[0]);*/
-	found = search_path(a, g);
-	printf("step %d, path found %d, length %f\n", i, found, get_path_length(a));
   }
 
   TEST_ASSERT_EQUAL_INT(SUCCESS, close_xtc_pathfinder());
   free_vert_def_n_hydr(vert_def, n_hydr, n_def);
   delete_graph(&g);
+  delete_a_star(a);
 }
 
 int main(void) {

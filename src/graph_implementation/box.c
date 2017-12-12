@@ -131,6 +131,7 @@ int get_neighbouring_domain_index(BOX *b, COORDINATE c, int *x) {
 	ret += y * value;
 	y *= b->decomposition[i];
   }
+  free(indexes);
   return ret;
 }
 

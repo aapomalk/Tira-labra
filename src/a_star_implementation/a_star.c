@@ -71,6 +71,8 @@ int search_path(A_STAR *a, GRAPH *g) {
   do {
 	e = get_edges(g, get_vertex(g, index));
 	if (e == NULL) {
+	  index = get_first_index(a->heap);
+	  remove_first(a->heap);
 	  continue;
 	}
 	for (i=0; i < g->n_of_edges[index]; i++) {
@@ -143,6 +145,9 @@ int * get_path_indexes(A_STAR *a, int *steps) {
 	  break;
 	}
 	index = a->came_from[index];
+	if (index < 0 || index >= a->n_of_nodes) {
+	  break; /* I don't know what's happening but just in case */
+	}
   }
   
   return indexes;
@@ -152,4 +157,5 @@ void delete_a_star(A_STAR *a) {
   delete_heap(a->heap);
   free(a->came_from);
   free(a->distance_from_start);
+  free(a);
 }

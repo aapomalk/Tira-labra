@@ -60,7 +60,9 @@ void test_n_of_hydrogens(void) {
   handle_n_of_hydrogens("---- 2", &n_hydr, &vert_def, 0);
   TEST_ASSERT_EQUAL_INT(2, n_hydr[0]);
   free(n_hydr);
+  free(vert_def[0]);
   free(vert_def);
+  /*free_vert_def_n_hydr(vert_def, n_hydr, n_def);*/
 }
 
 void test_handle_residue_definition_and_atomname(void) {

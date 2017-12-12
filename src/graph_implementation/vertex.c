@@ -7,19 +7,23 @@
 #include <math.h>
 
 VERTEX * new_vertex() {
-	int i;
 	VERTEX *v = allocation_malloc(1, sizeof(VERTEX));
 	if (v == NULL) {
 	  return NULL;
 	}
-	v->index = -1;
-	v->not_hydrogen.index = -1;
-	for (i=0; i<DIMENSIONS; i++) {
-		v->not_hydrogen.coord[i] = 0.0;
-	}
-	v->n_hydrogens = 0;
-	v->hydrogens = NULL;
+	initialize_vertex(v);
 	return v;
+}
+
+void initialize_vertex(VERTEX *v) {
+  int i;
+  v->index = -1;
+  v->not_hydrogen.index = -1;
+  for (i=0; i<DIMENSIONS; i++) {
+	v->not_hydrogen.coord[i] = 0.0;
+  }
+  v->n_hydrogens = 0;
+  v->hydrogens = NULL;
 }
 
 int initialize_hydrogens(VERTEX *v, int n_hydrogens) {
@@ -59,13 +63,15 @@ int delete_hydrogens(VERTEX *v) {
 }
 
 int get_index(VERTEX *v) {
-	return v->not_hydrogen.index;
+  if (v == NULL) {
+	return -1;
+  }
+  return v->not_hydrogen.index;
 }
 
-char* print_vertex(VERTEX *v) {
-  char *text = allocation_malloc(PRINT_LENGTH, sizeof(char));
+void print_vertex(VERTEX *v, char *text) {
+  /*char *text = allocation_malloc(PRINT_LENGTH, sizeof(char));*/
   sprintf(text, "%d", v->not_hydrogen.index);
-  return text;
 }
 
 void set_index(VERTEX *v, int ind) {

@@ -91,6 +91,10 @@ void test_path_finding(void) {
   set_target(a, 555); /* when changing the target the path is still found */
   TEST_ASSERT_EQUAL_INT(SUCCESS, search_path(a, g)); /* path is found */
   TEST_ASSERT_EQUAL_FLOAT(15.0, get_path_length(a)); /* this time the length is different */
+
+  free(indexes);
+  delete_graph(&g);
+  delete_a_star(a);
 }
 
 int main(void) {

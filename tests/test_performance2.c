@@ -81,6 +81,8 @@ clock_t test_performance(int size, int decomp) {
 	printf("%d, ", indexes[j]);
   }
   printf("\n");*/
+  delete_a_star(a);
+  delete_graph(&g);
   return time_end - time_start;
 }
 
@@ -89,6 +91,12 @@ int main(int argc, char ** argv) {
   int size,decomp;
   clock_t evaluation;
   printf("%s\n", argv[0]);
+  if (argc < 3) {
+	printf("need more arguments!\n");
+	printf("first argument is an integer telling the size of graph\n");
+	printf("second argument is also an integer telling the value of decomposition in each direction\n");
+	return 1;
+  }
   sscanf(argv[1], "%d", &size);
   sscanf(argv[2], "%d", &decomp);
   evaluation = test_performance(size, decomp);

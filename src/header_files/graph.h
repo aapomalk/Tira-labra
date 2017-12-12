@@ -4,7 +4,7 @@
 typedef struct VERTEX VERTEX;
 VERTEX * new_vertex();
 int get_index(VERTEX *v); /* index to identify v, see find_vertex */
-char* print_vertex(VERTEX *v);
+void print_vertex(VERTEX *v, char *text);
 
 typedef struct EDGE {
 	double weight;

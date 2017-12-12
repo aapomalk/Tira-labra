@@ -46,7 +46,7 @@ void test_remove_first(void) {
 }
 
 void test_parent_child(void) {
-  TEST_ASSERT_EQUAL_INT(-1, parent(0));
+  TEST_ASSERT_EQUAL_INT(0, parent(0));
   TEST_ASSERT_EQUAL_INT(0, parent(1));
   TEST_ASSERT_EQUAL_INT(0, parent(2));
   
@@ -73,6 +73,7 @@ void test_swap(void) {
   swap(h, 0, 1);
   TEST_ASSERT_EQUAL_INT(2, h->components[0].index);
   TEST_ASSERT_EQUAL_INT(1, h->components[1].index);
+  delete_heap(h);
 }
 
 void test_heap_new_value(void) {
@@ -84,6 +85,7 @@ void test_heap_new_value(void) {
   heap_new_value(h, 0, 5.0);
   TEST_ASSERT_EQUAL_INT(2, h->components[0].index);
   TEST_ASSERT_EQUAL_INT(1, h->components[1].index);
+  delete_heap(h);
 }
 
 int main(void) {
