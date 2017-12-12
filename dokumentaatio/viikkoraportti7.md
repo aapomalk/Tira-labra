@@ -43,7 +43,7 @@
 Ohjelma näyttäisi toimivan muuten, paitsi että alueisiin jako (domain decomposition) vaikuttaa lopputulokseen.
 Vaatii testaamista.
 
-klo 13:30-19:50
+klo 13:30-19:50, 22:30-
 
 ## Miten ohjelma on edistynyt?
 Hyvin. Ohjelma toimii, paitsi että alueisiin jako estää välillä pidempien reittien löytymisen.

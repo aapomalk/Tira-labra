@@ -46,6 +46,39 @@ Suoritusaikoja varten komentoriville (ainakin Linux käyttöjärjestelmissä) voi ki
 
 ## Ohjelman toiminnan empiirisen testauksen tulosten esittäminen graafisessa muodossa
 
+Seuraavissa kuvaajissa (y-akselilla) aika on koneen oma aikayksikkö, lähinnä vertailua varten.
+
+X-akselilla on verkon koko.
+Tarkemmin sanottuna kuution sivun pituus.
+Solmuja verkossa on siis `x^3`.
+
+Verkko on luotu siten, että vain vierekkäisiin solmuihin on yhteys
+(ei vinottain) ylös, alas ja neljälle sivulle.
+Jokaisella solmulla on siis kuusi naapuria.
+
+Yksi alue tarkoittaa sitä, että löytääkseen naapurinsa solmun täytyy
+selvittää etäisyytensä jokaiseen verkon solmuun (ja lähelläoleviin myös kulma).
+Monta aluetta tarkoittaa sitä, että lähimmät solmut löytyvät joko samasta tai läheisistä alueista nopeuttaen merkittävästi polun löytymistä.
+
+### Helppo tapaus
+Helpossa tapauksessa lyhin reitti löytyy etenemällä vain yhteen suuntaan.
+
+#### Monta aluetta
+![alt text](../tests/easy_case_many_domains.png "monta aluetta, helppo")
+#### Vain yksi alue
+![alt text](../tests/easy_case_one_domain.png "yksi alue, helppo")
+
+### Vaikea tapaus
+Vaikeassa tapauksessa lyhin reitti kulkisi vinottain,
+mutta koska se ei ole mahdollista täytyy kääntyä vähintään kolme kerta.
+Vaikean tapauksesta tekee se, että suunnilleen lyhimpiä reittejä on hyvin paljon.
+Lisäksi kun solmujen sijainteja on hieman satunnaistettu ei lyhimmän polun löytyminen todellakaan ole helppoa.
+
+#### Monta aluetta
+![alt text](../tests/tough_case_many_domains.png "monta aluetta, vaikea")
+#### Vain yksi alue
+![alt text](../tests/tough_case_one_domain.png "yksi alue, vaikea")
+
 ## Testaus on ideaalitapauksessa suoritettava ohjelma. Tällöin testi on helposti toistettavissa, mikä helpottaa toteutuksen tekoa jo varhaisessa vaiheessa. Javalla tehdyissä töissä on erittäin suositeltavaa käyttää testaukseen JUnitia
 
 ## Tunnettuja ongelmia:
