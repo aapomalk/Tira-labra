@@ -1,11 +1,11 @@
-# Käyttöohje
+# KÃ¤yttÃ¶ohje
 
-Käytetään biofysikaalisten tietokonesimulaatioiden trajektoreiden analysoimiseen.
+KÃ¤ytetÃ¤Ã¤n biofysikaalisten tietokonesimulaatioiden trajektoreiden analysoimiseen.
 
-Ohjelma löytää lyhimmän polun kahden valitun atomin välillä
-(mikäli sellainen on olemassa). Alla esimerkki löydetystä polusta.
+Ohjelma lÃ¶ytÃ¤Ã¤ lyhimmÃ¤n polun kahden valitun atomin vÃ¤lillÃ¤
+(mikÃ¤li sellainen on olemassa). Alla esimerkki lÃ¶ydetystÃ¤ polusta.
 
-[alt text](../tests/step138_hydrogen_bond_path.png "Löydetty polku")
+![alt text](../tests/step138_hydrogen_bond_path.png "LÃ¶ydetty polku")
 
 ## Ohjelman ajaminen
 
@@ -15,4 +15,4 @@ Ohjelma löytää lyhimmän polun kahden valitun atomin välillä
 
 ### Xtc -tiedostojen tuottaminen
 
-## Ohjelman kääntäminen
+## Ohjelman kÃ¤Ã¤ntÃ¤minen
