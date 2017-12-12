@@ -26,6 +26,8 @@
 
 ### 12.12.2017
 `valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./program_command` homma luistaa!
+Monta ongelmaa korjattua, kuten taannoinen mysteerinen "indeksi 10" bugi.
+Vaikka en kyseistä bugia edelleenkään täysin ymmärrä uskon että se on korjattu.
 
 #### testing memory leaks:
 +ok test_a_star.out
@@ -43,13 +45,18 @@
 Ohjelma näyttäisi toimivan muuten, paitsi että alueisiin jako (domain decomposition) vaikuttaa lopputulokseen.
 Vaatii testaamista.
 
-klo 13:30-19:50, 22:30-
+Muokkasin testausdokumenttia, toteutusdokumenttia ja aloitin käyttöohjeen.
+
+klo 13:30-19:50, 22:30-23:45 (yht 6h20min + 1h15min = 7h35min)
 
 ## Miten ohjelma on edistynyt?
-Hyvin. Ohjelma toimii, paitsi että alueisiin jako estää välillä pidempien reittien löytymisen.
+Hyvin. Ohjelma toimii, paitsi että alueisiin jako estää välillä pidempien reittien löytymisen (toinen aluejako löytää eri polut kuin toinen, lyhyet tuntuvat löytyvän kaikilla).
 
 ## Mitä opin tällä viikolla / tänään?
+Valgrind on hyvä!
+Kääntäjän -g ominaisuus on tärkeä valgrindin kanssa.
 
 ## Mikä jäi epäselväksi tai tuottanut vaikeuksia?
 
 ## Mitä teen seuraavaksi?
+Kun työ on valmis, voin nauttia työn hedelmistä ja tehdä lisää töitä.
