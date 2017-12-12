@@ -47,7 +47,7 @@ Vaatii testaamista.
 
 Muokkasin testausdokumenttia, toteutusdokumenttia ja aloitin käyttöohjeen.
 
-klo 13:30-19:50, 22:30-23:45 (yht 6h20min + 1h15min = 7h35min)
+klo 13:30-19:50, 22:30-23:55 (yht 6h20min + 1h25min = 7h45min)
 
 ## Miten ohjelma on edistynyt?
 Hyvin. Ohjelma toimii, paitsi että alueisiin jako estää välillä pidempien reittien löytymisen (toinen aluejako löytää eri polut kuin toinen, lyhyet tuntuvat löytyvän kaikilla).
