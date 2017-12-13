@@ -49,6 +49,12 @@ Muokkasin testausdokumenttia, toteutusdokumenttia ja aloitin käyttöohjeen.
 
 klo 13:30-19:50, 22:30-23:55 (yht 6h20min + 1h25min = 7h45min)
 
+### 13.12.2017
+Alueisiin jaon bugi korjattu.
+Ohjelma tuottaa nyt identtisen tuloksen riippumatta alueisiin jaosta.
+
+klo 11:10-12
+
 ## Miten ohjelma on edistynyt?
 Hyvin. Ohjelma toimii, paitsi että alueisiin jako estää välillä pidempien reittien löytymisen (toinen aluejako löytää eri polut kuin toinen, lyhyet tuntuvat löytyvän kaikilla).
 

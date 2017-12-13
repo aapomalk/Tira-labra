@@ -42,6 +42,14 @@ void set_all_atom_coordinates(GRAPH *g) {
   }
   /* uses the same decomposition as before */
   prepare_box(g, decomp, vector);
+  /*for (i=0; i<DIMENSIONS; i++) {
+	for (j=0; j<DIMENSIONS; j++) {
+	  if (vector[i][j] != box[i][j]) {
+		printf("failed, g->box[%d][%d] != box[%d][%d] but instead: %f != %f\n",
+			   i, j, i, j, g->box->vectors[i][j], box[i][j]);
+	  }
+	}
+	}*/
 }
 
 int read_first_xtc_pathfinder(char *xtc, GRAPH *g) {

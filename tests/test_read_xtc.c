@@ -48,7 +48,7 @@ void test_read_xtc(void) {
   /*found = search_path(a, g);
 	printf("path found %d, length %f\n", found, get_path_length(a));*/
   printf("starting path finding\n");
-  printf("\nstep, length, list of graph_index:structure_index:distance_from_start\n");
+  printf("\nstep, length, list of structure_index\n");
   for (i=0; i>=0; i++) {
 		/*TEST_ASSERT(test_coordinate != g->nodes[0].not_hydrogen.coord[0]);*/
 	found = search_path(a, g);
@@ -58,7 +58,7 @@ void test_read_xtc(void) {
 	  printf("%d, %f,", i, get_path_length(a));
 	  indexes = get_path_indexes(a, &steps);
 	  for (j=steps-1; j>=0; j--) {
-		printf("%d:%d:%.3f ", indexes[j], g->nodes[indexes[j]].not_hydrogen.index, a->distance_from_start[indexes[j]]);
+		printf("%d ", g->nodes[indexes[j]].not_hydrogen.index);
 	  }
 	  printf("\n");
 	  free(indexes);

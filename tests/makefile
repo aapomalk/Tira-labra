@@ -41,7 +41,8 @@ dir3=/opt/gromacs-5.0.7/include/gromacs/fileio
 GMX= -I $(dir3) -L$(dir2) -lgromacs
 
 all: performance test_a_star test_heap test_graph_implementation2 \
-test_read_pdb test_read_parameters test_read_parameters_and_pdb test_read_xtc
+test_read_pdb test_read_parameters test_read_parameters_and_pdb test_read_xtc \
+test_domain_decomposition
 
 test_read_xtc: test_read_xtc.c $(P6)/read_xtc.c $(OBJS_D) $(A_STAR)
 	$(CC) -o $@.out $^ $(GMX) $(FLAGS) $(FLAGS2) 
@@ -93,6 +94,10 @@ test_heap: $(OBJS2)
 	./$@.out
 
 test_graph_implementation2: $(OBJS)
+	$(CC) -o $@.out $^ $(FLAGS)
+	./$@.out
+
+test_domain_decomposition: test_domain_decomposition.c $(UNI) $(GBV) $(ALLOC)
 	$(CC) -o $@.out $^ $(FLAGS)
 	./$@.out
 

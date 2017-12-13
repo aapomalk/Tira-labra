@@ -256,33 +256,34 @@ double is_connection(VERTEX *a, VERTEX *b, GRAPH *g) {
 }
 
 int domain_is_within_reach(GRAPH *g, COORDINATE c, int *x) {
-	double distance = g->distance;
-	BOX *b = g->box;
-	int i,j;
-	COORDINATE *origin = get_domain_origin(b, c);
-	for (i=0; i<DIMENSIONS; i++) {
-		for (j=0; j<DIMENSIONS; j++) {
-			(*origin)[i] += x[j] * b->vectors[j][i] / b->decomposition[j];
-		}
+  double distance = g->distance;
+  BOX *b = g->box;
+  int i,j;
+  COORDINATE *origin = get_domain_origin(b, c);
+  for (i=0; i<DIMENSIONS; i++) {
+	for (j=0; j<DIMENSIONS; j++) {
+	  /* searches the origin or the domain positioned by x */
+	  (*origin)[i] += x[j] * b->vectors[j][i] / b->decomposition[j];
 	}
-	for (i=0; i<DIMENSIONS; i++) {
-		double min = (*origin)[i];
-		double max = min;
-		for (j=0; j<DIMENSIONS; j++) {
-			if (b->vectors[j][i] > 0) {
-				max += b->vectors[j][i] / b->decomposition[j];
-			} else {
-				min -= b->vectors[j][i] / b->decomposition[j];
-			}
-		}
-		if (c[i] + distance < min || c[i] - distance > max) {
-		  free(origin);
-		  return FAIL;
-		}
+  }
+  for (i=0; i<DIMENSIONS; i++) {
+	double min = (*origin)[i];
+	double max = min;
+	for (j=0; j<DIMENSIONS; j++) {
+	  if (b->vectors[j][i] > 0) {
+		max += b->vectors[j][i] / b->decomposition[j];
+	  } else {
+		min += b->vectors[j][i] / b->decomposition[j];
+	  }
 	}
-	
-	free(origin);
-	return SUCCESS;
+	if (c[i] + distance < min || c[i] - distance > max) {
+	  free(origin);
+	  return FAIL;
+	}
+  }
+  
+  free(origin);
+  return SUCCESS;
 }
 
 void clear_edges(GRAPH *g) {
