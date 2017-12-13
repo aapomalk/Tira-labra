@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#include <unistd.h> /* for the delay */
+
 A_STAR * new_a_star() {
   A_STAR *as = allocation_malloc(1, sizeof(A_STAR));
   as->start = -1;
@@ -69,21 +71,43 @@ int search_path(A_STAR *a, GRAPH *g) {
   index = start;
 
   do {
+	if (index < 0 || a->came_from[index] < 0) {
+	  index = get_first_index(a->heap);
+	  remove_first(a->heap);
+	  if (index < 0) {
+		break;
+	  }
+	  continue;
+	}
 	e = get_edges(g, get_vertex(g, index));
 	if (e == NULL) {
 	  index = get_first_index(a->heap);
 	  remove_first(a->heap);
+	  if (index < 0) { /* this equals empty heap */
+		break;
+	  }
 	  continue;
 	}
+	
 	for (i=0; i < g->n_of_edges[index]; i++) {
 	  int edge_index = e[i].node->index;
 	  double target_distance = heuristic(&(g->nodes[edge_index]), &(g->nodes[a->target]), g);
 	  double distance = a->distance_from_start[index] + e[i].weight; /*heuristic(&(g->nodes[index]), &(g->nodes[edge_index]), g);*/
+	  
+	  /*printf("%d, %f, %f, %f, %f\n", edge_index, target_distance, distance, e[i].weight, a->distance_from_start[index]);*/
+	  if (edge_index < 0 || edge_index >= g->number_of_nodes || target_distance < 0 || distance < 0 || e[i].weight < 0) {
+		printf("error with edges %d, %f, %f, %f, %f, %d, %d\n",
+			   edge_index, target_distance, distance, e[i].weight,
+			   a->distance_from_start[index], a->came_from[index], index);
+		sleep(1);
+		continue;
+	  }
 
 	  /* if found first time (distance < 0) and also if we found a shorter path then we add it */
 	  if ((a->came_from[edge_index] < 0 || distance < a->distance_from_start[edge_index]) && (a->limiter < 0 || target_distance < a->limiter)) { 
 		a->distance_from_start[edge_index] = distance; /* shortest distance */
 		a->came_from[edge_index] = index; /* shortest came from */
+		
 		/* 
 		   There will be some with the same index but different distances,
 		   but probably this is still more efficient compared to the other option
@@ -95,8 +119,9 @@ int search_path(A_STAR *a, GRAPH *g) {
 						 + target_distance
 #endif
 						 );
-	  }
-	}
+		
+	  } /* if */
+	} /* for loop */
 
 	do {
 	  dist = get_first_value(a->heap);
@@ -110,6 +135,7 @@ int search_path(A_STAR *a, GRAPH *g) {
 			 + heuristic(&(g->nodes[index]), &(g->nodes[a->target]), g)
 #endif
 			 ); /* lets skip all the longer (old) paths */
+	
   } while (a->heap->n_of_components > 0 && index != target && index >= 0 && index < g->number_of_nodes);
 
   if (a->came_from[target] >= 0) {
@@ -126,7 +152,7 @@ int * get_path_indexes(A_STAR *a, int *steps) {
   int index = a->target;
   int size = 10;
   int *indexes = allocation_malloc(size, sizeof(int));
-  int i;
+  int i,j,loop;
 
   if (a->came_from[index] < 0) {
 	*steps = -1;
@@ -144,6 +170,19 @@ int * get_path_indexes(A_STAR *a, int *steps) {
 	if (index == a->start) {
 	  break;
 	}
+
+	loop = 0;
+	for (j=i-1; j>=0; j--) {
+	  if (index == indexes[j]) {
+		printf("found a loop, exiting\n");
+		loop = 1;
+		break;
+	  }
+	}
+	if (loop == 1) {
+	  break;
+	}
+	
 	index = a->came_from[index];
 	if (index < 0 || index >= a->n_of_nodes) {
 	  break; /* I don't know what's happening but just in case */

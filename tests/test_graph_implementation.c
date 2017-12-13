@@ -365,6 +365,24 @@ void test_angle(void) {
 	free(b);
 }
 
+void test_find_vertex(void) {
+  GRAPH *g = new_graph();
+  int i,j,num=200;
+  VERTEX *v;
+  set_vertex_list_length(g, num);
+  g->number_of_nodes = num;
+  for (i=0; i<num; i++) {
+	j = i * 3;
+	g->nodes[i].not_hydrogen.index = j;
+	g->nodes[i].index = i;
+	TEST_ASSERT_EQUAL_INT(j, g->nodes[i].not_hydrogen.index);
+  }
+  v = find_vertex(g, 33);
+  TEST_ASSERT_EQUAL_INT(num, size_of_graph(g));
+  TEST_ASSERT(NULL != v);
+  TEST_ASSERT_EQUAL_INT(11, v->index);
+}
+
 int main(void) {
 	printf("\n");
 	UNITY_BEGIN();
@@ -380,5 +398,6 @@ int main(void) {
 	RUN_TEST(test_domain_within_reach);
 	RUN_TEST(test_is_connection);
 	RUN_TEST(test_angle);
+	RUN_TEST(test_find_vertex);
 	return UNITY_END();
 }

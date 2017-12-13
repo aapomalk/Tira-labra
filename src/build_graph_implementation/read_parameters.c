@@ -118,7 +118,8 @@ int build_vertex_definitions_and_prepare_graph(char *param, GRAPH *g,
 											   int *n_of_definitions) {
   FILE *param_pointer;
   char line[LINE_LENGTH_BUFFER];
-  int index=-1, index2;
+  int index=-1, index2=-1;
+  *n_of_definitions = -1;
 
   param_pointer = fopen(param, "r");
   if (param_pointer == NULL) {
@@ -128,11 +129,18 @@ int build_vertex_definitions_and_prepare_graph(char *param, GRAPH *g,
 
   while (!feof(param_pointer)) {
 	if (fgets(line, LINE_LENGTH_BUFFER, param_pointer) == NULL) {
-	  break;
+	  break; /* otherwise last line is doubled */
 	}
+	
 	if (compare_keyword_and_line(line, N_OF_DEFINITIONS) == SUCCESS) {
+	  if (index != -1 && index2 != -1) {
+		printf("%s number of definitions must come before residue and atom definitions\n", N_OF_DEFINITIONS);
+		printf("%s", line);
+		return FAIL;
+	  }
 	  handle_n_of_definitions(line, n_of_definitions, n_of_hydrogens,
 							  vertex_definitions);
+	  
 	} else if (compare_keyword_and_line(line, ANGLE) == SUCCESS) {
 	  handle_angle(line, g);
 	} else if (compare_keyword_and_line(line, DISTANCE) == SUCCESS) {
@@ -140,23 +148,37 @@ int build_vertex_definitions_and_prepare_graph(char *param, GRAPH *g,
 	} else if (compare_keyword_and_line(line, DOMAIN_DECOMPOSITION)
 			   == SUCCESS) {
 	  handle_domain_decomposition(line, g);
+	  
 	} else if (compare_keyword_and_line(line, N_OF_HYDROGENS) == SUCCESS) {
 	  index++;
 	  if (index >= *n_of_definitions) {
 		printf("index %d >= n_of_definitions %d\n", index, *n_of_definitions);
+		printf("%s", line);
+		return FAIL;
+	  }
+	  if (index2 != -1 && index2 != (*n_of_hydrogens)[index-1] + 2) {
+		printf("number of atom definitions doesn't match with number of hydrogens, %d != %d or -1\n",
+			   index2, ((*n_of_hydrogens)[index-1] + 2));
+		printf("%s", line);
+		printf("check the previous definitions\n");
 		return FAIL;
 	  }
 	  handle_n_of_hydrogens(line, n_of_hydrogens, vertex_definitions, index);
+	  
 	} else if (compare_keyword_and_line(line, RESIDUE_DEFINITION) == SUCCESS) {
-	  if (index >= *n_of_definitions) {
-		printf("index %d >= n_of_definitions %d\n", index, *n_of_definitions);
+	  if (index >= *n_of_definitions || index < 0) {
+		printf("index %d >= n_of_definitions %d or index < 0\n", index, *n_of_definitions);
+		printf("%s", line);
 		return FAIL;
 	  }
 	  handle_residue_definition(line, vertex_definitions, index);
 	  index2 = 1;
+	  
 	} else if (compare_keyword_and_line(line, ATOMNAME_DEFINITION) == SUCCESS) {
-	  if (index >= *n_of_definitions || index2 >= (*n_of_hydrogens)[index] + 2) {
-		printf("index %d >=? n_of_definitions %d or index2 %d >= (*n_of_hydrogens)[%d] %d + 2\n", index, *n_of_definitions, index2, index, (*n_of_hydrogens)[index]);
+	  if (index < 0 || index >= *n_of_definitions || index2 >= (*n_of_hydrogens)[index] + 2) {
+		printf("index < 0 or index %d >= n_of_definitions %d or index2 %d >= (*n_of_hydrogens)[%d] + 2\n",
+			   index, *n_of_definitions, index2, index);
+		printf("%s", line);
 		return FAIL;
 	  }
 	  handle_atomname_definition(line, vertex_definitions, index, index2);

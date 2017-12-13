@@ -143,16 +143,16 @@ VERTEX * get_vertex(GRAPH *g, int index) {
 VERTEX * find_vertex(GRAPH *g, int index) {
 	int i=0,j=size_of_graph(g)-1;
 	VERTEX *v;
-	while (j > i) {
+	while (j >= i) {
 		int k = (j - i) / 2 + i, x;
 		v = get_vertex(g, k);
-		x = get_index(v);
+		x = v->not_hydrogen.index;
 		if (x == index) {
 			return v;
-		} else if (x < index) {
-			j = x-1;
+		} else if (x > index) {
+		  j = k-1;
 		} else {
-			i = x+1;
+		  i = k+1;
 		}
 	}
 	return NULL;

@@ -17,7 +17,7 @@ GRAPH * new_graph();
 int delete_graph(GRAPH **g); /* pass the address of pointer g like &g */
 int size_of_graph(GRAPH *g);
 VERTEX * get_vertex(GRAPH *g, int index); /* 0 <= index < size_of_graph */
-VERTEX * find_vertex(GRAPH *g, int index); /* index might be larger than size_of_graph */
+VERTEX * find_vertex(GRAPH *g, int structure_index); /* structure_index might be larger than size_of_graph */
 int add_vertex(GRAPH *g, VERTEX *v);
 /* returns the (null-terminated) list of edges (weights and neighbours) */
 EDGE * get_edges(GRAPH *g, VERTEX *v);

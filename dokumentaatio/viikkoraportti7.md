@@ -53,16 +53,33 @@ klo 13:30-19:50, 22:30-23:55 (yht 6h20min + 1h25min = 7h45min)
 Alueisiin jaon bugi korjattu.
 Ohjelma tuottaa nyt identtisen tuloksen riippumatta alueisiin jaosta.
 
-klo 11:10-12
+Parametrien lukemiseen virhetilanteiden käsittelyä.
+
+Polkuun tulee välillä looppeja, jokin siis mättää..
+Mutta ei mätä enää. Bugi korjattu.
+
+Testataan kenties valmista ohjelmaa komennolla:
+`./pathfinder.out -pdb ../xtc_reader/final_solv_ions.pdb -xtc /home/work/aapomalk/proteins/complex_iv_monomer/separated/final_no_hetero2/sisu_trajectories/md.part0005_clst_cntr.xtc -par ../tests/parameter_protein_and_water.txt -start 27853 -end 1870`
+
+Muut komennot näet tulostetuista tiedostoista.
+Ohjelma toimii.
+Testi tulosteita on printattu src -kansioon (vaikka ei ehkä kuuluisi).
+
+klo 11:10-12, 12:45-18:25
 
 ## Miten ohjelma on edistynyt?
-Hyvin. Ohjelma toimii, paitsi että alueisiin jako estää välillä pidempien reittien löytymisen (toinen aluejako löytää eri polut kuin toinen, lyhyet tuntuvat löytyvän kaikilla).
+Hyvin. Ohjelma toimii.
+Limiter -ominaisuus on mukava (jos ei välitä pitkistä yhteyksistä),
+nopeuttaen ohjelman ajamista huomattavasti (esimerkiksi vesimolekyylien välillä).
 
 ## Mitä opin tällä viikolla / tänään?
 Valgrind on hyvä!
 Kääntäjän -g ominaisuus on tärkeä valgrindin kanssa.
 
 ## Mikä jäi epäselväksi tai tuottanut vaikeuksia?
+Täytyy vain luottaa siihen, että ohjelma toimii oikein
+ja löytää kaikki lyhimmät reitit, jos niitä on olemassa.
+Käsin niitä en halua etsiä, mutta ohjelma näyttäisi toimivan!
 
 ## Mitä teen seuraavaksi?
-Kun työ on valmis, voin nauttia työn hedelmistä ja tehdä lisää töitä.
+Työ on valmis, voin nauttia työn hedelmistä ja tehdä lisää töitä.

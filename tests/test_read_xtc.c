@@ -24,13 +24,16 @@ void test_read_xtc(void) {
   A_STAR *a = new_a_star();
   int found;
 
+  /*  char *parameters = "parameter_protein_and_water.txt";*/
+  char *parameters = "parameter_water.txt";
+
   printf("test_read_xtc started\n");
   
   set_start(a, 1);
   set_target(a, 0);
   set_limiter(a, -1); /* if this is negative then there is no limiter */
   
-  if (build_vertex_definitions_and_prepare_graph("parameter_protein_and_water.txt",
+  if (build_vertex_definitions_and_prepare_graph(parameters,
 												 g, &vert_def, &n_hydr, &n_def) == FAIL) {
 	printf("parameters failed\n");
 	return;
@@ -55,7 +58,7 @@ void test_read_xtc(void) {
 	
 	if (found == SUCCESS) {
 	  int *indexes,j,steps = -1;
-	  printf("%d, %f,", i, get_path_length(a));
+	  printf("%d, %f, ", i, get_path_length(a));
 	  indexes = get_path_indexes(a, &steps);
 	  for (j=steps-1; j>=0; j--) {
 		printf("%d ", g->nodes[indexes[j]].not_hydrogen.index);
