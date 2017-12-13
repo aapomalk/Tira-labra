@@ -59,13 +59,15 @@ Polkuun tulee välillä looppeja, jokin siis mättää..
 Mutta ei mätä enää. Bugi korjattu.
 
 Testataan kenties valmista ohjelmaa komennolla:
-`./pathfinder.out -pdb ../xtc_reader/final_solv_ions.pdb -xtc /home/work/aapomalk/proteins/complex_iv_monomer/separated/final_no_hetero2/sisu_trajectories/md.part0005_clst_cntr.xtc -par ../tests/parameter_protein_and_water.txt -start 27853 -end 1870`
+`./pathfinder.out -pdb ../xtc_reader/final_solv_ions.pdb -xtc /path/to/xtc/file/md.part0005_clst_cntr.xtc -par ../tests/parameter_protein_and_water.txt -start 27853 -end 1870`
 
 Muut komennot näet tulostetuista tiedostoista.
 Ohjelma toimii.
 Testi tulosteita on printattu src -kansioon (vaikka ei ehkä kuuluisi).
 
-klo 11:10-12, 12:45-18:25
+Käyttöohjeet tehty, kurssi on nyt mahdollisesti paketissa.
+
+klo 11:10-12, 12:45-18:25, 19:15-21 (yht 50min + 5h40min + 1h45min = 8h15min)
 
 ## Miten ohjelma on edistynyt?
 Hyvin. Ohjelma toimii.

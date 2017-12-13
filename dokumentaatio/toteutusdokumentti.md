@@ -1,5 +1,7 @@
 # Toteutusdokumentti
 
+![alt text](../tests/frame61_protein_water.ppm "hieno kuva")
+
 ## Ohjelman yleisrakenne
 
 Ohjelma koostuu verkosta (sisältää myös simulaatio laatikon ja naapurien etsintään soveltuvan box -rakenteen) ja A* -algoritmista (keko tietorakenteineen).
