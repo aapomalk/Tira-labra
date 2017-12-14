@@ -1,5 +1,7 @@
 # Tira-labra
 
+![alt text](tests/vmdscene.png "esimerkki")
+
 Tietorakenteiden harjoitustyö periodi 2, syksy 2017
 
 Ohjelma on kirjoitettu C:llä. Projektin tarkempi dokumentaatio löytyy dokumentaatio -kansiosta.
@@ -36,3 +38,9 @@ Jos ohjelma sijaitsee jossain muussa kuin nykyisessä kansiossa käytetään esi
 `/polku/kyseiseen/tiedostoon/ohjelman_nimi.out parametrit` tai `../../suhteellinen/polku/ohjelman_nimi.out parametrit`.
 Lisätietoa saat luultavasti kurssilta [Shell scripting](https://courses.helsinki.fi/fi/csm13501) (en itse ole käynyt sitä),
 tai muulta Linux:n käyttöön opastavalta kurssilta.
+
+[Käyttöohje](dokumentaatio/kayttoohje.md)
+
+[Toteutusdokumentti](dokumentaatio/toteutusdokumentti.md)
+
+[Testausdokumentti](dokumentaatio/testausdokumentti.md)

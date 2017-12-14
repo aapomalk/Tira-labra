@@ -1,6 +1,6 @@
 # Toteutusdokumentti
 
-![alt text](../tests/frame61_protein_water.ppm "hieno kuva")
+![alt text](../tests/frame61_protein_water.png "hieno kuva")
 
 ## Ohjelman yleisrakenne
 

@@ -1,7 +1,7 @@
 # Testausdokumentti
 
-![alt text](../tests/step19_top_view.tga "kuva ylh‰‰lt‰")
-![alt text](../tests/step19_side_view.tga "kuva sivulta")
+![alt text](../tests/step19_top_view.png "kuva ylh‰‰lt‰")
+![alt text](../tests/step19_side_view.png "kuva sivulta")
 
 ## Mit‰ on testattu, miten t‰m‰ tehtiin
 
