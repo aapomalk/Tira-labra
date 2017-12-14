@@ -56,13 +56,49 @@ Myös kun kohdesolmua vaihdetaan niin algoritmi löytää sen.
 ### test_performance.c
 
 Tätä testiä varten kääntäjä teki kaksi versiota: A* algoritmin ja Djikstra algoritmin.
-Näiden välillä on nähtävissä selvä ero (ks. performance_test_output.txt, *2_output.txt).
+Näiden välillä on nähtävissä selvä ero (ks. performance_test_output.txt, ...2_output.txt).
 Myös alueiden (domain) lukumäärällä oli hyvin suuri vaikutus.
 Jos alueita oli yhtä paljon kuin solmuja niin suoritusajat nousivat maltillisesti syötteen mukana,
 mutta jos alueita oli vain yksi niin suoritusajan nousu oli hyvin jyrkkää
 (vertaa performance_test_output.txt ja performance_test_output_one_domain.txt tiedostoja jne).
 
+Alempana testin suoritukset kuvaajina.
+
+### test_read_pdb.c
+
+Testattiin pdb -tiedoston lukemista kovakoodatuilla parametreilla/määritelmillä.
+Lopulta päädyin ratkaisuun, jossa pdb -tiedosto luetaan kahdesti,
+vaikka myöhemmän (valgrind) testauksen myötä yksi lukukerta olisi voinut olla myös toimiva.
+
+### test_read_parameters.c
+
+Kun pdb -tiedoston lukeminen onnistui oli hyvä hetki kehittää ja testata parametrien lukemista tiedostosta.
+
+### test_read_parameters_and_pdb.c
+
+Lopulta pdb -tiedoston ja parametrien lukeminen yhdistettiin.
+
+### test_read_xtc.c
+
+Viimeisenä testinä (tai näin luulin) testattiin kokonaisuutta.
+Lopullinen ohjelma vastaa tätä testiä komentorivi -parametreja lukuunottamatta
+(ja muutamaa testiä).
+
+### test_domain_decomposition.c
+
+test_read_xtc.c testissä kävi kuitenkin ilmi, että aluejaossa on jotain vialla,
+joten testasin vielä aluejakoa ei-kuution muotoisella laatikolla.
+
+### test_clocks_per_sec.c
+
+Viimeinen testi on kevennys.
+Suorituskykytestien aikayksikkö oli mysteeri, joten päätin selvittää mikä aikayksikkö todellisuudessa on.
+(vastaus: mikrosekunti, eli 10^-6 s)
+
 ## Minkälaisilla syötteillä testaus tehtiin (vertailupainotteisissa töissä tärkeää)
+Vertailun (test_performance.c) syötteenä toimi 3D-manhattan tyyppinen verkko, 
+jossa kohde oli joko vinottaisen etäisyyden päässä (hankala) tai suoran etäisyyden päässä (helppo).
+Käyttäjä määrittää verkon koon ja käytetyn aluejaon koon.
 
 ## Miten testit voidaan toistaa
 
@@ -73,6 +109,9 @@ Kääntämisen jälkeen ohjelman voi ajaa komentoriviltä esimerkiksi komennolla
 Suoritusaikoja varten komentoriville (ainakin Linux käyttöjärjestelmissä) voi kirjoittaa seuraavanlaisen komennon:
 
 `for i in {10..30..5} ; do ./test_performance2.out $i 1; ./test_performance_zero2_heuristic.out $i 1 ; done > performance_test2_output_one_domain.txt`
+
+Komento `./test_performance2.out x y` suorittaa ohjelman kertaalleen, 
+missä x on verkon sivun pituus (solmuissa laskettuna) ja y on aluejaon luku per sivu.
 
 ## Ohjelman toiminnan empiirisen testauksen tulosten esittäminen graafisessa muodossa
 
