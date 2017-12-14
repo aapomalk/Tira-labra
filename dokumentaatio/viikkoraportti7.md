@@ -69,6 +69,15 @@ Käyttöohjeet tehty, kurssi on nyt mahdollisesti paketissa.
 
 klo 11:10-12, 12:45-18:25, 19:15-21 (yht 50min + 5h40min + 1h45min = 8h15min)
 
+### 14.12.2017
+Projektin viimeistelyä.
+Tiedostojen muokkausta, lisäsin myös pienen xtc -tiedoston ja uuden esimerkkiajon.
+Siivousta.
+
+klo 13-14:15
+
+Koko viikko yhteensä: 7h45min + 8h15min + 1h15min = 17h15min
+
 ## Miten ohjelma on edistynyt?
 Hyvin. Ohjelma toimii.
 Limiter -ominaisuus on mukava (jos ei välitä pitkistä yhteyksistä),
@@ -82,6 +91,9 @@ Kääntäjän -g ominaisuus on tärkeä valgrindin kanssa.
 Täytyy vain luottaa siihen, että ohjelma toimii oikein
 ja löytää kaikki lyhimmät reitit, jos niitä on olemassa.
 Käsin niitä en halua etsiä, mutta ohjelma näyttäisi toimivan!
+
+Kysymyksenä on, että kannattaisiko ohjelma lisensoida?
+Haluaisin kuitenkin antaa ohjelman työkavereille käytettäväksi.
 
 ## Mitä teen seuraavaksi?
 Työ on valmis, voin nauttia työn hedelmistä ja tehdä lisää töitä.
