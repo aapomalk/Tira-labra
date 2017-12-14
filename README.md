@@ -13,8 +13,11 @@ tests -kansio testit. Testit tarvitsevat toimiakseen [Unity](http://www.throwthe
 
 xtc_reader -kansio sisältää testiversion xtc -tiedostojen lukemisesta (tarvitsee toimiakseen GROMACS kirjaston) 
 ja yhden xtc aika-askeleen auki kirjoitettuna sekä vastavan pdb tiedoston verkon luomista varten.
+Kansio sisältää nyt myös kolmen aika-askeleen xtc tiedoston, joka on kyseisen pdb -tiedoston kanssa yhteensopiva.
 
 Dokumentaatio -kansio sisältää viikkoraportit ja muun kurssin vaatimuksiin kuuluvat dokumentaatiot ohjelmasta ja ohjelman tekemisestä/testaamisesta jne.
+
+suoritettava_ohjelma_linux -kansio sisältää suoritettavan ohjelman linux -käyttöjärjestelmälle sekä esimerkkejä ohjelman tulostuksesta.
 
 Muut kansiot ovat vertaisarviointeja varten ladattuja github -projekteja.
 
